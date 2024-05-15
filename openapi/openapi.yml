@@ -1,0 +1,37 @@
+openapi: "3.0.3"
+info:
+  title: posture-annotation-api
+  description: "`posture-annotation-api` is a RESTful API for the Posture Annotation project."
+  version: "1.0.0"
+servers:
+  - url: http://api:5172
+paths:
+  /users:
+    post:
+      description: create user
+      responses:
+        '201':
+          description: created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+components:
+  schemas:
+    User:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+      example:
+        $ref: '#/components/examples/UserExample'
+  examples:
+    UserExample:
+      value:
+        id: 1
+        name: John
