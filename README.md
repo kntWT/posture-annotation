@@ -8,7 +8,7 @@
 
 - 開発環境
   - Docker
-    - Docker上でSvelte + TypeScript，Java，PostgresQL，PHPMyAdminを動かしてる
+    - Docker上でSvelte + TypeScript，Java，PostgresQL，PGAdminを動かしてる
 - フロントエンド
   - [Svelte](https://svelte.dev/)
   - [TypeScript](https://www.typescriptlang.org/)
@@ -50,4 +50,4 @@
 |     | 4200 | クライアント, Svelte            | posture-annotation-client       |
 |     | 4201 | API, Java                        | posture-annotation-api          |
 |     | 4202 | データベース，   POSTGRES         | posture-annotation-db        |
-|     | 4203 | データベースの操作, PHPMyAdmin | posture-annotation-phpmyadmin   |
+|     | 4203 | データベースの操作, PGAdmin | posture-annotation-pgadmin   |
