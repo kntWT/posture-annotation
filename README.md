@@ -21,7 +21,7 @@
 ### 設定ファイル
 - `./.env`
   - ```
-    POSTGRES_HOST=POSTGRES:3306
+    POSTGRES_HOST=POSTGRES:5432
     POSTGRES_DATABASE=posture_annotation_db
     POSTGRES_USER=ユーザ名
     POSTGRES_PASSWORD=パスワード
@@ -32,12 +32,16 @@
     PMA_PASSWORD=パスワード
     TZ=Asia/Tokyo
 
+    BUILD_MODE=dev
+
     IMAGE_DIR=images
     ORIGINAL_IMAGE_DIR=images/original
 
     API_URL=http://api:8000
     API_ENDPOINT=/api/
     ```
+  - 開発用と本番環境用でビルドの方法を変えるため，Dockerfileを分けています
+  - apiは，コンテナに入り`mvn compile`を実行すると変更が反映されます
 
 ### 開発で使用するポート一覧
 
