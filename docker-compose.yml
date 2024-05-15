@@ -1,0 +1,67 @@
+version: '3'
+services:
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: posture-annotation-phpmyadmin
+    env_file: .env
+    ports:
+      - "5171:80"
+    depends_on:
+      - db
+    networks:
+      - posture-annotation
+
+  api:
+    build: api
+    container_name: posture-annotation-api
+    env_file:
+      - .env
+    ports:
+      - "5172:8000"
+    volumes:
+      - ./api/src:/app/src
+      - api-build:/app/build
+    depends_on:
+      - db
+    restart: always
+    networks:
+      - posture-annotation
+
+  client:
+    build: client
+    container_name: posture-annotation-client
+    env_file:
+      - .env
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./client:/app
+      - client-build:/app/build
+      - node_modules:/app/node_modules
+    depends_on:
+      - db
+    tty: true
+    networks:
+      - posture-annotation
+
+  db:
+    build: db
+    container_name: posture-annotation-db
+    env_file:
+      - .env
+    ports:
+      - "5174:3306"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks:
+      - posture-annotation
+
+volumes:
+  api-build:
+  client-build:
+  node_modules:
+  db-data:
+
+networks:
+  posture-annotation:
+    driver: bridge
