@@ -73,9 +73,10 @@ services:
       - "5174:8080"
     volumes:
       - ./openapi:/local
-      - ./client/src/api/generated:/local/client
-      - ./api:/local/api/
-    command: generate -i /local/openapi.yml -g typescript-axios -o /local/client && generate -i /local/openapi.yml -g spring -o /local/api --additional-properties=Library=spring-boot
+      - ./client/src/lib/server/api/generated:/loca/generated/client
+      - ./api:/local/generated/api
+    # command: generate -i /local/openapi.yml -g typescript-axios -o /local/generated/client
+    command: generate -i /local/openapi.yml -g spring -o /local/generated/api --additional-properties=Library=spring-boot
     tty: true
     networks:
       - posture-annotation
