@@ -1,6 +1,7 @@
 user:
   post:
     description: create user
+    operationId: createUser
     tags:
       - user
     responses:
@@ -18,6 +19,7 @@ user:
               $ref: '../components/schemas/error.yaml#/BadRequest'
   get:
     description: get all users
+    operationId: getUsers
     tags:
       - user
     responses:
@@ -38,6 +40,7 @@ user:
 user_auth:
   get:
     description: get user by token
+    operationId: getUserByToken
     tags:
       - user
     headers:
@@ -63,6 +66,7 @@ user_auth:
 user_{id}:
   get:
     description: get user by id
+    operationId: getUserById
     tags:
       - user
     parameters:
@@ -87,6 +91,7 @@ user_{id}:
               $ref: '../components/schemas/error.yaml#/NotFound'
   put:
     description: update user by id
+    operationId: updateUserById
     tags:
       - user
     parameters:
@@ -105,6 +110,7 @@ user_{id}:
               $ref: '../components/schemas/user.yaml#/User'
   delete:
     description: delete user by id
+    operationId: deleteUserById
     tags:
       - user
     parameters:
