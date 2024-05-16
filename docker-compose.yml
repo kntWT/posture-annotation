@@ -89,7 +89,7 @@ services:
     environment:
       - SWAGGER_JSON=/app/openapi.yaml
     volumes:
-      - ./openapi/openapi.yaml:/app/openapi.yaml
+      - ./openapi:/app
     networks:
       - posture-annotation
 
