@@ -1,0 +1,32 @@
+openapi: "3.0.3"
+info:
+  title: posture-annotation-api
+  description: "`posture-annotation-api` is a RESTful API for the Posture Annotation project."
+  version: "1.0.0"
+servers:
+  - url: http://localhost:5172
+    description: Local development server
+  - url: http://api:8000
+    description: Docker development server
+paths:
+  /user:
+    $ref: ./paths/user.yaml#/user
+  /user/auth:
+    $ref: ./paths/user.yaml#/user_auth
+  /user/{id}:
+    $ref: ./paths/user.yaml#/user_{id}
+components:
+  schemas:
+    User:
+      $ref: ./components/schemas/user.yaml#/User
+    UserCreate:
+      $ref: ./components/schemas/user.yaml#/UserCreate
+  examples:
+    UserExample:
+      value:
+        id: 1
+        name: John
+        password: password
+        token: token
+        created_at: "2021-01-01T00:00:00Z"
+        updated_at: "2024-05-01T00:00:00Z"

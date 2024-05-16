@@ -73,10 +73,10 @@ services:
       - "5174:8080"
     volumes:
       - ./openapi:/local
-      - ./client/src/lib/server/api/generated:/loca/generated/client
+      - ./client/src/lib/server/api/generated:/local/generated/client
       - ./api:/local/generated/api
-    # command: generate -i /local/openapi.yml -g typescript-axios -o /local/generated/client
-    command: generate -i /local/openapi.yml -g spring -o /local/generated/api --additional-properties=Library=spring-boot
+    command: generate -i /local/openapi.yaml -g typescript-axios -o /local/generated/client
+    # command: generate -i /local/openapi.yaml -g spring -o /local/generated/api --additional-properties=Library=spring-boot
     tty: true
     networks:
       - posture-annotation
@@ -87,9 +87,9 @@ services:
     ports:
       - "5175:8080"
     environment:
-      - SWAGGER_JSON=/app/openapi.yml
+      - SWAGGER_JSON=/app/openapi.yaml
     volumes:
-      - ./openapi/openapi.yml:/app/openapi.yml
+      - ./openapi/openapi.yaml:/app/openapi.yaml
     networks:
       - posture-annotation
 
