@@ -10,17 +10,21 @@ servers:
     description: Docker development server
 paths:
   /user:
-    $ref: ./paths/user.yaml#/user
+    $ref: './paths/user.yaml#/user'
+  /user/login:
+    $ref: './paths/user.yaml#/login'
   /user/auth:
-    $ref: ./paths/user.yaml#/user_auth
+    $ref: './paths/user.yaml#/user_auth'
+  /user/is_exist:
+    $ref: './paths/user.yaml#/is_exist'
   /user/{id}:
-    $ref: ./paths/user.yaml#/user_{id}
+    $ref: './paths/user.yaml#/user_{id}'
 components:
   schemas:
     User:
-      $ref: ./components/schemas/user.yaml#/User
+      $ref: './components/schemas/user.yaml#/User'
     UserCreate:
-      $ref: ./components/schemas/user.yaml#/UserCreate
+      $ref: './components/schemas/user.yaml#/UserCreate'
   examples:
     UserExample:
       value:

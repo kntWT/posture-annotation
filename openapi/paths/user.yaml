@@ -4,6 +4,12 @@ user:
     operationId: createUser
     tags:
       - user
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/user.yaml#/UserCreate'
     responses:
       '201':
         description: created
@@ -37,6 +43,37 @@ user:
           application/json:
             schema:
               $ref: '../components/schemas/error.yaml#/Forbidden'
+login:
+  post:
+    description: login user
+    operationId: loginUser
+    tags:
+      - user
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/user.yaml#/UserCreate'
+    responses:
+      '200':
+        description: ok
+        content:
+          application/json:
+            schema:
+              $ref: '../components/schemas/user.yaml#/User'
+      '400':
+        description: bad request
+        content:
+          application/json:
+            schema:
+              $ref: '../components/schemas/error.yaml#/BadRequest'
+      '401':
+        description: unauthorized
+        content:
+          application/json:
+            schema:
+              $ref: '../components/schemas/error.yaml#/Unauthorized'
 user_auth:
   get:
     description: get user by token
@@ -63,6 +100,31 @@ user_auth:
           application/json:
             schema:
               $ref: '../components/schemas/error.yaml#/Unauthorized'
+is_exist:
+  post:
+    description: check if user exists
+    operationId: isUserExist
+    tags:
+      - user
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/user.yaml#/UserCreate'
+    responses:
+      '200':
+        description: ok
+        content:
+          application/json:
+            schema:
+              type: boolean
+      '400':
+        description: bad request
+        content:
+          application/json:
+            schema:
+              $ref: '../components/schemas/error.yaml#/BadRequest'
 user_{id}:
   get:
     description: get user by id
