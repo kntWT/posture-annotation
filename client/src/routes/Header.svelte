@@ -1,6 +1,28 @@
+<script lang="ts">
+    import { goto } from "$app/navigation";
+    import { getContext } from "svelte";
+    import { logout } from "$lib/store/user";
+	import type { User } from "$lib/api/generated";
+    import { page } from "$app/stores";
+
+    let user: User | null = getContext("user");
+    const navigateLogin = () => {
+        goto("/login");
+    };
+    const handleLogout = async () => {
+        logout();
+    };
+</script>
+
 <div class="header">
     <h2>姿勢アノテーションシステム</h2>
-    <btn>ログイン</btn>
+    {#if $page.url.pathname !== "/login"}
+        {#if user}
+            <btn on:click={handleLogout}>ログアウト</btn>
+        {:else }
+            <btn on:click={navigateLogin}>ログイン</btn>
+        {/if}
+    {/if}
 </div>
 
 <style lang="scss">
