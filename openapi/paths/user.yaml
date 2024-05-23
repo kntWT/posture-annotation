@@ -16,7 +16,7 @@ user:
         content:
           application/json:
             schema:
-              $ref: '../components/schemas/user.yaml#/UserCreate'
+              $ref: '../components/schemas/user.yaml#/User'
       '400':
         description: bad request
         content:
