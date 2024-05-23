@@ -4,10 +4,10 @@ info:
   description: "`posture-annotation-api` is a RESTful API for the Posture Annotation project."
   version: "1.0.0"
 servers:
-  - url: http://localhost:5172
-    description: Local development server
   - url: http://api:8000
     description: Docker development server
+  - url: http://localhost:5172
+    description: Local development server
 paths:
   /user:
     $ref: './paths/user.yaml#/user'
