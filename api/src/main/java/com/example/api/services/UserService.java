@@ -24,7 +24,7 @@ public class UserService {
         String name = userCreate.getName();
         String password = userCreate.getPassword();
         UserEntity existUser = userRepository.findByNameAndPassword(name, password);
-        if (existUser != null) {
+        if (existUser == null) {
             UserEntity user = new UserEntity(name, password);
             return userRepository.save(user).toUser();
         } else {
