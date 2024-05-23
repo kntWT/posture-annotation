@@ -33,4 +33,4 @@ build/
 .vscode/
 
 ### Open API Generator ###
-generated/
+**/generated/

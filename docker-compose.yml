@@ -42,6 +42,7 @@ services:
     depends_on:
       - postgres
     restart: always
+    tty: true
     networks:
       - posture-annotation
 
@@ -76,7 +77,7 @@ services:
       - ./client/src/lib/api/generated:/local/generated/client
       - ./api/generated:/local/generated/api
     # command: generate -i /local/openapi.yaml -g typescript-axios -o /local/generated/client
-    command: generate -i /local/openapi.yaml -g spring -o /local/generated/api --additional-properties=Library=spring-boot
+    command: generate -i /local/openapi.yaml -g spring -o /local/generated/api --additional-properties groupId=com.generated --additional-properties artifactId=openapi-generated --additional-properties apiPackage=com.generated.api --additional-properties modelPackage=com.generated.model --additional-properties=Library=spring-boot --additional-properties java17=true --additional-properties useSpringBoot3=true
     tty: true
     networks:
       - posture-annotation
