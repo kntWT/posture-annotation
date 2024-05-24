@@ -32,4 +32,14 @@ public class UserController implements UserApi {
         User user = userService.createUser(userCreate);
         return ResponseEntity.ok(user);
     }
+
+    @Override
+    public ResponseEntity<User> loginUser(UserCreate userCreate) {
+        User user = userService.loginUser(userCreate);
+        if (user == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(user);
+    }
 }
