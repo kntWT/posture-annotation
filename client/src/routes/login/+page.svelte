@@ -1,48 +1,43 @@
 <script lang="ts">
-	import type { UserCreate } from "$api/generated";
-	import { goto } from "$app/navigation";
-	import { userApi } from "$api/userApi";
-	import { login } from "$lib/store/user";
 	import Form from "./Form.svelte";
     import Divider from "$lib/components/Divider.svelte";
+	import type { ActionData } from "./$types";
+	import { goto } from "$app/navigation";
+	import { onMount } from "svelte";
 
-    const handleLogin = async (userInfo: UserCreate) => {
-        await (userApi.loginUser(userInfo))
-            .then((res) => {
-                const user = res.data;
-                goto("/");
-                login(user);
-            })
-            .catch((err) => {
-                console.log(err);
-                alert("ログインに失敗しました");
-                return null;
-            });
-    };
-
-    const handleSignup = async (userInfo: UserCreate) => {
-        await (userApi.createUser(userInfo))
-            .then((res) => {
-                const data = res.data;
-                login(data);
-            })
-            .catch((err) => {
-                console.log(err);
-                alert("新規登録に失敗しました");
-            });
-    };
+    export let form: ActionData
+    onMount(() => {
+        if (form?.status === 200) {
+            goto("/");
+        }
+    });
 </script>
 
 <div class="wrapper">
-    <Form action="ログイン" handleSubmit={handleLogin} />
+    {#if form?.message}
+        <div class="error-notification">
+            <p>{form.action}に失敗しました</p>
+            <p>{form.message}</p>
+        </div>
+    {/if}
+    <Form title="ログイン" action="login" />
     <Divider color={"gray"} />
-    <Form action="新規登録" handleSubmit={handleSignup} />
+    <Form title="新規登録" action="signup" />
 </div>
 
 <style lang="scss">
+    @import "$lib/styles/variables";
     .wrapper {
         display: flex;
         justify-content: center;
         flex-direction: column;
+    }
+
+    .error-notification {
+        color: $error-color;
+        padding: 10px;
+        border-radius: 10%;
+        border-color: $accent-color;
+        margin: 10px;
     }
 </style>
