@@ -47,7 +47,7 @@
 
 |     | port | 説明                           | docker container 名 |
 | :-: | ---- | :----------------------------- | ------------------- |
-|     | 7151 | クライアント, Svelte            | posture-annotation-client       |
-|     | 7152 | API, Java                        | posture-annotation-api          |
-|     | 7153 | データベース，   POSTGRES         | posture-annotation-db        |
-|     | 7154 | データベースの操作, PGAdmin | posture-annotation-pgadmin   |
+|     | 7150 | データベース，PostgresQL            | posture-annotation-db       |
+|     | 7151 | SQLクライアント，PGAdmin                        | posture-annotation-pgadmin          |
+|     | 7152 | API，Java         | posture-annotation-api        |
+|     | 7153 | クライアント，SvelteKit | posture-annotation-client   |
