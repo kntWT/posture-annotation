@@ -21,15 +21,14 @@
 ### 設定ファイル
 - `./.env`
   - ```
-    POSTGRES_HOST=POSTGRES:5432
+    POSTGRES_HOST=postgres
     POSTGRES_DATABASE=posture_annotation_db
     POSTGRES_USER=ユーザ名
     POSTGRES_PASSWORD=パスワード
     POSTGRES_ROOT_PASSWORD=パスワード
     POSTGRES_INITDB_ARGS=--encoding=UTF-8 --locale=C
-    PMA_HOST=db
-    PMA_USER=ユーザ名
-    PMA_PASSWORD=パスワード
+    PGADMIN_DEFAULT_EMAIL=gadmin4@pgadmin.org
+    PGADMIN_DEFAULT_PASSWORD=n1k2m3r4fms
     TZ=Asia/Tokyo
 
     BUILD_MODE=dev
@@ -51,3 +50,4 @@
 |     | 7151 | SQLクライアント，PGAdmin                        | posture-annotation-pgadmin          |
 |     | 7152 | API，Java         | posture-annotation-api        |
 |     | 7153 | クライアント，SvelteKit | posture-annotation-client   |
+|     | 7155 | API仕様書，Swagger UI | posture-annotation-swagger-ui   |
