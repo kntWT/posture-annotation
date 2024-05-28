@@ -23,7 +23,7 @@ openapi-generate-api:
 	docker run --rm -v "${PWD}:/local" openapitools/openapi-generator-cli generate \
 		-i /local/openapi/openapi.yaml \
 		-g spring \
-		-o /local/api \
+		-o /local/api/generated \
 		--additional-properties groupId=com.generated \
 		--additional-properties artifactId=openapi-generated \
 		--additional-properties apiPackage=com.generated.api \
