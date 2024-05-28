@@ -43,4 +43,14 @@ public class UserService {
 
         return null;
     }
+
+    @Transactional
+    public User getUserByToken(String token) {
+        UserEntity user = userRepository.findByToken(token);
+        if (user != null) {
+            return user.toUser();
+        }
+
+        return null;
+    }
 }

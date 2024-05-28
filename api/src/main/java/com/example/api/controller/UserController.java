@@ -3,7 +3,11 @@ package com.example.api.controller;
 import com.generated.api.UserApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
+import jakarta.validation.constraints.NotNull;
+import java.net.URI;
 
 import com.example.api.entities.UserEntity;
 import com.example.api.repositories.UserRepository;
@@ -30,14 +34,24 @@ public class UserController implements UserApi {
         }
 
         User user = userService.createUser(userCreate);
-        return ResponseEntity.ok(user);
+        return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }
 
     @Override
     public ResponseEntity<User> loginUser(UserCreate userCreate) {
         User user = userService.loginUser(userCreate);
         if (user == null) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+        return ResponseEntity.ok(user);
+    }
+
+    @Override
+    public ResponseEntity<User> getUserByToken(String authorization) {
+        User user = userService.getUserByToken(authorization);
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
         return ResponseEntity.ok(user);
