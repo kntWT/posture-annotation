@@ -19,10 +19,6 @@ user:
               $ref: '../components/schemas/user.yaml#/User'
       '400':
         description: bad request
-        content:
-          application/json:
-            schema:
-              $ref: '../components/schemas/error.yaml#/BadRequest'
   get:
     description: get all users
     operationId: getUsers
@@ -39,10 +35,6 @@ user:
                 $ref: '../components/schemas/user.yaml#/User'
       '403':
         description: forbidden
-        content:
-          application/json:
-            schema:
-              $ref: '../components/schemas/error.yaml#/Forbidden'
 login:
   post:
     description: login user
@@ -64,24 +56,17 @@ login:
               $ref: '../components/schemas/user.yaml#/User'
       '400':
         description: bad request
-        content:
-          application/json:
-            schema:
-              $ref: '../components/schemas/error.yaml#/BadRequest'
       '401':
         description: unauthorized
-        content:
-          application/json:
-            schema:
-              $ref: '../components/schemas/error.yaml#/Unauthorized'
 user_auth:
   get:
     description: get user by token
     operationId: getUserByToken
     tags:
       - user
-    headers:
-      token:
+    parameters:
+      - in: header
+        name: Authorization
         description: user token
         required: true
         schema:
@@ -96,10 +81,6 @@ user_auth:
               $ref: '../components/schemas/user.yaml#/User'
       '401':
         description: forbidden
-        content:
-          application/json:
-            schema:
-              $ref: '../components/schemas/error.yaml#/Unauthorized'
 is_exist:
   post:
     description: check if user exists
@@ -121,10 +102,6 @@ is_exist:
               type: boolean
       '400':
         description: bad request
-        content:
-          application/json:
-            schema:
-              $ref: '../components/schemas/error.yaml#/BadRequest'
 user_{id}:
   get:
     description: get user by id
@@ -147,10 +124,6 @@ user_{id}:
               $ref: '../components/schemas/user.yaml#/User'
       '404':
         description: not found
-        content:
-          application/json:
-            schema:
-              $ref: '../components/schemas/error.yaml#/NotFound'
   put:
     description: update user by id
     operationId: updateUserById
@@ -187,13 +160,5 @@ user_{id}:
         description: no content
       '403':
         description: forbidden
-        content:
-          application/json:
-            schema:
-              $ref: '../components/schemas/error.yaml#/Forbidden'
       '404':
         description: not found
-        content:
-          application/json:
-            schema:
-              $ref: '../components/schemas/error.yaml#/NotFound'
