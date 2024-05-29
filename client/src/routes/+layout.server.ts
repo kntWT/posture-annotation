@@ -8,10 +8,12 @@ export const load: LayoutServerLoad = async ({ cookies }) => {
             user: null
         }
     }
-    const user = await (userApi.getUserByToken({ data: { token } }))
-        .then((response) => response.data)
+    const user = await userApi.getUserByToken(token)
+        .then((response) => ({ ...response.data, token: "" }))
         .catch((e) => {
             cookies.set('token', '', { path: "/" })
+            return null;
         });
+
     return user ? { user } : { user: null };
 }

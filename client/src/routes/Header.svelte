@@ -1,11 +1,8 @@
 <script lang="ts">
     import { goto } from "$app/navigation";
-    import { getContext } from "svelte";
-    import { logout } from "$lib/store/user";
-	import type { User } from "$lib/api/generated";
+    import { user, logout } from "$lib/store/user";
     import { page } from "$app/stores";
 
-    let user: User | null = getContext("user");
     const navigateLogin = () => {
         goto("/login");
     };
@@ -17,7 +14,7 @@
 <div class="header">
     <h2>姿勢アノテーションシステム</h2>
     {#if $page.url.pathname !== "/login"}
-        {#if user}
+        {#if $user}
             <btn on:click={handleLogout}>ログアウト</btn>
         {:else }
             <btn on:click={navigateLogin}>ログイン</btn>
@@ -52,7 +49,7 @@
         btn {
             background-color: $accent-color;
             color: $secondary-color;
-            padding: 8px 16px;
+            padding: 8px 8px;
             margin: auto 16px auto auto;
             border: none;
             cursor: pointer;
@@ -63,6 +60,7 @@
             right: 0;
             transform: translate(0, -50%);
             -webkit-transform: translate(0, -50%);
+            font-size: 0.7rem;
         }
     }
 

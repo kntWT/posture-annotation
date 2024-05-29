@@ -7,7 +7,7 @@ import { userApi } from '$api/userApi';
 export const load: PageServerLoad = async ({ cookies }) => {
     const token = cookies.get('token');
     if (token || token !== '') {
-        // redirect(308, '/');
+        redirect(308, '/');
     }
 }
 

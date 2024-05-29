@@ -1,14 +1,15 @@
 <script lang="ts">
 	import Header from './Header.svelte';
-    import { setContext } from 'svelte';
+    import { onMount } from 'svelte';
     import type { LayoutData } from './$types';
 	import { login } from '$lib/store/user';
 
     export let data: LayoutData;
-    if (data.user) {
-        login(data.user);
-        setContext('user', data.user);
-    }
+    onMount(() => {
+        if (data.user) {
+            login(data.user);
+        }
+    });
 </script>
 
 <div class="app">
