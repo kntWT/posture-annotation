@@ -1,13 +1,14 @@
-import { fail, redirect, type Cookies } from '@sveltejs/kit';
+import { fail, redirect } from '@sveltejs/kit';
 import type { PageServerLoad, Actions } from './$types';
 import type { User, UserCreate } from '$api/generated';
-import { userApi } from '$api/userApi';
+import { userApi } from '$api';
+
 
 /** @type {import('./$types').PageServerLoad} */
 export const load: PageServerLoad = async ({ cookies }) => {
     const token = cookies.get('token');
     if (token || token !== '') {
-        redirect(308, '/');
+        redirect(301, '/');
     }
 }
 

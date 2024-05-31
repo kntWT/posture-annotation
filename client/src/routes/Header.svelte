@@ -8,6 +8,7 @@
     };
     const handleLogout = async () => {
         logout();
+        goto("/logout");
     };
 </script>
 
