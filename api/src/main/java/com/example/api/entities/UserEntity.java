@@ -84,9 +84,9 @@ public class UserEntity {
     public User toUser() {
         return new User(
             this.getId(),
+            this.getToken(),
             this.getName(),
-            this.getPassword(),
-            this.getToken()
+            this.getPassword()
         )
             .createdAt(this.getCreatedAt())
             .updatedAt(this.getUpdatedAt());
