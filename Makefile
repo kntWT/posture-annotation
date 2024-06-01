@@ -16,8 +16,9 @@ docker-down-v:
 openapi-generate-client:
 	docker run --rm -v "${PWD}:/local" openapitools/openapi-generator-cli generate \
 		-i /local/openapi/openapi.yaml \
-		-g typescript-axios \
-		-o /local/client/src/lib/api/generated
+		-g typescript-fetch \
+		-o /local/client/src/lib/api/generated \
+		--additional-properties modelPropertyNaming=camelCase
 
 openapi-generate-api:
 	docker run --rm -v "${PWD}:/local" openapitools/openapi-generator-cli generate \

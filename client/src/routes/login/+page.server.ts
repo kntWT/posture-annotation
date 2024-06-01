@@ -1,13 +1,13 @@
 import { fail, redirect } from '@sveltejs/kit';
 import type { PageServerLoad, Actions } from './$types';
-import type { User, UserCreate } from '$api/generated';
+import type { User, UserCreate } from '$api/generated/models';
 import { userApi } from '$api';
 
 
 /** @type {import('./$types').PageServerLoad} */
 export const load: PageServerLoad = async ({ cookies }) => {
     const token = cookies.get('token');
-    if (token || token !== '') {
+    if (token && token !== '' && token !== 'undefined') {
         redirect(301, '/');
     }
 }
@@ -30,15 +30,12 @@ export const actions: Actions = {
             return fail(400, { action: "ログイン", message: "ユーザ名とパスワードを入力してください", missing: true });
         }
 
-        const user: User | null = await userApi.loginUser(userInfo)
-            .then((response) => response.data)
-            .catch((e) => null);
-        
-        if (user === null) {
-            return fail(401, { action: "ログイン", message: "ユーザ名またはパスワードが違います", incorrect: true });
-        } else {
-            cookies.set("token", user.token, { path: "/" });
+        try {
+            const user: User | null = await userApi.loginUser({ userCreate: userInfo });
+            cookies.set("token", user.password, { path: "/" });
             return { status: 200, data: { user } };
+        } catch (e) {
+            return fail(401, { action: "ログイン", message: "ユーザ名またはパスワードが違います", incorrect: true });
         }
     },
 
@@ -48,15 +45,12 @@ export const actions: Actions = {
             return fail(400, { action: "新規登録", message: "ユーザ名とパスワードを入力してください", missing: true });
         }
 
-        const user: User | null = await userApi.createUser(userInfo)
-            .then((response) => response.data)
-            .catch((e) => null);
-        
-        if (user === null) {
-            return fail(400, { action: "新規登録", message: "無効なユーザ名またはパスワードです", incorrect: true });
-        } else {
+        try {
+            const user: User = await userApi.createUser({ userCreate: userInfo });
             cookies.set("token", user.token, { path: "/" });
             return { status: 200, data: { user } };
+        } catch (e) {
+            return fail(400, { action: "新規登録", message: "無効なユーザ名またはパスワードです", incorrect: true });
         }
     }
 }

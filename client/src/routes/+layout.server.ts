@@ -1,5 +1,5 @@
 import type { LayoutServerLoad } from './$types';
-import { userApi } from '$api/userApi';
+import { userApi } from '$api';
 
 export const load: LayoutServerLoad = async ({ cookies }) => {
     const token = cookies.get('token');
@@ -8,12 +8,11 @@ export const load: LayoutServerLoad = async ({ cookies }) => {
             user: null
         }
     }
-    const user = await userApi.getUserByToken(token)
-        .then((response) => ({ ...response.data, token: "" }))
-        .catch((e) => {
-            cookies.set('token', '', { path: "/" })
-            return null;
-        });
 
-    return user ? { user } : { user: null };
+    try {
+        const user = await userApi.getUserByToken({ authorization: token });
+        return { user };
+    } catch (e) {
+        return { user: null };
+    }
 }
