@@ -5,15 +5,12 @@ User:
     - name
     - password
     - token
+  allOf:
+    - $ref: './user.yaml#/UserCreate'
   properties:
     id:
       type: integer
       format: int64
-    name:
-      type: string
-    password:
-      type: string
-      format: password
     token:
       type: string
       format: password
