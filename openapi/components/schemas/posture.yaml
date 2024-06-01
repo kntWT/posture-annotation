@@ -1,0 +1,125 @@
+Posture:
+  type: object
+  allOf:
+    - $ref: './posture.yaml#/PostureUpdate'
+  required:
+    - id
+    - in_id
+    - file_name
+    - set_num
+    - orientation_alpha
+    - orientation_beta
+    - orientation_gamma
+    - pitch
+    - yaw
+    - roll
+    - nose_x
+    - nose_y
+    - neck_x
+    - neck_y
+    - neck_to_nose
+    - standard_dist
+    - in_created_at
+    - in_updated_at
+    - user_id
+    - name
+    - password
+    - neck_to_nose_standard
+    - neck_angle_offset
+    - ex_id
+    - ex_created_at
+    - updated_at
+  properties:
+    id:
+      type: integer
+      format: int64
+    in_id:
+      type: integer
+      format: int64
+    file_name:
+      type: string
+    set_num:
+      type: integer
+      format: int64
+    orientation_alpha:
+      type: number
+      format: double
+    orientation_beta:
+      type: number
+      format: double
+    orientation_gamma:
+      type: number
+      format: double
+    pitch:
+      type: number
+      format: double
+    yaw:
+      type: number
+      format: double
+    roll:
+      type: number
+      format: double
+    nose_x:
+      type: number
+      format: double
+    nose_y:
+      type: number
+      format: double
+    neck_x:
+      type: number
+      format: double
+    neck_y:
+      type: number
+      format: double
+    neck_to_nose:
+      type: number
+      format: double
+    standard_dist:
+      type: number
+      format: double
+    in_created_at:
+      type: string
+      format: date-time
+    in_updated_at:
+      type: string
+      format: date-time
+    user_id:
+      type: integer
+      format: int64
+    name:
+      type: string
+    password:
+      type: string
+      format: password
+    neck_to_nose_standard:
+      type: number
+      format: double
+    neck_angle_offset:
+      type: number
+      format: double
+    ex_id:
+      type: integer
+      format: int64
+    ex_created_at:
+      type: string
+      format: date-time
+    updated_at:
+      type: string
+      format: date-time
+PostureUpdate:
+  type: object
+  required:
+    - neck_angle
+    - torso_angle
+    - annotater_id
+  properties:
+    neck_angle:
+      type: number
+      format: double
+    torso_angle:
+      type: number
+      format: double
+    annotater_id:
+      type: integer
+      format: int64
+      nullable: true

@@ -19,12 +19,24 @@ paths:
     $ref: './paths/user.yaml#/is_exist'
   /user/{id}:
     $ref: './paths/user.yaml#/user_{id}'
+  /posture:
+    $ref: './paths/posture.yaml#/posture'
+  /posture/{id}:
+    $ref: './paths/posture.yaml#/posture_{id}'
+  /posture/user/{user_id}:
+    $ref: './paths/posture.yaml#/posture_user_{user_id}'
+  /posture/annotater/{annotater_id}:
+    $ref: './paths/posture.yaml#/posture_annotater_{annotater_id}'
 components:
   schemas:
     User:
       $ref: './components/schemas/user.yaml#/User'
     UserCreate:
       $ref: './components/schemas/user.yaml#/UserCreate'
+    Posture:
+      $ref: './components/schemas/posture.yaml#/Posture'
+    PostureUpdate:
+      $ref: './components/schemas/posture.yaml#/PostureUpdate'
   examples:
     UserExample:
       value:
