@@ -4,6 +4,8 @@ posture:
     operationId: getPostures
     tags:
       - posture
+    security: &bearerAuth
+      - bearerAuth: []
     responses:
       '200':
         description: ok
@@ -21,6 +23,7 @@ posture_{id}:
     operationId: getPostureById
     tags:
       - posture
+    security: *bearerAuth
     parameters:
       - name: id
         in: path
@@ -42,6 +45,7 @@ posture_{id}:
     operationId: updatePostureById
     tags:
       - posture
+    security: *bearerAuth
     parameters:
       - name: id
         in: path
@@ -70,6 +74,7 @@ posture_user_{user_id}:
     operationId: getPosturesByUserId
     tags:
       - posture
+    security: *bearerAuth
     parameters:
       - name: user_id
         in: path
@@ -94,6 +99,7 @@ posture_annotater_{annotater_id}:
     operationId: getPosturesByAnnotaterId
     tags:
       - posture
+    security: *bearerAuth
     parameters:
       - name: annotater_id
         in: path
