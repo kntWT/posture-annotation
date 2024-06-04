@@ -49,7 +49,11 @@ public class UserController implements UserApi {
 
     @Override
     public ResponseEntity<User> getUserByToken(String authorization) {
-        User user = userService.getUserByToken(authorization);
+        if (!authorization.startsWith("Bearer ")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        String token = authorization.substring(7);
+        User user = userService.getUserByToken(token);
         if (user == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
