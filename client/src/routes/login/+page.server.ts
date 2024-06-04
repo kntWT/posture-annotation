@@ -31,7 +31,7 @@ export const actions: Actions = {
         }
 
         try {
-            const user: User | null = await userApi.loginUser({ userCreate: userInfo });
+            const user: User = await userApi.loginUser({ userCreate: userInfo });
             cookies.set("token", user.password, { path: "/" });
             return { status: 200, data: { user } };
         } catch (e) {
