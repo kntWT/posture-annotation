@@ -29,12 +29,12 @@ public class PostureController implements PostureApi {
     PostureService postureService;
 
     @Override
-    public ResponseEntity<Posture> getPostureById(LOng id) {
+    public ResponseEntity<Posture> getPostureById(Long id) {
         Posture posture = postureService.getPostureById(id);
         if (posture == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
-        return ResponseEntity<Posture>.ok(posture);
+        return ResponseEntity.ok(posture);
     }
 }
