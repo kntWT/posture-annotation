@@ -1,3 +1,5 @@
 bearerAuth:
   type: http
+  in: header
   scheme: bearer
+  name: token

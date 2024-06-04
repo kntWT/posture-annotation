@@ -28,8 +28,9 @@ paths:
   /posture/annotater/{annotater_id}:
     $ref: './paths/posture.yaml#/posture_annotater_{annotater_id}'
 components:
-  securitySchemas:
-    $ref: './components/securitySchemas/bearerAuth.yaml'
+  securitySchemes:
+    bearerAuth:
+      $ref: './components/securitySchemas/bearerAuth.yaml#/bearerAuth'
   schemas:
     User:
       $ref: './components/schemas/user.yaml#/User'
