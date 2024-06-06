@@ -1,5 +1,5 @@
 import type { LayoutServerLoad } from './$types';
-import { postureApi, userApi } from '$api';
+import { userApi } from '$api';
 
 export const load: LayoutServerLoad = async ({ cookies }) => {
     const token = cookies.get('token');
