@@ -16,9 +16,11 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+            .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/public/**").permitAll()
-                .requestMatchers("/protected/**").authenticated()
+                .requestMatchers("/user**").permitAll()
+                .requestMatchers("/posture**").authenticated()
+                .anyRequest().permitAll()
             )
             .addFilterBefore(new TokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 

@@ -17,21 +17,24 @@ import com.generated.model.User;
 
 public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
-    @Autowired UserService userService;
+    @Autowired
+    UserService userService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
-
-        String headerAuth = request.getHeader("Authorization");
-        System.err.println(headerAuth);
-        if (headerAuth == null || !headerAuth.startsWith("Bearer ")) {
+        if (request.getRequestURI().startsWith("/user")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+        
+        String authorization = request.getHeader("Authorization");
+        if (authorization == null || !authorization.startsWith("Bearer ")) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Missing or invalid Authorization header");
             return;
         }
-        String token = headerAuth.substring(7);
-        User user = userService.getUserByToken(token);
+        User user = userService.getUserByToken(authorization);
         if (user == null) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Missing or invalid Authorization header");
             return;
