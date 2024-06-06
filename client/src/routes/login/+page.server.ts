@@ -32,7 +32,7 @@ export const actions: Actions = {
 
         try {
             const user: User = await userApi.loginUser({ userCreate: userInfo });
-            cookies.set("token", user.password, { path: "/" });
+            cookies.set("token", user.token, { path: "/" });
             return { status: 200, data: { user } };
         } catch (e) {
             return fail(401, { action: "ログイン", message: "ユーザ名またはパスワードが違います", incorrect: true });
