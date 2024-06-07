@@ -6,7 +6,7 @@ import { userApi } from '$api';
 
 /** @type {import('./$types').PageServerLoad} */
 export const load: PageServerLoad = async ({ cookies }) => {
-    const token = cookies.get('token');
+    const token = cookies.get(`${import.meta.env.VITE_COOKIE_PREFIX}token`);
     if (token && token !== '' && token !== 'undefined') {
         redirect(301, '/');
     }
@@ -32,7 +32,7 @@ export const actions: Actions = {
 
         try {
             const user: User = await userApi.loginUser({ userCreate: userInfo });
-            cookies.set("token", user.token, { path: "/" });
+            cookies.set(`${import.meta.env.VITE_COOKIE_PREFIX}token`, user.token, { path: "/" });
             return { status: 200, data: { user } };
         } catch (e) {
             return fail(401, { action: "ログイン", message: "ユーザ名またはパスワードが違います", incorrect: true });
@@ -47,7 +47,7 @@ export const actions: Actions = {
 
         try {
             const user: User = await userApi.createUser({ userCreate: userInfo });
-            cookies.set("token", user.token, { path: "/" });
+            cookies.set(`${import.meta.env.VITE_COOKIE_PREFIX}token`, user.token, { path: "/" });
             return { status: 200, data: { user } };
         } catch (e) {
             return fail(400, { action: "新規登録", message: "無効なユーザ名またはパスワードです", incorrect: true });

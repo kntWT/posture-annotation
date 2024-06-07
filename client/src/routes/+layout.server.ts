@@ -2,7 +2,7 @@ import type { LayoutServerLoad } from './$types';
 import { userApi } from '$api';
 
 export const load: LayoutServerLoad = async ({ cookies }) => {
-    const token = cookies.get('token');
+    const token = cookies.get(`${import.meta.env.VITE_COOKIE_PREFIX}token`);
     if (!token || token === '') {
         return {
             user: null
