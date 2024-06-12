@@ -68,6 +68,22 @@ posture_{id}:
               $ref: '../components/schemas/posture.yaml#/Posture'
       '403':
         description: forbidden
+posture_random:
+  get:
+    description: get random posture
+    operationId: getRandomPosture
+    tags:
+      - posture
+    security: *bearerAuth
+    responses:
+      '200':
+        description: ok
+        content:
+          application/json:
+            schema:
+              $ref: '../components/schemas/posture.yaml#/Posture'
+      '403':
+        description: forbidden
 posture_user_{user_id}:
   get:
     description: get all postures by user id
