@@ -1,13 +1,24 @@
 package com.example.api.repositories;
 
-import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Lock;
+import org.springframework.data.jpa.repository.QueryHints;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
+import jakarta.persistence.LockModeType;
+import jakarta.persistence.QueryHint;
 
 import com.example.api.entities.PostureEntity;
+import com.generated.model.PostureUpdate;
 
-public interface PostureRepository extends JpaRepository<PostureEntity, Long>{
+@Repository
+public interface PostureRepository extends JpaRepository<PostureEntity, Long> {
 
     public PostureEntity findByInId(Long inId);
 
@@ -15,4 +26,30 @@ public interface PostureRepository extends JpaRepository<PostureEntity, Long>{
 
     public List<PostureEntity> findByUserId(Long userId);
     
+    public List<PostureEntity> findByAnnotaterIdIsNull();
+
+    @Query(value = "SELECT p.* FROM postures AS p WHERE p.annotater_id IS NULL ORDER BY random() LIMIT :limit", nativeQuery = true)
+    public List<PostureEntity> findByAnnotaterIdIsNullLimitedTo(@Param("limit") int limit);
+
+    // @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @Query(value = "SELECT p.* FROM postures AS p WHERE p.id = :id FOR UPDATE", nativeQuery = true)
+    @QueryHints({
+        @QueryHint(name = "jakarta.persistence.lock.timeout", value = "3600000"),
+        @QueryHint(name = "jakarta.persistence.query.timeout", value = "1000")
+    })
+    public PostureEntity findByIdWithLock(@Param("id") Long id);
+
+    @Modifying
+    @Transactional
+    @Query(
+        value = "UPDATE postures SET neck_angle = :neckAngle, torso_angle = :torsoAngle, annotater_id = :annotaterId WHERE id = :id",
+        nativeQuery = true
+    )
+    public int updatePostureById(
+        @Param("id") Long id,
+        @Param("neckAngle") Double neckAngle,
+        @Param("torsoAngle") Double torsoAngle,
+        @Param("annotaterId") Long annotaterId
+    );
+
 }
