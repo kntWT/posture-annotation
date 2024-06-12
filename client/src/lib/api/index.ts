@@ -1,8 +1,20 @@
 import { PostureApi, UserApi } from "./generated/apis";
-import { Configuration, type ErrorContext, type Middleware } from "./generated/runtime";
+import { Configuration } from "./generated/runtime";
 
-const config = new Configuration();
+type CreateConfigParam = {
+    token?: string;
+    basePath?: string;
+}
+
+const createConfig = (param: CreateConfigParam) => {
+    return new Configuration({
+        basePath: param.basePath ?? import.meta.env.VITE_API_URL,
+        accessToken: param.token ?? "",
+    });
+}
+const config = createConfig({});
 const userApi = new UserApi(config);
 const postureApi = new PostureApi(config);
+const createPostureApi = (param: CreateConfigParam) => new PostureApi(createConfig(param));
 
-export { userApi, postureApi };
+export { userApi, postureApi, createConfig, createPostureApi };
