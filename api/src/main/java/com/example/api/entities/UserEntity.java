@@ -2,6 +2,9 @@ package com.example.api.entities;
 
 import org.hibernate.annotations.CreationTimestamp;
 import java.time.OffsetDateTime;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -57,16 +60,18 @@ public class UserEntity {
         return name;
     }
 
-    public void setName(String name) {
+    public UserEntity setName(String name) {
         this.name = name;
+        return this;
     }
 
     public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
+    public UserEntity setPassword(String password) {
         this.password = password;
+        return this;
     }
 
     public String getToken() {
@@ -90,5 +95,11 @@ public class UserEntity {
         )
             .createdAt(this.getCreatedAt())
             .updatedAt(this.getUpdatedAt());
+    }
+
+    static List<User> toUsers(List<UserEntity> users) {
+        return users.stream()
+            .map(user -> user.toUser())
+            .collect(Collectors.toList());
     }
 }

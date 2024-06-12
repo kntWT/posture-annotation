@@ -2,6 +2,9 @@ package com.example.api.entities;
 
 import org.hibernate.annotations.CreationTimestamp;
 import java.time.OffsetDateTime;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -108,10 +111,15 @@ public class PostureEntity {
     @Column(name = "annotater_id", nullable = false)
     private Long annotaterId;
 
-    protected PostureEntity() {}
+    public PostureEntity() {}
 
     public Long getId() {
         return id;
+    }
+
+    public PostureEntity setId(Long id) {
+        this.id = id;
+        return this;
     }
 
     public Long getInId() {
@@ -210,8 +218,18 @@ public class PostureEntity {
         return neckAngle;
     }
 
+    public PostureEntity setNeckAngle(Double neckAngle) {
+        this.neckAngle = neckAngle;
+        return this;
+    }
+
     public Double getTorsoAngle() {
         return torsoAngle;
+    }
+
+    public PostureEntity setTorosAngle(Double torsoAngle) {
+        this.torsoAngle = torsoAngle;
+        return this;
     }
 
     public OffsetDateTime getExCreatedAt() {
@@ -224,6 +242,11 @@ public class PostureEntity {
 
     public Long getAnnotaterId() {
         return annotaterId;
+    }
+
+    public PostureEntity setAnnotaterId(Long annotaterId) {
+        this.annotaterId = annotaterId;
+        return this;
     }
 
     public Posture toPosture() {
@@ -258,6 +281,12 @@ public class PostureEntity {
             this.getTorsoAngle(),
             this.getAnnotaterId()
         );
+    }
+
+    public static List<Posture> toPostures(List<PostureEntity> postures) {
+        return postures.stream()
+            .map(posture -> posture.toPosture())
+            .collect(Collectors.toList());
     }
 
 }
