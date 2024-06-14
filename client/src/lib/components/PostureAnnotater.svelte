@@ -48,6 +48,7 @@
         const shoulder = p.createVector(0, 0);
         const waist = p.createVector(0, 0);
         const radius = 10;
+        const alpha = 160;
         let target: p5.Vector | null = null;
         const imageOffset = p.createVector(0, 0);
         let pMouse: p5.Vector | null = null;
@@ -76,11 +77,12 @@
             p.line(waist.x, waist.y, shoulder.x, shoulder.y);
             p.line(shoulder.x, shoulder.y, tragus.x, tragus.y);
 
-            p.fill(255, 0, 0);
+            p.noStroke();
+            p.fill(255, 0, 0, alpha);
             p.ellipse(tragus.x, tragus.y, radius*2, radius*2);
-            p.fill(0, 255, 0);
+            p.fill(0, 255, 0, alpha);
             p.ellipse(shoulder.x, shoulder.y, radius*2, radius*2);
-            p.fill(0, 0, 255);
+            p.fill(0, 0, 255, alpha);
             p.ellipse(waist.x, waist.y, radius*2, radius*2);
 
             if(p.mouseIsPressed) {
