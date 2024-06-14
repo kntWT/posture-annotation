@@ -8,7 +8,7 @@
 
 <div class="wrapper">
     <div>
-        <span>#{posture.id}({posture.updatedAt.toLocaleDateString()})</span><br />
+        <span><a href={`/annotate?id=${posture.id}`}>#{posture.id}</a>({posture.updatedAt.toLocaleDateString()})</span><br />
         <span>首の角度: {posture.neckAngle}</span><br />
         <span>胴体の角度: {posture.torsoAngle}</span><br />
     </div>
