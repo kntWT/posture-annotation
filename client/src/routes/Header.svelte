@@ -13,7 +13,7 @@
 </script>
 
 <div class="header">
-    <h2>姿勢アノテーションシステム</h2>
+    <h2><a href="/">姿勢アノテーションシステム</a></h2>
     {#if $page.url.pathname !== "/login"}
         {#if $user}
             <btn on:click={handleLogout}>ログアウト</btn>
@@ -45,6 +45,11 @@
             left: 50%;
             transform: translate(-50%, -50%);
             -webkit-transform: translate(-50%, -50%);
+
+            a {
+                color: inherit;
+                text-decoration: none;
+            }
         }
 
         btn {
