@@ -37,14 +37,8 @@ services:
     volumes:
       - ./api/src:/app/src
       - ./api/pom.xml:/app/pom.xml
-      - ./api/generated:/app/generated
       - api-build:/app/build
       - m2:/root/.m2
-    deploy:
-      resources:
-        limits:
-          cpus: '0.5'
-          memory: 4G
     depends_on:
       - postgres
     restart: always
@@ -71,13 +65,30 @@ services:
     networks:
       - posture-annotation
 
+  # 画像配信用のnginx
+  nginx:
+    build:
+      context: nginx
+      dockerfile: Dockerfile
+    container_name: posture-annotation-nginx
+    env_file:
+      - .env
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 4G
+    ports:
+      - "5174:80"
+    tty: true
+    networks:
+      - posture-annotation
+
   openapi:
     image: openapitools/openapi-generator-cli
     # build:
     #   context: openapi
     container_name: posture-annotation-openapi
-    ports:
-      - "5174:8080"
     volumes:
       - ./openapi:/local
       - ./client/src/lib/api/generated:/local/generated/client

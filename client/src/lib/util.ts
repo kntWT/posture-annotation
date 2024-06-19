@@ -16,7 +16,7 @@ export const formatDate = (date: Date | undefined) => {
 }
 
 export const imageUrl = (posture: Posture, path: "original" | "annotated" = "original") => {
-    return `${import.meta.env.VITE_API_ENDPOINT}/images/${path}/${posture.userId}/${formatDate(posture.exCreatedAt)}.jpg`;
+    return `${import.meta.env.VITE_FILE_SERVER_ENDPOINT}/images/${path}/${posture.userId}/${formatDate(posture.exCreatedAt)}.jpg`;
 }
 
 export const toBearer = (token: string) => {

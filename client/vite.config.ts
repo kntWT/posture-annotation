@@ -16,7 +16,12 @@ export default defineConfig(({ mode }) => {
 					target: env.VITE_API_URL,
 					changeOrigin: true,
 					rewrite: path => path.replace(/^\/api\//, '/')
-				}
+				},
+				'/images/': {
+					target: env.VITE_FILE_SERVER_URL,
+					changeOrigin: true,
+					rewrite: path => path.replace(/^\/images\//, '/')
+				},
 			}
 		}
 	}
