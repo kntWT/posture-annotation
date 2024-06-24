@@ -1,7 +1,6 @@
 <script lang="ts">
 	import type { Posture, PostureUpdateWithFile } from "$api/generated";
 	import { isLoggedIn, getUser } from "$lib/store/user";
-	import type { Image } from "p5";
 	import type p5 from "p5";
     import P5 from "p5-svelte";
 
@@ -12,7 +11,7 @@
 
     let correctedNeckAngle: number = posture.neckAngle;
     let correctedTorsoAngle: number = posture.torsoAngle;
-    let scale: number = 4;
+    let scale: number = 2;
     const step = 0.05;
 
     // FIXME: なぜか型アノテーションが変なのでanyで回避
@@ -55,11 +54,13 @@
     }
 
     const sketch = (p: p5) => {
-        let img: Image;
+        let img: p5.Image;
         const tragus = p.createVector(0, 0);
         const shoulder = p.createVector(0, 0);
         const waist = p.createVector(0, 0);
-        const radius = 10;
+        const radius = 4;
+        const marginRadius = 15;
+        const strokeWeight = 2;
         const alpha = 160;
         let target: p5.Vector | null = null;
         const imageOffset = p.createVector(0, 0);
@@ -75,6 +76,7 @@
             const width = Math.min(container?.clientWidth ?? 400, height * 16 / 9);
             p.createCanvas(width, height);
             p.imageMode(p.CENTER);
+            imageOffset.set(0, -height*0.1);
             const len = p.height / 6;
             waist.set(p.width / 2, p.height * 2 / 3);
             shoulder.set(waist.x - len*p.sin(p.radians(correctedTorsoAngle)), waist.y - len*p.cos(p.radians(correctedTorsoAngle)));
@@ -82,12 +84,30 @@
         }
 
         p.draw = () => {
-            p.background(255);
-            const aspectRatio = img.width / img.height;
-            p.image(img, p.width/2 + (imageOffset.x*scale), p.height/2 + (imageOffset.y*scale), aspectRatio*p.height * scale , p.height * scale);
+            drawImage();
+            drawMarks();
 
+            if(p.mouseIsPressed) {
+                mousePressed();
+            } else {
+                mouseReseased();
+            }
+        }
+
+        const drawImage = () => {
+            const aspectRatio = img.width / img.height;
+            p.image(
+                img,
+                p.width/2 + (imageOffset.x*scale),
+                p.height/2 + (imageOffset.y*scale),
+                aspectRatio*p.height * scale,
+                p.height * scale
+            );
+        }
+
+        const drawMarks = () => {
             p.stroke(255, 255, 0);
-            p.strokeWeight(5);
+            p.strokeWeight(strokeWeight);
             p.line(shoulder.x, shoulder.y, tragus.x, tragus.y);
             if (showWaist) {
                 p.line(waist.x, waist.y, shoulder.x, shoulder.y);
@@ -102,24 +122,26 @@
                 p.fill(0, 0, 255, alpha);
                 p.ellipse(waist.x, waist.y, radius*2, radius*2);
             }
+        }
 
-            if(p.mouseIsPressed) {
-                if (target === null) {
-                    setTarget();
-                    if (target === null && pMouse === null) {
-                        pMouse = p.createVector(p.mouseX, p.mouseY);
-                    }
-                } else {
-                    updateMarkPosition();
-                }
-                updateImageOffset();
-                if (pMouse !== null) {
-                    pMouse.set(p.mouseX, p.mouseY);
+        const mousePressed = () => {
+            if (target === null) {
+                setTarget();
+                if (target === null && pMouse === null) {
+                    pMouse = p.createVector(p.mouseX, p.mouseY);
                 }
             } else {
-                target = null;
-                pMouse = null;
+                updateMarkPosition();
             }
+            updateImageOffset();
+            if (pMouse !== null) {
+                pMouse.set(p.mouseX, p.mouseY);
+            }
+        }
+
+        const mouseReseased = () => {
+            target = null;
+            pMouse = null;
         }
 
         const distToMouse = (point: p5.Vector): number => {
@@ -127,13 +149,13 @@
         }
 
         const setTarget = () => {
-            if (distToMouse(tragus) < radius) {
+            if (distToMouse(tragus) < radius + marginRadius) {
                 target = tragus;
             }
-            else if (distToMouse(shoulder) < radius) {
+            else if (distToMouse(shoulder) < radius + marginRadius) {
                 target = shoulder;
             }
-            else if (distToMouse(waist) < radius) {
+            else if (distToMouse(waist) < radius + marginRadius) {
                 target = waist;
             }
         }
@@ -141,22 +163,22 @@
         const updateMarkPosition = () => {
             if (target === null) return;
 
-            if (distToMouse(target) < radius) {
+            if (distToMouse(target) < radius + marginRadius) {
                 target.set(p.mouseX, p.mouseY);
                 correctedNeckAngle = calcAngle(shoulder, tragus);
                 return;
             }
         }
 
+        const calcAngle = (p1: p5.Vector, p2: p5.Vector): number => {
+            const theta = p.acos(((p2.y-p1.y) * -p1.y )/ (p.dist(p1.x, p1.y, p2.x, p2.y) * p1.y));
+            return p.degrees(theta);
+        }
+
         const updateImageOffset = () => {
             if (pMouse === null) return;
 
             imageOffset.add(p.mouseX - pMouse.x, p.mouseY - pMouse.y);
-        }
-
-        const calcAngle = (p1: p5.Vector, p2: p5.Vector): number => {
-            const theta = p.acos(((p2.y-p1.y) * -p1.y )/ (p.dist(p1.x, p1.y, p2.x, p2.y) * p1.y));
-            return p.degrees(theta);
         }
     }
 
