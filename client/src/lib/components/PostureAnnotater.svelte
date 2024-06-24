@@ -1,17 +1,17 @@
 <script lang="ts">
-	import type { Posture, PostureUpdate } from "$api/generated";
+	import type { Posture, PostureUpdateWithFile } from "$api/generated";
 	import { isLoggedIn, getUser } from "$lib/store/user";
 	import type { Image } from "p5";
 	import type p5 from "p5";
     import P5 from "p5-svelte";
 
-    export let handleAction: (data: PostureUpdate) => Promise<unknown>;
+    export let handleAction: (data: PostureUpdateWithFile) => Promise<unknown>;
     export let posture: Posture;
     export let imageSrc: string;
 
     let correctedNeckAngle: number = posture.neckAngle;
     let correctedTorsoAngle: number = posture.torsoAngle;
-    let scale: number = 1;
+    let scale: number = 4;
     const step = 0.05;
 
     // FIXME: なぜか型アノテーションが変なのでanyで回避
@@ -26,7 +26,15 @@
             alert("ログインしてください");
             return;
         }
-        const data: PostureUpdate = {
+        const canvas = document.querySelector("canvas") as HTMLCanvasElement;
+        const img = canvasToBase64(canvas);
+        if (!img || img === "") {
+            alert("キャンバスの読み込みに失敗しました");
+            return;
+        }
+        console.log(img);
+        const data: PostureUpdateWithFile = {
+            file: img,
             neckAngle: correctedNeckAngle,
             torsoAngle: correctedTorsoAngle,
             annotaterId: user.id,
@@ -40,6 +48,10 @@
 
     const decrementScale = () => {
         scale -= step;
+    }
+
+    const canvasToBase64 = (canvas: HTMLCanvasElement): string => {
+            return canvas.toDataURL("image/jpeg");
     }
 
     const sketch = (p: p5) => {
@@ -152,7 +164,7 @@
         <button on:click={handleSubmit}>保存</button>
         <div>
             <button on:click={decrementScale}>-</button>
-            <input type="number" step="0.05" value={scale.toFixed(2)} on:change={handleInputChange} />
+            <input type="number" step={step} value={scale.toFixed(2)} on:change={handleInputChange} />
             <button on:click={incrementScale}>+</button>
         </div>
     </div>
