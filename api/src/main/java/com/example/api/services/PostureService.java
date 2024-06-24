@@ -114,8 +114,9 @@ public class PostureService {
         }
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH:mm:ss.SSS");
+        String path = System.getenv("IMAGE_DIR");
         String fileName = formatter.format(posture.getExCreatedAt()) + ".jpg";
-        Path dir = Paths.get("src/main/resources/static/images/annotated", posture.getUserId().toString());
+        Path dir = Paths.get(path, posture.getUserId().toString());
         if(!Files.exists(dir)) {
             try {
                 Files.createDirectory(dir);
@@ -129,12 +130,14 @@ public class PostureService {
                 base64Image = base64Image.replace("data:image/jpeg;base64,", "");
             }
             byte[] data = Base64.getDecoder().decode(base64Image);
-            OutputStream out = new FileOutputStream("src/main/resources/static/images/annotated/" + posture.getUserId() + "/" + fileName);
+            OutputStream out = new FileOutputStream(dir.toString() + "/" + fileName);
             out.write(data);
         } catch (IOException e) {
             e.printStackTrace();
+            return null;
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
 
         return posture;
