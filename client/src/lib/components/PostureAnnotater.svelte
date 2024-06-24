@@ -32,7 +32,6 @@
             alert("キャンバスの読み込みに失敗しました");
             return;
         }
-        console.log(img);
         const data: PostureUpdateWithFile = {
             file: img,
             neckAngle: correctedNeckAngle,
@@ -71,7 +70,9 @@
 
         p.setup = () => {
             const container = document.getElementById("annotater-container");
-            p.createCanvas(container?.clientWidth ?? 400, container?.clientHeight ?? 600);
+            const height = container?.clientHeight ?? 600;
+            const width = Math.min(container?.clientWidth ?? 400, height * 16 / 9);
+            p.createCanvas(width, height);
             p.imageMode(p.CENTER);
             const len = p.height / 6;
             waist.set(p.width / 2, p.height * 2 / 3);
@@ -176,7 +177,7 @@
     #annotater-container {
         text-align: center;
         width: 100vw;
-        height: 45vh;
+        height: 50vh;
         
         div {
             text-align: center;
