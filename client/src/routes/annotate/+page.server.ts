@@ -1,5 +1,5 @@
 import { redirect } from "@sveltejs/kit";
-import type { PageServerLoad } from "./[id]/$types";
+import type { PageServerLoad } from "./$types";
 import { createPostureApi } from "$api";
 
 
