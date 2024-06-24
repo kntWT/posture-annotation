@@ -122,3 +122,13 @@ PostureUpdate:
     annotater_id:
       type: integer
       format: int64
+PostureUpdateWithFile:
+  type: object
+  allOf:
+    - $ref: './posture.yaml#/PostureUpdate'
+  required:
+    - file
+  properties:
+    file:
+      type: string
+      format: base64

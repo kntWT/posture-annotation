@@ -58,7 +58,7 @@ posture_{id}:
       content:
         application/json:
           schema:
-            $ref: '../components/schemas/posture.yaml#/PostureUpdate'
+            $ref: '../components/schemas/posture.yaml#/PostureUpdateWithFile'
     responses:
       '200':
         description: ok
