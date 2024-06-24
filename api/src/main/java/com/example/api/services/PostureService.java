@@ -1,17 +1,30 @@
 package com.example.api.services;
 
 import java.util.List;
+import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.Optional;
+import jakarta.xml.bind.DatatypeConverter;
+import java.util.Base64;
+import java.io.OutputStream;
+import java.io.FileOutputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.dao.PessimisticLockingFailureException;
+// import org.springframework.data.jpa.domain.JpaSort.Path;
 
 import com.example.api.repositories.PostureRepository;
 import com.example.api.entities.PostureEntity;
 import com.generated.model.Posture;
 import com.generated.model.PostureUpdate;
+import com.generated.model.PostureUpdateWithFile;
 
 @Service
 public class PostureService {
@@ -86,6 +99,45 @@ public class PostureService {
         }
         
         return getPostureById(id);
+    }
+
+    @Transactional
+    public Posture updatePostureByIdAndSaveFile(Long id, PostureUpdateWithFile postureUpdateWithFile) {
+        PostureUpdate postureUpdate = new PostureUpdate(
+            postureUpdateWithFile.getNeckAngle(),
+            postureUpdateWithFile.getTorsoAngle(),
+            postureUpdateWithFile.getAnnotaterId()
+        );
+        Posture posture = updatePostureById(id, postureUpdate);
+        if (posture == null) {
+            return null;
+        }
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH:mm:ss.SSS");
+        String fileName = formatter.format(posture.getExCreatedAt()) + ".jpg";
+        Path dir = Paths.get("src/main/resources/static/images/annotated", posture.getUserId().toString());
+        if(!Files.exists(dir)) {
+            try {
+                Files.createDirectory(dir);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        try {
+            String base64Image = postureUpdateWithFile.getFile();
+            if (base64Image.startsWith("data:image/jpeg;base64,")) {
+                base64Image = base64Image.replace("data:image/jpeg;base64,", "");
+            }
+            byte[] data = Base64.getDecoder().decode(base64Image);
+            OutputStream out = new FileOutputStream("src/main/resources/static/images/annotated/" + posture.getUserId() + "/" + fileName);
+            out.write(data);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return posture;
     }
 
 }

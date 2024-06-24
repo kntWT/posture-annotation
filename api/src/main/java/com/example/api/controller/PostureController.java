@@ -15,6 +15,7 @@ import com.example.api.repositories.PostureRepository;
 import com.example.api.services.PostureService;
 import com.generated.model.Posture;
 import com.generated.model.PostureUpdate;
+import com.generated.model.PostureUpdateWithFile;
 
 @RestController
 public class PostureController implements PostureApi {
@@ -46,8 +47,9 @@ public class PostureController implements PostureApi {
     }
 
     @Override
-    public ResponseEntity<Posture> updatePostureById(Long id, PostureUpdate postureUpdate) {
-        Posture posture = postureService.updatePostureById(id, postureUpdate);
+    public ResponseEntity<Posture> updatePostureById(Long id, PostureUpdateWithFile postureUpdate) {
+        // Posture posture = postureService.updatePostureById(id, postureUpdate);
+        Posture posture = postureService.updatePostureByIdAndSaveFile(id, postureUpdate);
         if (posture == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
