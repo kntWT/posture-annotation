@@ -68,8 +68,8 @@ services:
   # 画像配信用のnginx
   nginx:
     build:
-      context: nginx
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: ./nginx/Dockerfile
     container_name: posture-annotation-nginx
     env_file:
       - .env
@@ -80,6 +80,8 @@ services:
           memory: 4G
     ports:
       - "5174:80"
+    volumes:
+      - ./api/src/main/resources/static/images/annotated:/root/public/images/annotated
     tty: true
     networks:
       - posture-annotation

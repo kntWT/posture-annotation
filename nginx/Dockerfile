@@ -1,7 +1,7 @@
 FROM nginx
 
-COPY ./default.conf /etc/nginx/conf.d/default.conf
-COPY ./images /root/public/images
+COPY ./nginx/default.conf /etc/nginx/conf.d/default.conf
+COPY ./nginx/images /root/public/images
 
 RUN mkdir /root/logs
 RUN chmod 755 -R /root
