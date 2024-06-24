@@ -8,6 +8,7 @@
     export let handleAction: (data: PostureUpdateWithFile) => Promise<unknown>;
     export let posture: Posture;
     export let imageSrc: string;
+    export let showWaist: boolean = false;
 
     let correctedNeckAngle: number = posture.neckAngle;
     let correctedTorsoAngle: number = posture.torsoAngle;
@@ -87,16 +88,20 @@
 
             p.stroke(255, 255, 0);
             p.strokeWeight(5);
-            p.line(waist.x, waist.y, shoulder.x, shoulder.y);
             p.line(shoulder.x, shoulder.y, tragus.x, tragus.y);
+            if (showWaist) {
+                p.line(waist.x, waist.y, shoulder.x, shoulder.y);
+            }
 
             p.noStroke();
             p.fill(255, 0, 0, alpha);
             p.ellipse(tragus.x, tragus.y, radius*2, radius*2);
             p.fill(0, 255, 0, alpha);
             p.ellipse(shoulder.x, shoulder.y, radius*2, radius*2);
-            p.fill(0, 0, 255, alpha);
-            p.ellipse(waist.x, waist.y, radius*2, radius*2);
+            if (showWaist) {
+                p.fill(0, 0, 255, alpha);
+                p.ellipse(waist.x, waist.y, radius*2, radius*2);
+            }
 
             if(p.mouseIsPressed) {
                 if (target === null) {
@@ -161,7 +166,9 @@
     <div>
         <h2>#{posture.id}</h2>
         <p>首の角度: {correctedNeckAngle.toFixed(2)}</p>
-        <p>胴体の角度: {correctedTorsoAngle.toFixed(2)}</p>
+        {#if showWaist}
+            <p>胴体の角度: {correctedTorsoAngle.toFixed(2)}</p>
+        {/if}
         <button on:click={handleSubmit}>保存</button>
         <div>
             <button on:click={decrementScale}>-</button>
