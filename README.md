@@ -15,6 +15,8 @@
 - バックエンド
   - [Java](https://www.java.com/)
     - フレームワーク：[Spring Boot](https://spring.io/)
+  - [nginx](https://nginx.org/en/)
+    - 画像配信用
 - データベース
   - [PostgresQL](https://www.postgresql.org/)
 
@@ -33,8 +35,7 @@
 
     BUILD_MODE=dev
 
-    IMAGE_DIR=images
-    ORIGINAL_IMAGE_DIR=images/original
+    IMAGE_DIR=src/main/resources/static/images
 
     API_URL=http://api:8000
     API_ENDPOINT=/api/
@@ -46,8 +47,9 @@
 
 |     | port | 説明                           | docker container 名 |
 | :-: | ---- | :----------------------------- | ------------------- |
-|     | 7150 | データベース，PostgresQL            | posture-annotation-postgres       |
-|     | 7151 | SQLクライアント，PGAdmin                        | posture-annotation-pgadmin          |
-|     | 7152 | API，Java         | posture-annotation-api        |
-|     | 7153 | クライアント，SvelteKit | posture-annotation-client   |
-|     | 7155 | API仕様書，Swagger UI | posture-annotation-swagger-ui   |
+|     | 5170 | データベース，PostgresQL            | posture-annotation-postgres       |
+|     | 5171 | SQLクライアント，PGAdmin                        | posture-annotation-pgadmin          |
+|     | 5172 | API，Java         | posture-annotation-api        |
+|     | 5173 | クライアント，SvelteKit | posture-annotation-client   |
+|     | 5174 | 画像配信サーバ，nginx | posture-annotation-nginx   |
+|     | 5175 | API仕様書，Swagger UI | posture-annotation-swagger-ui   |
