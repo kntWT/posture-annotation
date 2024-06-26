@@ -134,3 +134,57 @@ posture_annotater_{annotater_id}:
                 $ref: '../components/schemas/posture.yaml#/Posture'
       '403':
         description: forbidden
+posture_markers:
+  put:
+    description: update posture markers
+    operationId: updatePostureMarkers
+    tags:
+      - posture
+    security: *bearerAuth
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '../components/schemas/posture.yaml#/PostureUpdateMarkerPosition'
+    responses:
+      '200':
+        description: ok
+        content:
+          application/json:
+            schema:
+              type: integer
+              format: int64
+      '403':
+        description: forbidden
+posture_marker_{id}:
+  put:
+    description: update posture marker by id
+    operationId: updatePostureMarkerById
+    tags:
+      - posture
+    security: *bearerAuth
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/posture.yaml#/PostureUpdateMarkerPosition'
+    responses:
+      '200':
+        description: ok
+        content:
+          application/json:
+            schema:
+              $ref: '../components/schemas/posture.yaml#/Posture'
+      '403':
+        description: forbidden
