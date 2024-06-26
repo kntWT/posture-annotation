@@ -16,6 +16,7 @@ import com.example.api.services.PostureService;
 import com.generated.model.Posture;
 import com.generated.model.PostureUpdate;
 import com.generated.model.PostureUpdateWithFile;
+import com.generated.model.PostureUpdateMarkerPosition;
 
 @RestController
 public class PostureController implements PostureApi {
@@ -77,5 +78,21 @@ public class PostureController implements PostureApi {
         }
         
         return ResponseEntity.ok(posture);
+    }
+
+    @Override
+    public ResponseEntity<Posture> updatePostureMarkerById(Long id, PostureUpdateMarkerPosition postureUpdateMarkerPosition) {
+        Posture posture = postureService.updatePostureMarkerById(id, postureUpdateMarkerPosition);
+        if (posture == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+
+        return ResponseEntity.ok(posture);
+    }
+
+    @Override
+    public ResponseEntity<Long> updatePostureMarkers(List<PostureUpdateMarkerPosition> markerPositions) {
+        Long updatedCount = postureService.updatePostureMarkers(markerPositions);
+        return ResponseEntity.ok(updatedCount);
     }
 }

@@ -111,6 +111,30 @@ public class PostureEntity {
     @Column(name = "annotater_id", nullable = false)
     private Long annotaterId;
 
+    @Column(name = "tragus_x", nullable = true)
+    private Double tragusX;
+
+    @Column(name = "tragus_y", nullable = true)
+    private Double tragusY;
+
+    @Column(name = "shoulder_x", nullable = true)
+    private Double shoulderX;
+
+    @Column(name = "shoulder_y", nullable = true)
+    private Double shoulderY;
+
+    @Column(name = "waist_x", nullable = true)
+    private Double waistX;
+
+    @Column(name = "waist_y", nullable = true)
+    private Double waistY;
+
+    @Column(name = "image_width", nullable = true)
+    private Double imageWidth;
+
+    @Column(name = "image_height", nullable = true)
+    private Double imageHeight;
+
     public PostureEntity() {}
 
     public Long getId() {
@@ -249,6 +273,78 @@ public class PostureEntity {
         return this;
     }
 
+    public Double getTragusX() {
+        return tragusX;
+    }
+
+    public PostureEntity setTragusX(Double tragusX) {
+        this.tragusX = tragusX;
+        return this;
+    }
+
+    public Double getTragusY() {
+        return tragusY;
+    }
+
+    public PostureEntity setTragusY(Double tragusY) {
+        this.tragusY = tragusY;
+        return this;
+    }
+
+    public Double getShoulderX() {
+        return shoulderX;
+    }
+
+    public PostureEntity setShoulderX(Double shoulderX) {
+        this.shoulderX = shoulderX;
+        return this;
+    }
+
+    public Double getShoulderY() {
+        return shoulderY;
+    }
+
+    public PostureEntity setShoulderY(Double shoulderY) {
+        this.shoulderY = shoulderY;
+        return this;
+    }
+
+    public Double getWaistX() {
+        return waistX;
+    }
+
+    public PostureEntity setWaistX(Double waistX) {
+        this.waistX = waistX;
+        return this;
+    }
+
+    public Double getWaistY() {
+        return waistY;
+    }
+
+    public PostureEntity setWaistY(Double waistY) {
+        this.waistY = waistY;
+        return this;
+    }
+
+    public Double getImageWidth() {
+        return imageWidth;
+    }
+
+    public PostureEntity setImageWidth(Double imageWidth) {
+        this.imageWidth = imageWidth;
+        return this;
+    }
+
+    public Double getImageHeight() {
+        return imageHeight;
+    }
+
+    public PostureEntity setImageHeight(Double imageHeight) {
+        this.imageHeight = imageHeight;
+        return this;
+    }
+
     public Posture toPosture() {
         return new Posture(
             this.getId(),
@@ -279,7 +375,15 @@ public class PostureEntity {
             this.getUpdatedAt(),
             this.getNeckAngle(),
             this.getTorsoAngle(),
-            this.getAnnotaterId()
+            this.getAnnotaterId(),
+            this.getTragusX(),
+            this.getTragusY(),
+            this.getShoulderX(),
+            this.getShoulderY(),
+            this.getWaistX(),
+            this.getWaistY(),
+            this.getImageWidth(),
+            this.getImageHeight()
         );
     }
 

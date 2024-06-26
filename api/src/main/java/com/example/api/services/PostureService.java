@@ -25,6 +25,7 @@ import com.example.api.entities.PostureEntity;
 import com.generated.model.Posture;
 import com.generated.model.PostureUpdate;
 import com.generated.model.PostureUpdateWithFile;
+import com.generated.model.PostureUpdateMarkerPosition;
 
 @Service
 public class PostureService {
@@ -130,8 +131,7 @@ public class PostureService {
                 base64Image = base64Image.replace("data:image/jpeg;base64,", "");
             }
             byte[] data = Base64.getDecoder().decode(base64Image);
-            OutputStream out = new FileOutputStream(dir.toString() + "/" + fileName);
-            out.write(data);
+            OutputStream out = new FileOutputStream(dir.toString() + "/" + fileName);            out.write(data);
         } catch (IOException e) {
             e.printStackTrace();
             return null;
@@ -141,6 +141,49 @@ public class PostureService {
         }
 
         return posture;
+    }
+
+    @Transactional
+    public Posture updatePostureMarkerById(Long id, PostureUpdateMarkerPosition postureUpdate) {
+        int updateCount = postureRepository
+            .updatePostureById(
+                id,
+                postureUpdate.getTragusX(),
+                postureUpdate.getTragusY(),
+                postureUpdate.getShoulderX(),
+                postureUpdate.getShoulderY(),
+                postureUpdate.getWaistX(),
+                postureUpdate.getWaistY(),
+                postureUpdate.getImageWidth(),
+                postureUpdate.getImageHeight()
+            );
+        if (updateCount <= 0) {
+            return null;
+        }
+        return getPostureById(id);
+    }
+
+    @Transactional
+    public Long updatePostureMarkers(List<PostureUpdateMarkerPosition> postureUpdates) {
+        Long updatedCount = 0L;
+        for (PostureUpdateMarkerPosition postureUpdate : postureUpdates) {
+            int count = postureRepository
+                .updatePostureById(
+                    postureUpdate.getId(),
+                    postureUpdate.getTragusX(),
+                    postureUpdate.getTragusY(),
+                    postureUpdate.getShoulderX(),
+                    postureUpdate.getShoulderY(),
+                    postureUpdate.getWaistX(),
+                    postureUpdate.getWaistY(),
+                    postureUpdate.getImageWidth(),
+                    postureUpdate.getImageHeight()
+                );
+            if (count > 0) {
+                updatedCount++;
+            }
+        }
+        return updatedCount;
     }
 
 }

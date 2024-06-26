@@ -52,4 +52,22 @@ public interface PostureRepository extends JpaRepository<PostureEntity, Long> {
         @Param("annotaterId") Long annotaterId
     );
 
+    @Modifying
+    @Transactional
+    @Query(
+        value = "UPDATE postures SET tragus_x = :tragusX, tragus_y = :tragusY, shoulder_x = :shoulderX, shoulder_y = :shoulderY, waist_x = :waistX, waist_y = :waistY, image_width = :imageWidth, image_height = :imageHeight WHERE id = :id",
+        nativeQuery = true
+    )
+    public int updatePostureById(
+        @Param("id") Long id,
+        @Param("tragusX") Double tragusX,
+        @Param("tragusY") Double tragusY,
+        @Param("shoulderX") Double shoulderX,
+        @Param("shoulderY") Double shoulderY,
+        @Param("waistX") Double waistX,
+        @Param("waistY") Double waistY,
+        @Param("imageWidth") Double imageWidth,
+        @Param("imageHeight") Double imageHeight
+    );
+
 }
