@@ -20,7 +20,7 @@
         <div class="card-list">
             {#each data.postures as posture}
                 <div class="card">
-                    <AnnotatedCard posture={posture} imageSrc={imageUrl(posture, "original")} />
+                    <AnnotatedCard posture={posture} imageSrc={imageUrl(posture, "annotated")} />
                 </div>
             {/each}
         </div>
