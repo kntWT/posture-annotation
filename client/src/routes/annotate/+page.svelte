@@ -46,6 +46,7 @@
             imageSrc={imageUrl(data.posture, "original")}
             handleAction={sendAnnotation}
             showWaist={true}
+            holdShoulder={true}
         />
     {:else}
         <p>データがありません</p>

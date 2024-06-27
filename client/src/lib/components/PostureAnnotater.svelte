@@ -8,6 +8,7 @@
     export let posture: Posture;
     export let imageSrc: string;
     export let showWaist: boolean = false;
+    export let holdShoulder: boolean = false;
 
     let correctedNeckAngle: number = posture.neckAngle;
     let correctedTorsoAngle: number = posture.torsoAngle;
@@ -101,6 +102,9 @@
                 );
             }
             adjustFrame([tragus, shoulder, waist]);
+            if (holdShoulder) {
+                target = shoulder;
+            }
         }
 
         p.draw = () => {
@@ -112,11 +116,17 @@
                 drawMarks();
             p.pop();
 
-            if(p.mouseIsPressed) {
-                mousePressed();
-            } else {
-                mouseReseased();
+            if(target !== null || pMouse !== null) {
+                mosueMoved();
             }
+        }
+
+        p.mousePressed = () => {
+            mousePressed();
+        }
+
+        p.mouseReleased = () => {
+            mouseReseased();
         }
 
         const drawMarks = () => {
@@ -160,9 +170,17 @@
                 if (target === null && pMouse === null) {
                     pMouse = p.createVector(p.mouseX, p.mouseY);
                 }
-            } else {
-                updateMarkPosition(mouse);
             }
+        }
+
+        const mosueMoved = () => {
+            if (target === null && pMouse === null) return;
+
+            const mouse = p.createVector(
+                (p.mouseX - imageOffset.x - p.width/2)/scale + p.width/2,
+                (p.mouseY - imageOffset.y - p.height/2)/scale + p.height/2
+            );
+            updateMarkPosition(mouse);
             updateImageOffset();
             if (pMouse !== null) {
                 pMouse.set(p.mouseX, p.mouseY);
