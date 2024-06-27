@@ -162,7 +162,7 @@
                 tragus.y - p.height/2
             );
             p.stroke(255, 255, 0);
-            p.strokeWeight(strokeWeight);
+            p.strokeWeight(strokeWeight/scale);
             p.line(correctedShoulder.x, correctedShoulder.y, correctedTragus.x, correctedTragus.y);
             if (showWaist) {
                 p.line(correctedWaist.x, correctedWaist.y, correctedShoulder.x, correctedShoulder.y);
@@ -170,16 +170,18 @@
 
             p.noStroke();
             p.fill(255, 0, 0, alpha);
-            p.ellipse(correctedTragus.x, correctedTragus.y, radius*2, radius*2);
+            p.ellipse(correctedTragus.x, correctedTragus.y, radius*2/scale, radius*2/scale);
             p.fill(0, 255, 0, alpha);
-            p.ellipse(correctedShoulder.x, correctedShoulder.y, radius*2, radius*2);
+            p.ellipse(correctedShoulder.x, correctedShoulder.y, radius*2/scale, radius*2/scale);
             if (showWaist) {
                 p.fill(0, 0, 255, alpha);
-                p.ellipse(correctedWaist.x, correctedWaist.y, radius*2, radius*2);
+                p.ellipse(correctedWaist.x, correctedWaist.y, radius*2/scale, radius*2/scale);
             }
         }
 
         const mousePressed = () => {
+            if (!mouseInCanvas()) return;
+
             const mouse = p.createVector(
                 (p.mouseX - imageOffset.x - p.width/2)/scale + p.width/2,
                 (p.mouseY - imageOffset.y - p.height/2)/scale + p.height/2
@@ -207,8 +209,17 @@
         }
 
         const mouseReseased = () => {
+            if (!mouseInCanvas()) return;
+
             target = null;
             pMouse = null;
+        }
+
+        const mouseInCanvas = (): boolean => {
+            return (
+                p.mouseX >= 0 && p.mouseX <= p.width
+                && p.mouseY >= 0 && p.mouseY <= p.height
+            );
         }
 
         const distToMouse = (point: p5.Vector, mouse: p.Vector = p.createVector(p.mouseX, p.mouseY)): number => {
