@@ -84,6 +84,7 @@
         const aspectRatio = posture.imageWidth / posture.imageHeight;
         const alpha = 160;
         let target: p5.Vector | null = null;
+        let lastTarget: p5.Vector | null = null;
         const imageOffset = p.createVector(0, 0);
         let pMouse: p5.Vector | null = null;
 
@@ -211,8 +212,68 @@
         const mouseReseased = () => {
             if (!mouseInCanvas()) return;
 
+            lastTarget = target;
             target = null;
             pMouse = null;
+        }
+
+        p.keyPressed = () => {
+            const _step = 1 / scale;
+            switch (p.keyCode) {
+                case p.ESCAPE:
+                    resetTarget();
+                    break;
+                case p.UP_ARROW:
+                    if (lastTarget) {
+                        lastTarget.add(0, -_step);
+                    }
+                    break;
+                case p.DOWN_ARROW:
+                    if (lastTarget) {
+                        lastTarget.add(0, _step);
+                    }
+                    break;
+                case p.LEFT_ARROW:
+                    if (lastTarget) {
+                        lastTarget.add(-_step, 0);
+                    }
+                    break;
+                case p.RIGHT_ARROW:
+                    if (lastTarget) {
+                        lastTarget.add(_step, 0);
+                    }
+                    break;
+            }
+        }
+
+        const resetTarget = () => {
+            const _target = target ?? lastTarget;
+            if (_target == tragus) {
+                if (posture.tragusX && posture.tragusY) {
+                    tragus.set(...adjustMarkerPosition(posture.tragusX, posture.tragusY));
+                } else {
+                    tragus.set(
+                        shoulder.x - p.height/6*p.sin(p.radians(correctedNeckAngle)),
+                        shoulder.y - p.height/6*p.cos(p.radians(correctedNeckAngle))
+                    );
+                }
+            } else if (_target == shoulder) {
+                if (posture.shoulderX && posture.shoulderY) {
+                    shoulder.set(...adjustMarkerPosition(posture.shoulderX, posture.shoulderY));
+                } else {
+                    shoulder.set(
+                        waist.x - p.height/6*p.sin(p.radians(correctedTorsoAngle)),
+                        waist.y - p.height/6*p.cos(p.radians(correctedTorsoAngle))
+                    );
+                }
+            } else if (_target == waist) {
+                if (posture.waistX && posture.waistY) {
+                    waist.set(...adjustMarkerPosition(posture.waistX, posture.waistY));
+                } else {
+                    waist.set(p.width / 2, p.height * 2 / 3);
+                }
+            }
+            target = null;
         }
 
         const mouseInCanvas = (): boolean => {
@@ -257,11 +318,11 @@
 
         const adjustMarkerPosition = (x: number, y: number): number[] => {
             const rate = p.height / posture.imageHeight;
-            const imageLeft = p.width/2 - (posture.imageWidth/2)*rate*scale + imageOffset.x;
-            const imageTop = p.height/2 - (posture.imageHeight/2)*rate*scale + imageOffset.y;
+            const imageLeft = p.width/2 - (posture.imageWidth/2)*rate;
+            const imageTop = p.height/2 - (posture.imageHeight/2)*rate;
             return [
-                imageLeft + x*rate*scale,
-                imageTop + y*rate*scale
+                imageLeft + x*rate,
+                imageTop + y*rate
             ]
         }
 
