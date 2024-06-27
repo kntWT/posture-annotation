@@ -1,6 +1,8 @@
 <script lang="ts">
 	import type { Posture, PostureUpdateWithFile } from "$api/generated";
 	import { isLoggedIn, getUser } from "$lib/store/user";
+    import { onMount, onDestroy } from "svelte";
+    import { browser } from '$app/environment';
 	import type p5 from "p5";
     import P5 from "p5-svelte";
 
@@ -14,6 +16,16 @@
     let correctedTorsoAngle: number = posture.torsoAngle;
     let scale: number = 1;
     const step = 0.05;
+
+    onMount(() => {
+        document.addEventListener("keydown", handleKeyDown);
+    });
+
+    onDestroy(() => {
+        if (browser) {
+            document.removeEventListener("keydown", handleKeyDown);
+        }
+    });
 
     // FIXME: なぜか型アノテーションが変なのでanyで回避
     const handleInputChange = (e: any) => {
@@ -40,6 +52,13 @@
             annotaterId: user.id,
         };
         await handleAction(data);
+    }
+
+    // Enterキーでsubmitできるようにする
+    const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === "Enter") {
+            handleSubmit();
+        }
     }
 
     const incrementScale = () => {
