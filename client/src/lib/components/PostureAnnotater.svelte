@@ -11,7 +11,7 @@
 
     let correctedNeckAngle: number = posture.neckAngle;
     let correctedTorsoAngle: number = posture.torsoAngle;
-    let scale: number = 2;
+    let scale: number = 1;
     const step = 0.05;
 
     // FIXME: なぜか型アノテーションが変なのでanyで回避
@@ -59,8 +59,9 @@
         const shoulder = p.createVector(0, 0);
         const waist = p.createVector(0, 0);
         const radius = 4;
-        const marginRadius = 15;
+        const marginRadius = 5;
         const strokeWeight = 2;
+        const aspectRatio = posture.imageWidth / posture.imageHeight;
         const alpha = 160;
         let target: p5.Vector | null = null;
         const imageOffset = p.createVector(0, 0);
@@ -76,16 +77,40 @@
             const width = Math.min(container?.clientWidth ?? 400, height * 16 / 9);
             p.createCanvas(width, height);
             p.imageMode(p.CENTER);
-            imageOffset.set(0, -height*0.1);
+            imageOffset.set(0, 0);
             const len = p.height / 6;
-            waist.set(p.width / 2, p.height * 2 / 3);
-            shoulder.set(waist.x - len*p.sin(p.radians(correctedTorsoAngle)), waist.y - len*p.cos(p.radians(correctedTorsoAngle)));
-            tragus.set(shoulder.x - len*p.sin(p.radians(correctedNeckAngle)), shoulder.y - len*p.cos(p.radians(correctedNeckAngle)));
+            if (posture.waistX && posture.waistY) {
+                waist.set(...adjustMarkerPosition(posture.waistX, posture.waistY));
+            } else {
+                waist.set(p.width / 2, p.height * 2 / 3);
+            }
+            if (posture.shoulderX && posture.shoulderY) {
+                shoulder.set(...adjustMarkerPosition(posture.shoulderX, posture.shoulderY));
+            } else {
+                shoulder.set(
+                    waist.x - len*p.sin(p.radians(correctedTorsoAngle)),
+                    waist.y - len*p.cos(p.radians(correctedTorsoAngle))
+                );
+            }
+            if (posture.tragusX && posture.tragusY) {
+                tragus.set(...adjustMarkerPosition(posture.tragusX, posture.tragusY));
+            } else {
+                tragus.set(
+                    shoulder.x - len*p.sin(p.radians(correctedNeckAngle)),
+                    shoulder.y - len*p.cos(p.radians(correctedNeckAngle))
+                );
+            }
+            adjustFrame([tragus, shoulder, waist]);
         }
 
         p.draw = () => {
-            drawImage();
-            drawMarks();
+            p.background(255);
+            p.push();
+                p.translate(p.width/2 + imageOffset.x, p.height/2 + imageOffset.y);
+                p.scale(scale);
+                p.image(img, 0, 0, aspectRatio*p.height, p.height);
+                drawMarks();
+            p.pop();
 
             if(p.mouseIsPressed) {
                 mousePressed();
@@ -94,44 +119,49 @@
             }
         }
 
-        const drawImage = () => {
-            const aspectRatio = img.width / img.height;
-            p.image(
-                img,
-                p.width/2 + (imageOffset.x*scale),
-                p.height/2 + (imageOffset.y*scale),
-                aspectRatio*p.height * scale,
-                p.height * scale
-            );
-        }
-
         const drawMarks = () => {
+            const correctedWaist = p.createVector(
+                waist.x - p.width/2,
+                waist.y - p.height/2
+            );
+            const correctedShoulder = p.createVector(
+                shoulder.x - p.width/2,
+                shoulder.y - p.height/2
+            );
+            const correctedTragus = p.createVector(
+                tragus.x - p.width/2,
+                tragus.y - p.height/2
+            );
             p.stroke(255, 255, 0);
             p.strokeWeight(strokeWeight);
-            p.line(shoulder.x, shoulder.y, tragus.x, tragus.y);
+            p.line(correctedShoulder.x, correctedShoulder.y, correctedTragus.x, correctedTragus.y);
             if (showWaist) {
-                p.line(waist.x, waist.y, shoulder.x, shoulder.y);
+                p.line(correctedWaist.x, correctedWaist.y, correctedShoulder.x, correctedShoulder.y);
             }
 
             p.noStroke();
             p.fill(255, 0, 0, alpha);
-            p.ellipse(tragus.x, tragus.y, radius*2, radius*2);
+            p.ellipse(correctedTragus.x, correctedTragus.y, radius*2, radius*2);
             p.fill(0, 255, 0, alpha);
-            p.ellipse(shoulder.x, shoulder.y, radius*2, radius*2);
+            p.ellipse(correctedShoulder.x, correctedShoulder.y, radius*2, radius*2);
             if (showWaist) {
                 p.fill(0, 0, 255, alpha);
-                p.ellipse(waist.x, waist.y, radius*2, radius*2);
+                p.ellipse(correctedWaist.x, correctedWaist.y, radius*2, radius*2);
             }
         }
 
         const mousePressed = () => {
+            const mouse = p.createVector(
+                (p.mouseX - imageOffset.x - p.width/2)/scale + p.width/2,
+                (p.mouseY - imageOffset.y - p.height/2)/scale + p.height/2
+            );
             if (target === null) {
-                setTarget();
+                setTarget(mouse);
                 if (target === null && pMouse === null) {
                     pMouse = p.createVector(p.mouseX, p.mouseY);
                 }
             } else {
-                updateMarkPosition();
+                updateMarkPosition(mouse);
             }
             updateImageOffset();
             if (pMouse !== null) {
@@ -144,30 +174,26 @@
             pMouse = null;
         }
 
-        const distToMouse = (point: p5.Vector): number => {
-            return p.dist(point.x, point.y, p.mouseX, p.mouseY);
+        const distToMouse = (point: p5.Vector, mouse: p.Vector = p.createVector(p.mouseX, p.mouseY)): number => {
+            return p.dist(point.x, point.y, mouse.x, mouse.y);
         }
 
-        const setTarget = () => {
-            if (distToMouse(tragus) < radius + marginRadius) {
+        const setTarget = (mouse: p.Vector = p.createVector(p.mouseX, p.mouseY)) => {
+            const r = radius + marginRadius;
+            if (distToMouse(tragus, mouse) < r) {
                 target = tragus;
-            }
-            else if (distToMouse(shoulder) < radius + marginRadius) {
+            } else if (distToMouse(shoulder, mouse) < r) {
                 target = shoulder;
-            }
-            else if (distToMouse(waist) < radius + marginRadius) {
+            } else if (distToMouse(waist, mouse) < r) {
                 target = waist;
             }
         }
 
-        const updateMarkPosition = () => {
+        const updateMarkPosition = (mouse: p.Vector = p.createVector(p.mouseX, p.mouseY)) => {
             if (target === null) return;
 
-            if (distToMouse(target) < radius + marginRadius) {
-                target.set(p.mouseX, p.mouseY);
-                correctedNeckAngle = calcAngle(shoulder, tragus);
-                return;
-            }
+            target.add(mouse.x - target.x, mouse.y - target.y);
+            correctedNeckAngle = calcAngle(shoulder, tragus);
         }
 
         const calcAngle = (p1: p5.Vector, p2: p5.Vector): number => {
@@ -175,10 +201,39 @@
             return p.degrees(theta);
         }
 
-        const updateImageOffset = () => {
+        const updateImageOffset = (mouse: p.Vector = p.createVector(p.mouseX, p.mouseY)) => {
             if (pMouse === null) return;
 
-            imageOffset.add(p.mouseX - pMouse.x, p.mouseY - pMouse.y);
+            imageOffset.add(mouse.x - pMouse.x, mouse.y - pMouse.y);
+        }
+
+        const adjustMarkerPosition = (x: number, y: number): number[] => {
+            const rate = p.height / posture.imageHeight;
+            const imageLeft = p.width/2 - (posture.imageWidth/2)*rate*scale + imageOffset.x;
+            const imageTop = p.height/2 - (posture.imageHeight/2)*rate*scale + imageOffset.y;
+            return [
+                imageLeft + x*rate*scale,
+                imageTop + y*rate*scale
+            ]
+        }
+
+        const adjustFrame = (points: p.Vector[], margin: number = 0.5) => {
+            const left = Math.min(...points.map(p => p.x));
+            const right = Math.max(...points.map(p => p.x));
+            const top = Math.min(...points.map(p => p.y));
+            const bottom = Math.max(...points.map(p => p.y));
+            const w = right - left;
+            const h = bottom - top;
+            const g = p.createVector(
+                points.reduce((acc, p) => acc + p.x, 0) / points.length,
+                points.reduce((acc, p) => acc + p.y, 0) / points.length
+            );
+            const rate = Math.min(p.height*aspectRatio / (w * (1+margin)), p.height / (h * (1+margin)));
+            scale = rate;
+            imageOffset.set(
+                -(g.x - p.width/2) * rate,
+                -(g.y - p.height/2) * rate
+            );
         }
     }
 
