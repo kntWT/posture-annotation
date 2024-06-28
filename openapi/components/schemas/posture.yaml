@@ -135,40 +135,40 @@ PostureUpdateWithFile:
       format: base64
 PostureUpdateMarkerPosition:
   type: object
-  required:
-    - tragus_x
-    - tragus_y
-    - shoulder_x
-    - shoulder_y
-    - waist_x
-    - waist_y
-    - image_width
-    - image_height
   properties:
     id:
       type: integer
       format: int64
+      nullable: true
     tragus_x:
       type: number
       format: double
+      nullable: true
     tragus_y:
       type: number
       format: double
+      nullable: true
     shoulder_x:
       type: number
       format: double
+      nullable: true
     shoulder_y:
       type: number
       format: double
+      nullable: true
     waist_x:
       type: number
       format: double
+      nullable: true
     waist_y:
       type: number
       format: double
+      nullable: true
     image_width:
       type: number
       format: double
+      nullable: true
     image_height:
       type: number
       format: double
+      nullable: true
