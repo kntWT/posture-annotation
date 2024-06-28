@@ -131,7 +131,8 @@ public class PostureService {
                 base64Image = base64Image.replace("data:image/jpeg;base64,", "");
             }
             byte[] data = Base64.getDecoder().decode(base64Image);
-            OutputStream out = new FileOutputStream(dir.toString() + "/" + fileName);            out.write(data);
+            OutputStream out = new FileOutputStream(dir.toString() + "/" + fileName);
+            out.write(data);
         } catch (IOException e) {
             e.printStackTrace();
             return null;
