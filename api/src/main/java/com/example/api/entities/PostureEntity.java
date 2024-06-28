@@ -375,16 +375,16 @@ public class PostureEntity {
             this.getUpdatedAt(),
             this.getNeckAngle(),
             this.getTorsoAngle(),
-            this.getAnnotaterId(),
-            this.getTragusX(),
-            this.getTragusY(),
-            this.getShoulderX(),
-            this.getShoulderY(),
-            this.getWaistX(),
-            this.getWaistY(),
-            this.getImageWidth(),
-            this.getImageHeight()
-        );
+            this.getAnnotaterId()
+        )
+            .tragusX(this.getTragusX())
+            .tragusY(this.getTragusY())
+            .shoulderX(this.getShoulderX())
+            .shoulderY(this.getShoulderY())
+            .waistX(this.getWaistX())
+            .waistY(this.getWaistY())
+            .imageWidth(this.getImageWidth())
+            .imageHeight(this.getImageHeight());
     }
 
     public static List<Posture> toPostures(List<PostureEntity> postures) {

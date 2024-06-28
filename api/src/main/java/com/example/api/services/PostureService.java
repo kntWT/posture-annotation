@@ -148,14 +148,14 @@ public class PostureService {
         int updateCount = postureRepository
             .updatePostureById(
                 id,
-                postureUpdate.getTragusX(),
-                postureUpdate.getTragusY(),
-                postureUpdate.getShoulderX(),
-                postureUpdate.getShoulderY(),
-                postureUpdate.getWaistX(),
-                postureUpdate.getWaistY(),
-                postureUpdate.getImageWidth(),
-                postureUpdate.getImageHeight()
+                postureUpdate.getTragusX().get(),
+                postureUpdate.getTragusY().get(),
+                postureUpdate.getShoulderX().get(),
+                postureUpdate.getShoulderY().get(),
+                postureUpdate.getWaistX().get(),
+                postureUpdate.getWaistY().get(),
+                postureUpdate.getImageWidth().get(),
+                postureUpdate.getImageHeight().get()
             );
         if (updateCount <= 0) {
             return null;
@@ -169,15 +169,15 @@ public class PostureService {
         for (PostureUpdateMarkerPosition postureUpdate : postureUpdates) {
             int count = postureRepository
                 .updatePostureById(
-                    postureUpdate.getId(),
-                    postureUpdate.getTragusX(),
-                    postureUpdate.getTragusY(),
-                    postureUpdate.getShoulderX(),
-                    postureUpdate.getShoulderY(),
-                    postureUpdate.getWaistX(),
-                    postureUpdate.getWaistY(),
-                    postureUpdate.getImageWidth(),
-                    postureUpdate.getImageHeight()
+                    postureUpdate.getId().get(),
+                    postureUpdate.getTragusX().get(),
+                    postureUpdate.getTragusY().get(),
+                    postureUpdate.getShoulderX().get(),
+                    postureUpdate.getShoulderY().get(),
+                    postureUpdate.getWaistX().get(),
+                    postureUpdate.getWaistY().get(),
+                    postureUpdate.getImageWidth().get(),
+                    postureUpdate.getImageHeight().get()
                 );
             if (count > 0) {
                 updatedCount++;
