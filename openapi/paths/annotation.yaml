@@ -1,0 +1,166 @@
+annotated_posture:
+  get:
+    description: get all annotated posture
+    operationId: getAnnotations
+    tags:
+      - annotated_posture
+    security: &bearerAuth
+      - bearerAuth: []
+    responses:
+      '200':
+        description: ok
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '../components/schemas/annotation.yaml#/Annotation'
+      '403':
+        description: forbidden
+  post:
+    description: create annotated posture
+    operationId: createAnnotation
+    tags:
+      - annotated_posture
+    security: *bearerAuth
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/annotation.yaml#/AnnotationWithFile'
+    responses:
+      '201':
+        description: created
+        content:
+          application/json:
+            schema:
+              $ref: '../components/schemas/annotation.yaml#/Annotation'
+      '403':
+        description: forbidden
+annotated_posture_{id}:
+  get:
+    description: get annotated posture by id
+    operationId: getAnnotationById
+    tags:
+      - annotated_posture
+    security: *bearerAuth
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+    responses:
+      '200':
+        description: ok
+        content:
+          application/json:
+            schema:
+              $ref: '../components/schemas/annotation.yaml#/Annotation'
+      '403':
+        description: forbidden
+  put:
+    description: update annotated posture by id
+    operationId: updateAnnotationById
+    tags:
+      - annotated_posture
+    security: *bearerAuth
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/annotation.yaml#/AnnotationCreate'
+    responses:
+      '200':
+        description: ok
+        content:
+          application/json:
+            schema:
+              $ref: '../components/schemas/annotation.yaml#/Annotation'
+      '403':
+        description: forbidden
+annotated_posture_posture_{posture_id}:
+  get:
+    description: get annotated posture by posture id
+    operationId: getAnnotationsByPostureId
+    tags:
+      - annotated_posture
+    security: *bearerAuth
+    parameters:
+      - name: posture_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+    responses:
+      '200':
+        description: ok
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '../components/schemas/annotation.yaml#/Annotation'
+      '403':
+        description: forbidden
+annotated_posture_user_{user_id}:
+  get:
+    description: get annotated posture by user id
+    operationId: getAnnotationsByUserId
+    tags:
+      - annotated_posture
+    security: *bearerAuth
+    parameters:
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+    responses:
+      '200':
+        description: ok
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '../components/schemas/annotation.yaml#/Annotation'
+      '403':
+        description: forbidden
+annotated_posture_annotater_{annotater_id}:
+  get:
+    description: get annotated posture by annotater id
+    operationId: getAnnotationsByAnnotaterId
+    tags:
+      - annotated_posture
+    security: *bearerAuth
+    parameters:
+      - name: annotater_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+    responses:
+      '200':
+        description: ok
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '../components/schemas/annotation.yaml#/Annotation'
+      '403':
+        description: forbidden

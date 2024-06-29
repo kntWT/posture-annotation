@@ -1,0 +1,56 @@
+Annotation:
+  type: object
+  required:
+    - id
+  allOf:
+    - $ref: '#/AnnotationCreate'
+  properties:
+    id:
+      type: integer
+      format: int64
+AnnotationCreate:
+  type: object
+  required:
+    - posture_id
+    - annotater_id
+    - tragus_x
+    - tragus_y
+    - shoulder_x
+    - shoulder_y
+    - waist_x
+    - waist_y
+  properties:
+    posture_id:
+      type: integer
+      format: int64
+    annotater_id:
+      type: integer
+      format: int64
+    tragus_x:
+      type: number
+      format: double
+    tragus_y:
+      type: number
+      format: double
+    shoulder_x:
+      type: number
+      format: double
+    shoulder_y:
+      type: number
+      format: double
+    waist_x:
+      type: number
+      format: double
+    waist_y:
+      type: number
+      format: double
+AnnotationWithFile:
+  type: object
+  allOf:
+    - $ref: '#/AnnotationCreate'
+  required:
+    - file
+  properties:
+    file:
+      type: string
+      format: base64
