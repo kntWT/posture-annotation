@@ -51,6 +51,22 @@ CREATE TABLE postures (
     updated_at TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE annotations (
+    id SERIAL PRIMARY KEY,
+    posture_id INTEGER NOT NULL,
+    annotater_id INTEGER NOT NULL,
+    neck_angle REAL NOT NULL,
+    torso_angle REAL NOT NULL,
+    tragus_x REAL DEFAULT NULL,
+    tragus_y REAL DEFAULT NULL,
+    shoulder_x REAL DEFAULT NULL,
+    shoulder_y REAL DEFAULT NULL,
+    waist_x REAL DEFAULT NULL,
+    waist_y REAL DEFAULT NULL,
+    created_at TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP
+);
+
 CREATE OR REPLACE FUNCTION update_updated_at_column()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -66,5 +82,10 @@ EXECUTE FUNCTION update_updated_at_column();
 
 CREATE TRIGGER update_postures_updated_at
 BEFORE UPDATE ON postures
+FOR EACH ROW
+EXECUTE FUNCTION update_updated_at_column();
+
+CREATE TRIGGER update_annotations_updated_at
+BEFORE UPDATE ON annotations
 FOR EACH ROW
 EXECUTE FUNCTION update_updated_at_column();
