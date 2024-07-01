@@ -8,24 +8,24 @@ Annotation:
     id:
       type: integer
       format: int64
-AnnotationCreate:
+    created_at:
+      type: string
+      format: date-time
+    updated_at:
+      type: string
+      format: date-time
+AnnotationUpdate:
   type: object
   required:
-    - posture_id
-    - annotater_id
     - tragus_x
     - tragus_y
     - shoulder_x
     - shoulder_y
     - waist_x
     - waist_y
+    - neck_angle
+    - torso_angle
   properties:
-    posture_id:
-      type: integer
-      format: int64
-    annotater_id:
-      type: integer
-      format: int64
     tragus_x:
       type: number
       format: double
@@ -44,6 +44,26 @@ AnnotationCreate:
     waist_y:
       type: number
       format: double
+    neck_angle:
+      type: number
+      format: double
+    torso_angle:
+      type: number
+      format: double
+AnnotationCreate:
+  type: object
+  required:
+    - posture_id
+    - annotater_id
+  allOf:
+    - $ref: '#/AnnotationUpdate'
+  properties:
+    posture_id:
+      type: integer
+      format: int64
+    annotater_id:
+      type: integer
+      format: int64
 AnnotationWithFile:
   type: object
   allOf:
