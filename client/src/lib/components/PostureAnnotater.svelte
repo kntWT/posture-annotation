@@ -14,6 +14,8 @@
 
     let correctedNeckAngle: number = posture.neckAngle;
     let correctedTorsoAngle: number = posture.torsoAngle;
+    const imageWidth = posture.imageWidth ?? 1536;
+    const imageHeight = posture.imageHeight ?? 2048;
     let scale: number = 1;
     const step = 0.05;
 
@@ -81,7 +83,7 @@
         const radius = 4;
         const marginRadius = 5;
         const strokeWeight = 2;
-        const aspectRatio = posture.imageWidth / posture.imageHeight;
+        const aspectRatio = imageWidth / imageHeight;
         const alpha = 160;
         let target: p5.Vector | null = null;
         let lastTarget: p5.Vector | null = null;
@@ -283,11 +285,11 @@
             );
         }
 
-        const distToMouse = (point: p5.Vector, mouse: p.Vector = p.createVector(p.mouseX, p.mouseY)): number => {
+        const distToMouse = (point: p5.Vector, mouse: p5.Vector = p.createVector(p.mouseX, p.mouseY)): number => {
             return p.dist(point.x, point.y, mouse.x, mouse.y);
         }
 
-        const setTarget = (mouse: p.Vector = p.createVector(p.mouseX, p.mouseY)) => {
+        const setTarget = (mouse: p5.Vector = p.createVector(p.mouseX, p.mouseY)) => {
             const r = radius + marginRadius;
             if (distToMouse(tragus, mouse) < r) {
                 target = tragus;
@@ -298,7 +300,7 @@
             }
         }
 
-        const updateMarkPosition = (mouse: p.Vector = p.createVector(p.mouseX, p.mouseY)) => {
+        const updateMarkPosition = (mouse: p5.Vector = p.createVector(p.mouseX, p.mouseY)) => {
             if (target === null) return;
 
             target.add(mouse.x - target.x, mouse.y - target.y);
@@ -310,23 +312,23 @@
             return p.degrees(theta);
         }
 
-        const updateImageOffset = (mouse: p.Vector = p.createVector(p.mouseX, p.mouseY)) => {
+        const updateImageOffset = (mouse: p5.Vector = p.createVector(p.mouseX, p.mouseY)) => {
             if (pMouse === null) return;
 
             imageOffset.add(mouse.x - pMouse.x, mouse.y - pMouse.y);
         }
 
         const adjustMarkerPosition = (x: number, y: number): number[] => {
-            const rate = p.height / posture.imageHeight;
-            const imageLeft = p.width/2 - (posture.imageWidth/2)*rate;
-            const imageTop = p.height/2 - (posture.imageHeight/2)*rate;
+            const rate = p.height / imageHeight;
+            const imageLeft = p.width/2 - (imageWidth/2)*rate;
+            const imageTop = p.height/2 - (imageHeight/2)*rate;
             return [
                 imageLeft + x*rate,
                 imageTop + y*rate
             ]
         }
 
-        const adjustFrame = (points: p.Vector[], margin: number = 0.5) => {
+        const adjustFrame = (points: p5.Vector[], margin: number = 0.5) => {
             const left = Math.min(...points.map(p => p.x));
             const right = Math.max(...points.map(p => p.x));
             const top = Math.min(...points.map(p => p.y));
@@ -363,7 +365,6 @@
         </div>
     </div>
     <P5 {sketch} />
-
 </div>
 
 <style lang="scss">
@@ -371,7 +372,7 @@
         text-align: center;
         width: 100vw;
         height: 50vh;
-        
+
         div {
             text-align: center;
             margin: 8px;
