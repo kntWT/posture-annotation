@@ -33,16 +33,16 @@ paths:
     $ref: './paths/posture.yaml#/posture_markers'
   /posture/marker/{id}:
     $ref: './paths/posture.yaml#/posture_marker_{id}'
-  /annotated-posture:
-    $ref: './paths/annotation.yaml#/annotated_posture'
-  /annotated-posture/{id}:
+  /annotation:
+    $ref: './paths/annotation.yaml#/annotation'
+  /annotation/{id}:
     $ref: './paths/annotation.yaml#/annotation_{id}'
-  /annotated-posture/posture/{posture_id}:
+  /annotation/posture/{posture_id}:
     $ref: './paths/annotation.yaml#/annotation_posture_{posture_id}'
-  /annotated-posture/annotater/{annotater_id}:
+  /annotation/annotater/{annotater_id}:
     $ref: './paths/annotation.yaml#/annotation_annotater_{annotater_id}'
-  /annotated-posture/annotater/{annotater_id}/posture/{posture_id}:
-    $ref: './paths/annotation.yaml#/annotation_annotater_{annotater_id}_posture_{posture_id}'
+  /annotation/posture/{posture_id}/annotater/{annotater_id}:
+    $ref: './paths/annotation.yaml#/annotation_posture_{posture_id}_annotater_{annotater_id}'
 components:
   securitySchemes:
     bearerAuth:
@@ -66,8 +66,10 @@ components:
       $ref: './components/schemas/annotation.yaml#/AnnotationUpdate'
     AnnotationCreate:
       $ref: './components/schemas/annotation.yaml#/AnnotationCreate'
-    AnnotationWithFile:
-      $ref: './components/schemas/annotation.yaml#/AnnotationWithFile'
+    AnnotationUpdateWithFile:
+      $ref: './components/schemas/annotation.yaml#/AnnotationUpdateWithFile'
+    AnnotationCreateWithFile:
+      $ref: './components/schemas/annotation.yaml#/AnnotationCreateWithFile'
   examples:
     UserExample:
       value:

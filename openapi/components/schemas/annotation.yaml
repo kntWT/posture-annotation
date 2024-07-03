@@ -2,6 +2,8 @@ Annotation:
   type: object
   required:
     - id
+    - created_at
+    - updated_at
   allOf:
     - $ref: '#/AnnotationCreate'
   properties:
@@ -64,13 +66,28 @@ AnnotationCreate:
     annotater_id:
       type: integer
       format: int64
-AnnotationWithFile:
+AnnotationUpdateWithFile:
+  type: object
+  allOf:
+    - $ref: '#/AnnotationUpdate'
+    - $ref: '#/FileInfo'
+AnnotationCreateWithFile:
   type: object
   allOf:
     - $ref: '#/AnnotationCreate'
+    - $ref: '#/FileInfo'
+FileInfo:
+  type: object
   required:
     - file
+    - user_id
+    - file_name
   properties:
     file:
       type: string
       format: base64
+    user_id:
+      type: integer
+      format: int64
+    file_name:
+      type: string

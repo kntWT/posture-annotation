@@ -1,9 +1,9 @@
-annotated_posture:
+annotation:
   get:
     description: get all annotated posture
     operationId: getAnnotations
     tags:
-      - annotated_posture
+      - annotation
     security: &bearerAuth
       - bearerAuth: []
     responses:
@@ -21,14 +21,14 @@ annotated_posture:
     description: create annotated posture
     operationId: createAnnotation
     tags:
-      - annotated_posture
+      - annotation
     security: *bearerAuth
     requestBody:
       required: true
       content:
         application/json:
           schema:
-            $ref: '../components/schemas/annotation.yaml#/AnnotationWithFile'
+            $ref: '../components/schemas/annotation.yaml#/AnnotationCreateWithFile'
     responses:
       '201':
         description: created
@@ -43,7 +43,7 @@ annotation_{id}:
     description: get annotated posture by id
     operationId: getAnnotationById
     tags:
-      - annotated_posture
+      - annotation
     security: *bearerAuth
     parameters:
       - name: id
@@ -65,7 +65,7 @@ annotation_{id}:
     description: update annotated posture by id
     operationId: updateAnnotationById
     tags:
-      - annotated_posture
+      - annotation
     security: *bearerAuth
     parameters:
       - name: id
@@ -79,7 +79,7 @@ annotation_{id}:
       content:
         application/json:
           schema:
-            $ref: '../components/schemas/annotation.yaml#/AnnotationUpdate'
+            $ref: '../components/schemas/annotation.yaml#/AnnotationUpdateWithFile'
     responses:
       '200':
         description: ok
@@ -94,7 +94,7 @@ annotation_posture_{posture_id}:
     description: get annotated posture by posture id
     operationId: getAnnotationsByPostureId
     tags:
-      - annotated_posture
+      - annotation
     security: *bearerAuth
     parameters:
       - name: posture_id
@@ -119,7 +119,7 @@ annotation_annotater_{annotater_id}:
     description: get annotated posture by annotater id
     operationId: getAnnotationsByAnnotaterId
     tags:
-      - annotated_posture
+      - annotation
     security: *bearerAuth
     parameters:
       - name: annotater_id
@@ -137,5 +137,68 @@ annotation_annotater_{annotater_id}:
               type: array
               items:
                 $ref: '../components/schemas/annotation.yaml#/Annotation'
+      '403':
+        description: forbidden
+annotation_posture_{posture_id}_annotater_{annotater_id}:
+  get:
+    description: get annotated posture by posture id and annotater id
+    operationId: getAnnotationByPostureIdAndAnnotaterId
+    tags:
+      - annotation
+    security: *bearerAuth
+    parameters:
+      - name: posture_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: annotater_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+    responses:
+      '200':
+        description: ok
+        content:
+          application/json:
+            schema:
+              $ref: '../components/schemas/annotation.yaml#/Annotation'
+      '403':
+        description: forbidden
+  put:
+    description: update annotated posture by posture id and annotater id
+    operationId: updateAnnotationByPostureIdAndAnnotaterId
+    tags:
+      - annotation
+    security: *bearerAuth
+    parameters:
+      - name: posture_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: annotater_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/annotation.yaml#/AnnotationUpdateWithFile'
+    responses:
+      '200':
+        description: ok
+        content:
+          application/json:
+            schema:
+              $ref: '../components/schemas/annotation.yaml#/Annotation'
       '403':
         description: forbidden
