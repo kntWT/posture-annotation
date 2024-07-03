@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Posture, PostureUpdateWithFile } from "$api/generated";
+	import type { AnnotationCreateWithFile, Posture } from "$api/generated";
 	import { isLoggedIn, getUser } from "$lib/store/user";
     import { onMount, onDestroy } from "svelte";
     import { browser } from '$app/environment';
@@ -8,7 +8,7 @@
 
     type Vector = { x: number, y: number };
 
-    export let handleAction: (data: PostureUpdateWithFile) => Promise<unknown>;
+    export let handleAction: (data: AnnotationCreateWithFile) => Promise<unknown>;
     export let posture: Posture;
     export let imageSrc: string;
     export let showWaist: boolean = false;
@@ -52,11 +52,23 @@
             alert("キャンバスの読み込みに失敗しました");
             return;
         }
-        const data: PostureUpdateWithFile = {
+        const fileName = imageSrc.split("/").pop()
+            ?? `${posture.exCreatedAt.toLocaleString().replace(" ", "_")}.${posture.exCreatedAt.getMilliseconds()}.jpg;`
+
+        const data: AnnotationCreateWithFile = {
             file: img,
+            userId: posture.userId,
+            fileName: fileName,
+            tragusX: tragus.x,
+            tragusY: tragus.y,
+            shoulderX: shoulder.x,
+            shoulderY: shoulder.y,
+            waistX: waist.x,
+            waistY: waist.y,
             neckAngle: correctedNeckAngle,
             torsoAngle: correctedTorsoAngle,
             annotaterId: user.id,
+            postureId: posture.id
         };
         await handleAction(data);
     }
@@ -411,5 +423,11 @@
         width: 20%;
         max-width: 60px;
         text-align: right;
+    }
+
+    canvas {
+        user-select: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
     }
 </style>

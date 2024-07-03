@@ -1,12 +1,14 @@
 <script lang="ts">
-	import { createPostureApi } from "$api";
-	import type { PostureUpdateWithFile } from "$api/generated";
+	import { createAnnotationApi } from "$api";
+	import type { AnnotationCreateWithFile, AnnotationUpdateWithFile } from "$api/generated";
 	import PostureAnnotater from "$lib/components/PostureAnnotater.svelte";
     import { getToken } from "$lib/store/user";
 	import { onMount } from "svelte";
     import type { PageData } from "./$types";
 	import { imageUrl } from "$lib/util";
 	import { goto } from "$app/navigation";
+	import { page } from "$app/stores";
+
 
 
     export let data: PageData;
@@ -15,8 +17,8 @@
         console.log(data)
     });
 
-    const sendAnnotation = async (annotated: PostureUpdateWithFile) => {
-        if (!data.posture?.id) {
+    const sendAnnotation = async (annotated: AnnotationCreateWithFile) => {
+        if (!data.posture?.id || !data.user?.id) {
             return null;
         }
         const token = getToken();
@@ -24,9 +26,18 @@
             alert("ログインしてください");
             return;
         }
-        const postureApi = createPostureApi({ token: token, basePath: import.meta.env.VITE_API_ENDPOINT });
+        const annotationApi = createAnnotationApi({ token: token, basePath: import.meta.env.VITE_API_ENDPOINT });
+        const createMode: boolean = $page.url.searchParams.get("id") === null;
         try {
-            await postureApi.updatePostureById({ id: data.posture.id, postureUpdateWithFile: annotated });
+            if (createMode) {
+                await annotationApi.createAnnotation({ annotationCreateWithFile: annotated });
+            } else {
+                await annotationApi.updateAnnotationByPostureIdAndAnnotaterId({
+                    postureId: data.posture.id,
+                    annotaterId: data.user.id,
+                    annotationUpdateWithFile: annotated as AnnotationUpdateWithFile 
+                });
+            }
             const path = window.location.pathname;
             goto(path, { invalidateAll: true });
             data = { ...data, posture: null };
