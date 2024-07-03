@@ -1,4 +1,4 @@
-import { PostureApi, UserApi } from "./generated/apis";
+import { AnnotationApi, PostureApi, UserApi } from "./generated/apis";
 import { Configuration } from "./generated/runtime";
 
 type CreateConfigParam = {
@@ -16,5 +16,6 @@ const config = createConfig({});
 const userApi = new UserApi(config);
 const postureApi = new PostureApi(config);
 const createPostureApi = (param: CreateConfigParam) => new PostureApi(createConfig(param));
+const createAnnotationApi = (param: CreateConfigParam) => new AnnotationApi(createConfig(param));
 
-export { userApi, postureApi, createConfig, createPostureApi };
+export { userApi, postureApi, createConfig, createPostureApi, createAnnotationApi };
