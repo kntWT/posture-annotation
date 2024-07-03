@@ -135,7 +135,11 @@ public class AnnotationEntity {
             .shoulderX(shoulderX)
             .shoulderY(shoulderY)
             .waistX(waistX)
-            .waistY(waistY);
+            .waistY(waistY)
+            .neckAngle(neckAngle)
+            .torsoAngle(torsoAngle)
+            .createdAt(createdAt)
+            .updatedAt(updatedAt);
     }
 
     public static List<Annotation> toAnnotations(List<AnnotationEntity> annotationEntities) {
