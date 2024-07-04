@@ -37,6 +37,8 @@ paths:
     $ref: './paths/annotation.yaml#/annotation'
   /annotation/{id}:
     $ref: './paths/annotation.yaml#/annotation_{id}'
+  /annotation/{id}/file-path:
+    $ref: './paths/annotation.yaml#/annotation_{id}_file_path'
   /annotation/posture/{posture_id}:
     $ref: './paths/annotation.yaml#/annotation_posture_{posture_id}'
   /annotation/annotater/{annotater_id}:
@@ -70,6 +72,8 @@ components:
       $ref: './components/schemas/annotation.yaml#/AnnotationUpdateWithFile'
     AnnotationCreateWithFile:
       $ref: './components/schemas/annotation.yaml#/AnnotationCreateWithFile'
+    AnnotationWithFilePath:
+      $ref: './components/schemas/annotation.yaml#/AnnotationWithFilePath'
   examples:
     UserExample:
       value:

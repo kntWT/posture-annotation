@@ -91,3 +91,16 @@ FileInfo:
       format: int64
     file_name:
       type: string
+AnnotationWithFilePath:
+  type: object
+  allOf:
+    - $ref: '#/Annotation'
+  required:
+    - user_id
+    - file_name
+  properties:
+    user_id:
+      type: integer
+      format: int64
+    file_name:
+      type: string
