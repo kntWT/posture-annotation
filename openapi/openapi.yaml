@@ -41,10 +41,16 @@ paths:
     $ref: './paths/annotation.yaml#/annotation_{id}_file_path'
   /annotation/posture/{posture_id}:
     $ref: './paths/annotation.yaml#/annotation_posture_{posture_id}'
+  /annotation/posture/{posture_id}/file-path:
+    $ref: './paths/annotation.yaml#/annotation_posture_{posture_id}_file_path'
   /annotation/annotater/{annotater_id}:
     $ref: './paths/annotation.yaml#/annotation_annotater_{annotater_id}'
+  /annotation/annotater/{annotater_id}/file-path:
+    $ref: './paths/annotation.yaml#/annotation_annotater_{annotater_id}_file_path'
   /annotation/posture/{posture_id}/annotater/{annotater_id}:
     $ref: './paths/annotation.yaml#/annotation_posture_{posture_id}_annotater_{annotater_id}'
+  /annotation/posture/{posture_id}/annotater/{annotater_id}/file-path:
+    $ref: './paths/annotation.yaml#/annotation_posture_{posture_id}_annotater_{annotater_id}_file_path'
 components:
   securitySchemes:
     bearerAuth:

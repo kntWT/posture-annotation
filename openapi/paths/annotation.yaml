@@ -92,7 +92,7 @@ annotation_{id}:
 annotation_{id}_file_path:
   get:
     description: get annotated posture file path by id
-    operationId: getAnnotationFilePathById
+    operationId: getAnnotationWithFilePathById
     tags:
       - annotation
     security: *bearerAuth
@@ -137,6 +137,31 @@ annotation_posture_{posture_id}:
                 $ref: '../components/schemas/annotation.yaml#/Annotation'
       '403':
         description: forbidden
+annotation_posture_{posture_id}_file_path:
+  get:
+    description: get annotated posture file path by posture id
+    operationId: getAnnotationsWithFilePathByPostureId
+    tags:
+      - annotation
+    security: *bearerAuth
+    parameters:
+      - name: posture_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+    responses:
+      '200':
+        description: ok
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '../components/schemas/annotation.yaml#/AnnotationWithFilePath'
+      '403':
+        description: forbidden
 annotation_annotater_{annotater_id}:
   get:
     description: get annotated posture by annotater id
@@ -160,6 +185,31 @@ annotation_annotater_{annotater_id}:
               type: array
               items:
                 $ref: '../components/schemas/annotation.yaml#/Annotation'
+      '403':
+        description: forbidden
+annotation_annotater_{annotater_id}_file_path:
+  get:
+    description: get annotated posture file path by annotater id
+    operationId: getAnnotationsWithFilePathByAnnotaterId
+    tags:
+      - annotation
+    security: *bearerAuth
+    parameters:
+      - name: annotater_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+    responses:
+      '200':
+        description: ok
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '../components/schemas/annotation.yaml#/AnnotationWithFilePath'
       '403':
         description: forbidden
 annotation_posture_{posture_id}_annotater_{annotater_id}:
@@ -223,5 +273,34 @@ annotation_posture_{posture_id}_annotater_{annotater_id}:
           application/json:
             schema:
               $ref: '../components/schemas/annotation.yaml#/Annotation'
+      '403':
+        description: forbidden
+annotation_posture_{posture_id}_annotater_{annotater_id}_file_path:
+  get:
+    description: get annotated posture file path by posture id and annotater id
+    operationId: getAnnotationWithFilePathByPostureIdAndAnnotaterId
+    tags:
+      - annotation
+    security: *bearerAuth
+    parameters:
+      - name: posture_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: annotater_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+    responses:
+      '200':
+        description: ok
+        content:
+          application/json:
+            schema:
+              $ref: '../components/schemas/annotation.yaml#/AnnotationWithFilePath'
       '403':
         description: forbidden
