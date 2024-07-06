@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
 import com.example.api.repositories.AnnotationRepository;
+import com.example.api.utils.DateFormatter;
 import com.example.api.utils.SaveFile;
 import com.example.api.entities.AnnotationEntity;
 import com.generated.model.Annotation;
@@ -16,6 +17,8 @@ import com.generated.model.AnnotationUpdate;
 import com.generated.model.AnnotationUpdateWithFile;
 import com.generated.model.AnnotationCreate;
 import com.generated.model.AnnotationCreateWithFile;
+import com.generated.model.AnnotationWithFilePath;
+import com.example.api.entities.PostureEntity;
 
 @Service
 public class AnnotationService {
@@ -99,6 +102,16 @@ public class AnnotationService {
     }
 
     @Transactional
+    public AnnotationWithFilePath getAnnotationWithFilePathById(Long id) {
+        AnnotationEntity annotation = annotationRepository.findByIdWithFilePath(id);
+        if (annotation == null) {
+            return null;
+        }
+        
+        return annotation.toAnnotationWithFilePath();
+    }
+
+    @Transactional
     public boolean isAnnotationExist(Long id) {
         return annotationRepository.existsById(id);
     }
@@ -168,9 +181,21 @@ public class AnnotationService {
     }
 
     @Transactional
+    public List<AnnotationWithFilePath> getAnnotationsWithFilePathByAnnotaterId(Long annotaterId) {
+        List<AnnotationEntity> annotations = annotationRepository.findByAnnotaterIdWithFilePath(annotaterId);
+        return AnnotationEntity.toAnnotationsWithFilePath(annotations);
+    }
+
+    @Transactional
     public List<Annotation> getAnnotationsByPostureId(Long postureId) {
         List<AnnotationEntity> annotations = annotationRepository.findByPostureId(postureId);
         return AnnotationEntity.toAnnotations(annotations);
+    }
+
+    @Transactional
+    public List<AnnotationWithFilePath> getAnnotationsWithFilePathByPostureId(Long postureId) {
+        List<AnnotationEntity> annotations = annotationRepository.findByPostureIdWithFilePath(postureId);
+        return AnnotationEntity.toAnnotationsWithFilePath(annotations);
     }
 
     @Transactional
@@ -181,6 +206,16 @@ public class AnnotationService {
         }
 
         return annotation.toAnnotation();
+    }
+
+    @Transactional
+    public AnnotationWithFilePath getAnnotationWithFilePathByPostureIdAndAnnotaterId(Long postureId, Long annotaterId) {
+        AnnotationEntity annotation = annotationRepository.findByPostureIdAndAnnotaterIdWithFilePath(postureId, annotaterId);
+        if (annotation == null) {
+            return null;
+        }
+
+        return annotation.toAnnotationWithFilePath();
     }
 
     @Transactional

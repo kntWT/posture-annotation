@@ -40,4 +40,35 @@ public interface AnnotationRepository extends JpaRepository<AnnotationEntity, Lo
         @Param("torsoAngle") Double torsoAngle
     );
 
+    @Transactional
+    @Query(
+        value = "SELECT a.*, p.user_id, p.ex_created_at FROM annotations as a INNER JOIN postures as p ON a.posture_id = p.id WHERE a.id = :id",
+        nativeQuery = true
+    )
+    public AnnotationEntity findByIdWithFilePath(@Param("id") Long id);
+
+    @Transactional
+    @Query(
+        value = "SELECT a.*, p.user_id, p.ex_created_at FROM annotations as a INNER JOIN postures as p ON a.posture_id = p.id WHERE a.annotater_id = :annotaterId",
+        nativeQuery = true
+    )
+    public List<AnnotationEntity> findByAnnotaterIdWithFilePath(@Param("annotaterId") Long annotaterId);
+
+    @Transactional
+    @Query(
+        value = "SELECT a.*, p.user_id, p.ex_created_at FROM annotations as a INNER JOIN postures as p ON a.posture_id = p.id WHERE a.posture_id = :postureId",
+        nativeQuery = true
+    )
+    public List<AnnotationEntity> findByPostureIdWithFilePath(@Param("postureId") Long postureId);
+
+    @Transactional
+    @Query(
+        value = "SELECT a.*, p.user_id, p.ex_created_at FROM annotations as a INNER JOIN postures as p ON a.posture_id = p.id WHERE a.posture_id = :postureId AND a.annotater_id = :annotaterId",
+        nativeQuery = true
+    )
+    public AnnotationEntity findByPostureIdAndAnnotaterIdWithFilePath(
+        @Param("postureId") Long postureId,
+        @Param("annotaterId") Long annotaterId
+    );
+
 }

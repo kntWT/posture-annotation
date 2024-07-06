@@ -8,11 +8,14 @@ import java.util.stream.Collectors;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import com.generated.model.Posture;
+import com.example.api.entities.AnnotationEntity;
 
 @Entity
 @Table(name = "postures")
@@ -134,6 +137,9 @@ public class PostureEntity {
 
     @Column(name = "image_height", nullable = true)
     private Double imageHeight;
+
+    @OneToMany(mappedBy = "posture", fetch = FetchType.LAZY)
+    private List<AnnotationEntity> annotations;
 
     public PostureEntity() {}
 
