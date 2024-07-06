@@ -5,7 +5,7 @@
     import { getToken } from "$lib/store/user";
 	import { onMount } from "svelte";
     import type { PageData } from "./$types";
-	import { imageUrl } from "$lib/util";
+	import { imageUrlFromPosture } from "$lib/util";
 	import { goto } from "$app/navigation";
 	import { page } from "$app/stores";
 
@@ -54,7 +54,7 @@
     {#if data.posture }
         <PostureAnnotater
             posture={data.posture}
-            imageSrc={imageUrl(data.posture, "original")}
+            imageSrc={imageUrlFromPosture(data.posture, "original")}
             handleAction={sendAnnotation}
             showWaist={true}
             holdShoulder={true}
