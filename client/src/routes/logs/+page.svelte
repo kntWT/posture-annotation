@@ -13,14 +13,14 @@
 
 <div class="wrapper">
     <h1>アノテーション履歴</h1>
-    {#if data.postures.length === 0}
+    {#if data.annotations.length === 0}
         <p>データがありません</p>
         <a href="/annotate">アノテーションをする</a>
     {:else}
         <div class="card-list">
-            {#each data.postures as posture}
+            {#each data.annotations as annotation}
                 <div class="card">
-                    <AnnotatedCard posture={posture} imageSrc={imageUrl(posture, "annotated")} />
+                    <AnnotatedCard annotation={annotation} imageSrc={imageUrl(annotation.userId, annotation.fileName, "annotated")} />
                 </div>
             {/each}
         </div>

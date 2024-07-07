@@ -1,16 +1,19 @@
 <script lang="ts">
-	import type { Posture } from "$api/generated";
+	import type { Annotation } from "$api/generated";
 
-    export let posture: Posture;
+    export let annotation: Annotation;
     export let imageSrc: string;
+    export let showWaist: boolean = false;
 
 </script>
 
 <div class="wrapper">
     <div>
-        <span><a href={`/annotate?id=${posture.id}`}>#{posture.id}</a>({posture.updatedAt.toLocaleDateString()})</span><br />
-        <span>首の角度: {posture.neckAngle}</span><br />
-        <span>胴体の角度: {posture.torsoAngle}</span><br />
+        <span><a href={`/annotate?id=${annotation.postureId}`}>#{annotation.postureId}</a>({annotation.updatedAt?.toLocaleDateString?.()})</span><br />
+        <span>首の角度: {annotation.neckAngle.toFixed(2)}</span><br />
+        {#if showWaist}
+            <span>胴体の角度: {annotation.torsoAngle.toFixed(2)}</span><br />
+        {/if}
     </div>
     <img src={imageSrc} alt="annotated-posture" />
 </div>
