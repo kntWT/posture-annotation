@@ -8,14 +8,25 @@
 	import { imageUrlFromPosture } from "$lib/util";
 	import { goto } from "$app/navigation";
 	import { page } from "$app/stores";
-
-
+    import { annotationHistory, undo, addHistory } from "$lib/store/annotationHistory";
 
     export let data: PageData;
+
+    $: isOldest = $annotationHistory.currentIndex === -1;
 
     onMount(async () => {
         console.log(data)
     });
+
+    const handleUndo = () => {
+        const dst = undo($annotationHistory);
+        if (dst >= 0) {
+            const path = window.location.pathname;
+            // FIXME: なぜかinvalidateAllしてもページが更新されないので，リソーそを無理矢理変更している
+            data.posture = null;
+            goto(`${path}?id=${dst}`, { invalidateAll: true });
+        }
+    }
 
     const sendAnnotation = async (annotated: AnnotationCreateWithFile) => {
         if (!data.posture?.id || !data.user?.id) {
@@ -35,9 +46,10 @@
                 await annotationApi.updateAnnotationByPostureIdAndAnnotaterId({
                     postureId: data.posture.id,
                     annotaterId: data.user.id,
-                    annotationUpdateWithFile: annotated as AnnotationUpdateWithFile 
+                    annotationUpdateWithFile: annotated as AnnotationUpdateWithFile
                 });
             }
+            addHistory(data.posture.id);
             const path = window.location.pathname;
             goto(path, { invalidateAll: true });
             data = { ...data, posture: null };
@@ -51,6 +63,7 @@
 
 <div class="wrapper">
     <h1>姿勢アノテーション</h1>
+    <button on:click={handleUndo} disabled={isOldest}>戻る</button>
     {#if data.posture }
         <PostureAnnotater
             posture={data.posture}
@@ -72,6 +85,11 @@
 
         h1 {
             text-align: center;
+        }
+
+        button {
+            padding: 8px 16px;
+            border: solid 1px #ccc;
         }
     }
 </style>
