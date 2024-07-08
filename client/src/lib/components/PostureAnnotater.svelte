@@ -120,31 +120,7 @@
             p.createCanvas(width, height);
             p.imageMode(p.CENTER);
             imageOffset.set(0, 0);
-            const len = p.height / 6;
-            if (posture.waistX && posture.waistY) {
-                const {x, y} = adjustMarkerPosition(posture.waistX, posture.waistY);
-                markers.waist.set(x, y)
-            } else {
-                markers.waist.set(p.width / 2, p.height * 2 / 3);
-            }
-            if (posture.shoulderX && posture.shoulderY) {
-                const {x, y} = adjustMarkerPosition(posture.shoulderX, posture.shoulderY);
-                markers.shoulder.set(x, y);
-            } else {
-                markers.shoulder.set(
-                    markers.waist.x - len*p.sin(p.radians(correctedTorsoAngle)),
-                    markers.waist.y - len*p.cos(p.radians(correctedTorsoAngle))
-                );
-            }
-            if (posture.tragusX && posture.tragusY) {
-                const {x, y} = adjustMarkerPosition(posture.tragusX, posture.tragusY);
-                markers.tragus.set(x, y);
-            } else {
-                markers.tragus.set(
-                    markers.shoulder.x - len*p.sin(p.radians(correctedNeckAngle)),
-                    markers.shoulder.y - len*p.cos(p.radians(correctedNeckAngle))
-                );
-            }
+            initMarkerPosition();
             adjustFrame([markers.tragus, markers.shoulder, markers.waist]);
             if (holdShoulder) {
                 target = markers.shoulder;
@@ -215,6 +191,7 @@
                 setTarget(mouse);
                 if (target === null && pMouse === null) {
                     pMouse = p.createVector(p.mouseX, p.mouseY);
+                    handleSubmit();
                 }
             }
         }
@@ -271,26 +248,65 @@
             syncronizeMarkers();
         }
 
+        const initMarkerPosition = (_target?: "tragus" | "shoulder" | "waist") => {
+            const len = p.height / 6;
+            const initWaist = () => {
+                if (posture.waistX && posture.waistY) {
+                    const {x, y} = adjustMarkerPosition(posture.waistX, posture.waistY);
+                    markers.waist.set(x, y)
+                } else {
+                    markers.waist.set(p.width / 2, p.height * 2 / 3);
+                }
+            }
+            const initShoulder = () => {
+                if (posture.shoulderX && posture.shoulderY) {
+                    const {x, y} = adjustMarkerPosition(posture.shoulderX, posture.shoulderY);
+                    markers.shoulder.set(x, y);
+                } else {
+                    markers.shoulder.set(
+                        markers.waist.x - len*p.sin(p.radians(correctedTorsoAngle)),
+                        markers.waist.y - len*p.cos(p.radians(correctedTorsoAngle))
+                    );
+                }
+            }
+            const initTragus = () => {
+                if (posture.tragusX && posture.tragusY) {
+                    const {x, y} = adjustMarkerPosition(posture.tragusX, posture.tragusY);
+                    markers.tragus.set(x, y);
+                } else {
+                    markers.tragus.set(
+                        markers.shoulder.x - len*p.sin(p.radians(correctedNeckAngle)),
+                        markers.shoulder.y - len*p.cos(p.radians(correctedNeckAngle))
+                    );
+                }
+            }
+
+            switch (_target) {
+                case "waist":
+                    initWaist();
+                    break;
+                case "shoulder":
+                    initShoulder();
+                    break;
+                case "tragus":
+                    initTragus();
+                    break;
+                default:
+                    initWaist();
+                    initShoulder();
+                    initTragus();
+                    break;
+            }
+        }
+
         const resetTarget = () => {
             const _target = target ?? lastTarget;
             if (_target == markers.tragus) {
-                if (!posture.tragusX || !posture.tragusY) {
-                    markers.tragus.set(
-                        shoulder.x - p.height/6*p.sin(p.radians(correctedNeckAngle)),
-                        shoulder.y - p.height/6*p.cos(p.radians(correctedNeckAngle))
-                    );
-                }
+                initMarkerPosition("tragus");
             } else if (_target == markers.shoulder) {
-                if (!posture.shoulderX || !posture.shoulderY) {
-                    markers.shoulder.set(
-                        waist.x - p.height/6*p.sin(p.radians(correctedTorsoAngle)),
-                        waist.y - p.height/6*p.cos(p.radians(correctedTorsoAngle))
-                    );
-                }
+                initMarkerPosition("shoulder");
             } else if (_target == markers.waist) {
-                if (!posture.waistX || !posture.waistY) {
-                    markers.waist.set(p.width / 2, p.height * 2 / 3);
-                }
+                initMarkerPosition("waist");
             }
             target = null;
         }
