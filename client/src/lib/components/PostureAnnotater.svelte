@@ -73,9 +73,9 @@
         await handleAction(data);
     }
 
-    // Enterキーでsubmitできるようにする
+    // Enterキーまたはスペースでsubmitできるようにする
     const handleKeyDown = (e: KeyboardEvent) => {
-        if (e.key === "Enter") {
+        if (e.key === "Enter" || e.key === " ") {
             handleSubmit();
         }
     }
