@@ -56,7 +56,9 @@
             data = { ...data, posture: null };
         } catch (e) {
             console.error(e);
-            alert("データの送信に失敗しました");
+            // FIXME: なぜか再レンダリングしても破棄されたPostureAnnotaterのsubmitが呼ばれてしまうので，無理矢理リセット
+            window.location.href = `/annotate?id=${data.posture?.id}`
+            // alert("データの送信に失敗しました");
         }
     }
 
