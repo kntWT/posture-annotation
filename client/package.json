@@ -20,6 +20,8 @@
 	"devDependencies": {
 		"@smui/button": "^7.0.0",
 		"@smui/card": "^7.0.0",
+		"@smui/icon-button": "^7.0.0",
+		"@smui/textfield": "^7.0.0",
 		"@sveltejs/adapter-auto": "^3.0.0",
 		"@sveltejs/adapter-node": "^5.0.1",
 		"@sveltejs/kit": "^2.0.0",
@@ -45,6 +47,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"p5-svelte": "^3.1.2"
+		"p5-svelte": "^3.1.2",
+		"svelte-material-ui": "^7.0.0"
 	}
 }
