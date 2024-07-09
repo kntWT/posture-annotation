@@ -12,7 +12,7 @@ export const annotationHistory = writable<AnnotationHistory>({
 
 export const addHistory = (id: number) => {
     const ah = get(annotationHistory);
-    const history = [...ah.history, id];
+    const history = ah.history.includes(id) ? [...ah.history] : [...ah.history, id];
     const currentIndex = history.length - 1;
     annotationHistory.set({ history, currentIndex });
 }
@@ -44,8 +44,8 @@ export const undo = (ah: AnnotationHistory): number => {
     if (history.length === 0) {
         return -1;
     }
-    const currentIndex = ah.currentIndex - 1;
-    annotationHistory.set({ history, currentIndex: currentIndex === 0 ? -1 : currentIndex});
+    const currentIndex = ah.currentIndex;
+    annotationHistory.set({ history, currentIndex: currentIndex -1 });
     return history[currentIndex];
 }
 
