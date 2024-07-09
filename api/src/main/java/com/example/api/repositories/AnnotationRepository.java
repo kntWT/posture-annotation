@@ -14,11 +14,13 @@ import jakarta.transaction.Transactional;
 @Repository
 public interface AnnotationRepository extends JpaRepository<AnnotationEntity, Long> {
 
+    public List<AnnotationEntity> findAllByOrderByIdAsc();
+
     public boolean existsByPostureIdAndAnnotaterId(Long postureId, Long annotaterId);
 
-    public List<AnnotationEntity> findByPostureId(Long postureId);
+    public List<AnnotationEntity> findByPostureIdOrderByIdAsc(Long postureId);
 
-    public List<AnnotationEntity> findByAnnotaterId(Long annotaterId);
+    public List<AnnotationEntity> findByAnnotaterIdOrderByIdAsc(Long annotaterId);
 
     public AnnotationEntity findByPostureIdAndAnnotaterId(Long postureId, Long annotaterId);
 

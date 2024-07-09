@@ -87,7 +87,7 @@ public class AnnotationService {
 
     @Transactional
     public List<Annotation> getAnnotations() {
-        List<AnnotationEntity> annotations = annotationRepository.findAll();
+        List<AnnotationEntity> annotations = annotationRepository.findAllByOrderByIdAsc();
         return AnnotationEntity.toAnnotations(annotations);
     }
 
@@ -176,7 +176,7 @@ public class AnnotationService {
 
     @Transactional
     public List<Annotation> getAnnotationsByAnnotaterId(Long annotaterId) {
-        List<AnnotationEntity> annotations = annotationRepository.findByAnnotaterId(annotaterId);
+        List<AnnotationEntity> annotations = annotationRepository.findByAnnotaterIdOrderByIdAsc(annotaterId);
         return AnnotationEntity.toAnnotations(annotations);
     }
 
@@ -188,7 +188,7 @@ public class AnnotationService {
 
     @Transactional
     public List<Annotation> getAnnotationsByPostureId(Long postureId) {
-        List<AnnotationEntity> annotations = annotationRepository.findByPostureId(postureId);
+        List<AnnotationEntity> annotations = annotationRepository.findByPostureIdOrderByIdAsc(postureId);
         return AnnotationEntity.toAnnotations(annotations);
     }
 
