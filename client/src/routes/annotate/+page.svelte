@@ -23,7 +23,7 @@
         if (dst >= 0) {
             const path = window.location.pathname;
             // FIXME: なぜかinvalidateAllしてもページが更新されないので，リソーそを無理矢理変更している
-            data.posture = null;
+            data = { ...data, posture: null };
             goto(`${path}?id=${dst}`, { invalidateAll: true });
         }
     }
