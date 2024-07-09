@@ -8,6 +8,10 @@
 
     let topAppBar: TopAppBar;
 
+    const navigateHome = () => {
+        goto("/");
+    };
+
     const navigateLogin = () => {
         goto("/login");
     };
@@ -23,7 +27,13 @@
             <IconButton class="material-icons">menu</IconButton>
         </Section>
         <Section>
-            <Title class="center" style="width: 100%; text-align: center;">姿勢アノテーションシステム</Title>
+            <Title
+                class="center"
+                style="width: 100%; text-align: center;"
+                on:click={navigateHome}
+            >
+                姿勢アノテーションシステム
+            </Title>
         </Section>
         <Section align="end" toolbar>
             {#if $page.url.pathname !== "/login"}
