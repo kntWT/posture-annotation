@@ -36,3 +36,6 @@ openapi-generate-api:
 
 recompile-api:
 	docker compose exec api mvn compile
+
+npm-install:
+	docker compose exec client npm install
