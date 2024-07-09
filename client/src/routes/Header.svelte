@@ -2,6 +2,11 @@
     import { goto } from "$app/navigation";
     import { user, logout } from "$lib/store/user";
     import { page } from "$app/stores";
+    import TopAppBar, { Section, Title, Row } from "@smui/top-app-bar";
+    import IconButton from "@smui/icon-button";
+    import Button, { Label } from "@smui/button";
+
+    let topAppBar: TopAppBar;
 
     const navigateLogin = () => {
         goto("/login");
@@ -12,62 +17,36 @@
     };
 </script>
 
-<div class="header">
-    <h2><a href="/">姿勢アノテーションシステム</a></h2>
-    {#if $page.url.pathname !== "/login"}
-        {#if $user}
-            <btn on:click={handleLogout}>ログアウト</btn>
-        {:else }
-            <btn on:click={navigateLogin}>ログイン</btn>
-        {/if}
-    {/if}
-</div>
+<TopAppBar bind:this={topAppBar} variant="standard">
+    <Row>
+        <Section align="start">
+            <IconButton class="material-icons">menu</IconButton>
+        </Section>
+        <Section>
+            <Title class="center" style="width: 100%; text-align: center;">姿勢アノテーションシステム</Title>
+        </Section>
+        <Section align="end" toolbar>
+            {#if $page.url.pathname !== "/login"}
+                {#if $user}
+                    <Button on:click={handleLogout}>
+                        <Label>
+                            ログアウト
+                        </Label>
+                    </Button>
+                {:else }
+                    <Button on:click={navigateLogin}>
+                        <Label>
+                            ログイン
+                        </Label>
+                    </Button>
+                {/if}
+            {/if}
+        </Section>
+    </Row>
+</TopAppBar>
 
 <style lang="scss">
-
-    @import "$lib/styles/variables";
-
-    .header {
-        background-color: $base-color;
-        text-align: center;
-        width: 100%;
-        height: 10vh;
-        min-height: 80px;
-        max-height: 150px;
-        position: relative;
-        align-items: center;
-
-        h2 {
-            margin: auto;
-            position: absolute;
-            max-width: 70%;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            -webkit-transform: translate(-50%, -50%);
-
-            a {
-                color: inherit;
-                text-decoration: none;
-            }
-        }
-
-        btn {
-            background-color: $accent-color;
-            color: $secondary-color;
-            padding: 8px 8px;
-            margin: auto 16px auto auto;
-            border: none;
-            cursor: pointer;
-            width: 15%;
-            max-width: 200px;
-            position: absolute;
-            top: 50%;
-            right: 0;
-            transform: translate(0, -50%);
-            -webkit-transform: translate(0, -50%);
-            font-size: 0.7rem;
-        }
+    :global(.mdc-top-app-bar) {
+        position: relative !important;
     }
-
 </style>
