@@ -23,6 +23,7 @@
     const imageHeight = posture.imageHeight ?? 2048;
     let scale: number = 1;
     const step = 0.05;
+    let submitted: boolean = false;
 
     onMount(() => {
         document.addEventListener("keydown", handleKeyDown);
@@ -41,6 +42,9 @@
     }
 
     const handleSubmit = async () => {
+        // FIXME: なぜか過去のp5sketchが残っている（マウス座標などが再レンダリングされる直前のもののままmousePressedの送信処理が実行されてしまう）ので，フラグで管理
+        if (submitted) return;
+
         const user = getUser();
         if (!isLoggedIn() || !user) {
             alert("ログインしてください");
@@ -71,6 +75,7 @@
             postureId: posture.id
         };
         await handleAction(data);
+        submitted = true;
     }
 
     // Enterキーまたはスペースでsubmitできるようにする
@@ -312,10 +317,9 @@
         }
 
         const mouseInCanvas = (): boolean => {
-            return (
-                p.mouseX >= 0 && p.mouseX <= p.width
+            return p.mouseX >= 0 && p.mouseX <= p.width
                 && p.mouseY >= 0 && p.mouseY <= p.height
-            );
+            ;
         }
 
         const distToMouse = (point: Vector, mouse: p5.Vector = p.createVector(p.mouseX, p.mouseY)): number => {
