@@ -62,8 +62,8 @@
 </script>
 
 <div class="wrapper">
-    <h1>姿勢アノテーション</h1>
-    <button on:click={handleUndo} disabled={isOldest}>戻る</button>
+    <h2>姿勢アノテーション</h2>
+    <button on:click={handleUndo} disabled={isOldest}>直前に戻る</button>
     {#if data.posture }
         <PostureAnnotater
             posture={data.posture}
@@ -88,8 +88,7 @@
         }
 
         button {
-            padding: 8px 16px;
-            border: solid 1px #ccc;
+            padding: 4px 8px;
         }
     }
 </style>
