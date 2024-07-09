@@ -31,6 +31,12 @@ public interface PostureRepository extends JpaRepository<PostureEntity, Long> {
     @Query(value = "SELECT p.* FROM postures AS p WHERE p.annotater_id IS NULL ORDER BY random() LIMIT :limit", nativeQuery = true)
     public List<PostureEntity> findByAnnotaterIdIsNullLimitedTo(@Param("limit") int limit);
 
+    @Query(
+        value = "SELECT p.* FROM postures AS p left join (select a.posture_id, coalesce(count(*), 0) as count from annotations as a group by a.posture_id) as counts on p.id = counts.posture_id ORDER BY counts.count desc, random() LIMIT :limit",
+        nativeQuery = true
+    )
+    public List<PostureEntity> findOrderByAnnotationCountLimitedTo(@Param("limit") int limit);
+
     // @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query(value = "SELECT p.* FROM postures AS p WHERE p.id = :id FOR UPDATE", nativeQuery = true)
     @QueryHints({

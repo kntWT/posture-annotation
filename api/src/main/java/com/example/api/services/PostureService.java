@@ -58,7 +58,8 @@ public class PostureService {
 
     @Transactional
     public Posture getRandomPosture() {
-        List<PostureEntity> unannotatedPostures = postureRepository.findByAnnotaterIdIsNullLimitedTo(100);
+        // List<PostureEntity> unannotatedPostures = postureRepository.findByAnnotaterIdIsNullLimitedTo(100);
+        List<PostureEntity> unannotatedPostures = postureRepository.findOrderByAnnotationCountLimitedTo(100);
         Collections.shuffle(unannotatedPostures);
         int index = 0;
         PostureEntity target = null;
