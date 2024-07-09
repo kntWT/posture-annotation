@@ -1,38 +1,32 @@
 <script lang="ts">
-	import type { Annotation } from "$api/generated";
+	import type { Annotation } from '$api/generated';
+	import { goto } from '$app/navigation';
+	import Card, { Media, Content, PrimaryAction } from '@smui/card';
 
-    export let annotation: Annotation;
-    export let imageSrc: string;
-    export let showWaist: boolean = false;
+	export let annotation: Annotation;
+	export let imageSrc: string;
+	export let showWaist: boolean = false;
 
+	const navigateTo = (id: number) => {
+		goto(`/annotate?id=${id}`, { invalidateAll: true });
+	};
 </script>
 
-<div class="wrapper">
-    <div>
-        <span><a href={`/annotate?id=${annotation.postureId}`}>#{annotation.postureId}</a>({annotation.updatedAt?.toLocaleDateString?.()})</span><br />
-        <span>首の角度: {annotation.neckAngle.toFixed(2)}</span><br />
-        {#if showWaist}
-            <span>胴体の角度: {annotation.torsoAngle.toFixed(2)}</span><br />
-        {/if}
-    </div>
-    <img src={imageSrc} alt="annotated-posture" />
-</div>
+<Card>
+    <PrimaryAction on:click={() => navigateTo(annotation.postureId)}>
+        <Content>
+            <span>#{annotation.postureId} ({annotation.updatedAt?.toLocaleDateString?.()})</span><br />
+            <span>首の角度: {annotation.neckAngle.toFixed(2)}</span><br />
+            {#if showWaist}
+                <span>胴体の角度: {annotation.torsoAngle.toFixed(2)}</span><br />
+            {/if}
+        </Content>
+        <Media
+            style={`background-image: url(${imageSrc})`}
+            aspectRatio="16x9"
+        />
+    </PrimaryAction>
+</Card>
 
 <style lang="scss">
-    .wrapper {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        border: 1px solid #ccc;
-        padding: 12px;
-
-        div {
-            display: block;
-            margin: 8px;
-        }
-    }
-    img {
-        width: 80%;
-        max-width: 500px;
-    }
 </style>
