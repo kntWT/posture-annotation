@@ -9,6 +9,7 @@
 	import { goto } from "$app/navigation";
 	import { page } from "$app/stores";
     import { annotationHistory, undo, addHistory } from "$lib/store/annotationHistory";
+    import Button from "@smui/button";
 
     export let data: PageData;
 
@@ -63,7 +64,13 @@
 
 <div class="wrapper">
     <h2>姿勢アノテーション</h2>
-    <button on:click={handleUndo} disabled={isOldest}>直前に戻る</button>
+    <Button
+        on:click={handleUndo}
+        disabled={isOldest}
+        variant="raised"
+    >
+        直前に戻る
+    </Button>
     {#if data.posture }
         <PostureAnnotater
             posture={data.posture}
