@@ -5,6 +5,9 @@
     import { browser } from '$app/environment';
 	import type p5 from "p5";
     import P5 from "p5-svelte";
+    // import Button, { Label } from "@smui/button";
+    import IconButton from "@smui/icon-button";
+    import TextField from "@smui/textfield";
 
     type Vector = { x: number, y: number };
 
@@ -413,16 +416,21 @@
 
 <div id="annotater-container">
     <div>
-        <h2>#{posture.id}</h2>
-        <p>首の角度: {correctedNeckAngle.toFixed(2)}</p>
-        {#if showWaist}
-            <p>胴体の角度: {correctedTorsoAngle.toFixed(2)}</p>
-        {/if}
-        <button on:click={handleSubmit}>保存</button>
-        <div>
-            <button on:click={decrementScale}>-</button>
-            <input type="number" step={step} value={scale.toFixed(2)} on:change={handleInputChange} />
-            <button on:click={incrementScale}>+</button>
+        <h3>#{posture.id}</h3>
+        <p>
+            <span>首の角度: {correctedNeckAngle.toFixed(2)}</span>
+            <br />
+            {#if showWaist}
+                <span>胴体の角度: {correctedTorsoAngle.toFixed(2)}</span>
+            {/if}
+        </p>
+        <!-- <Button on:click={handleSubmit}>
+            <Label>保存</Label>
+        </Button> -->
+        <div class="view-controller">
+            <IconButton class="material-icons" on:click={decrementScale}>remove</IconButton>
+            <TextField class="input" type="number" step={step} value={scale.toFixed(2)} on:change={handleInputChange} />
+            <IconButton class="material-icons" on:click={incrementScale}>add</IconButton>
         </div>
     </div>
     <P5 {sketch} />
@@ -439,9 +447,7 @@
             margin: 8px;
         }
     }
-    input {
-        width: 20%;
-        max-width: 60px;
+    .view-controller :global(input[type="number"]) {
         text-align: right;
     }
 
