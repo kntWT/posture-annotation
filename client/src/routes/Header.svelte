@@ -5,6 +5,7 @@
     import TopAppBar, { Section, Title, Row } from "@smui/top-app-bar";
     import IconButton from "@smui/icon-button";
     import Button, { Label } from "@smui/button";
+    import Ripple from "@smui/ripple";
 
     let topAppBar: TopAppBar;
 
@@ -32,7 +33,13 @@
                 style="width: 100%; text-align: center;"
                 on:click={navigateHome}
             >
-                姿勢アノテーションシステム
+                <div
+                    use:Ripple={{ unbounded: false }}
+                    style="cursor: pointer; width: 100%; text-align: center;"
+                    role="button"
+                >
+                    姿勢アノテーションシステム
+                </div>
             </Title>
         </Section>
         <Section align="end" toolbar>
