@@ -45,13 +45,13 @@
         <Section align="end" toolbar>
             {#if $page.url.pathname !== "/login"}
                 {#if $user}
-                    <Button on:click={handleLogout}>
+                    <Button on:click={handleLogout} variant="raised">
                         <Label>
                             ログアウト
                         </Label>
                     </Button>
                 {:else }
-                    <Button on:click={navigateLogin}>
+                    <Button on:click={navigateLogin} variant="raised">
                         <Label>
                             ログイン
                         </Label>
