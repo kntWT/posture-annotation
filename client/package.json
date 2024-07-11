@@ -18,6 +18,7 @@
 		"format": "prettier --write ."
 	},
 	"devDependencies": {
+		"@felte/reporter-svelte": "^1.1.11",
 		"@smui/button": "^7.0.0",
 		"@smui/card": "^7.0.0",
 		"@smui/icon-button": "^7.0.0",
@@ -33,6 +34,7 @@
 		"eslint": "^8.56.0",
 		"eslint-config-prettier": "^9.1.0",
 		"eslint-plugin-svelte": "^2.35.1",
+		"felte": "^1.2.14",
 		"p5": "^1.9.4",
 		"prettier": "^3.1.1",
 		"prettier-plugin-svelte": "^3.1.2",
@@ -48,8 +50,10 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@felte/validator-zod": "^1.0.17",
 		"@smui/ripple": "^7.0.0",
 		"p5-svelte": "^3.1.2",
-		"svelte-material-ui": "^7.0.0"
+		"svelte-material-ui": "^7.0.0",
+		"zod": "^3.23.8"
 	}
 }
