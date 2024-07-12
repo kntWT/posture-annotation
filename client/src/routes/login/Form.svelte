@@ -75,9 +75,9 @@
         min-width: 200px;
         max-width: 400px;
         margin: 24px auto;
-    }
 
-    :global(.mdc-text-field) {
-        width: 100%;
+        :global(.mdc-text-field) {
+            width: 100%;
+        }
     }
 </style>
