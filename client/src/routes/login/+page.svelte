@@ -57,7 +57,7 @@
         <p>読み込み中...</p>
     {:else}
         <Form title="ログイン" action="login" handleSubmit={handleSubmit("login")} />
-        <Divider color={"gray"} />
+        <Divider color={"gray"} width="90vw" />
         <Form title="新規登録" action="signup" handleSubmit={handleSubmit("signup")} />
     {/if}
 </div>

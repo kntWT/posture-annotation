@@ -1,9 +1,10 @@
 <script lang="ts">
     export let content: string = "";
     export let color: string = "black";
+    export let width: string = "100%";
 </script>
 
-<div style={`background-color: ${color};`}>{content}</div>
+<div style={`background-color: ${color}; width: ${width}`}>{content}</div>
 
 <style lang="scss">
     div {
@@ -11,7 +12,6 @@
         display: flex;
         align-items: center;
         margin: 0 auto;
-        width: 90vw;
         height: 1px;
 
         &::before, &::after {
