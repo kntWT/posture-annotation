@@ -1,37 +1,35 @@
 <script lang="ts">
     import { goto } from "$app/navigation";
-    import { user, logout } from "$lib/store/user";
+    import { user } from "$lib/store/user";
     import { page } from "$app/stores";
     import TopAppBar, { Section, Title, Row } from "@smui/top-app-bar";
     import IconButton from "@smui/icon-button";
     import Button, { Label } from "@smui/button";
     import Ripple from "@smui/ripple";
+    import Drawer from "./Drawer.svelte";
 
     let topAppBar: TopAppBar;
+    let openDrawer: boolean = false;
 
-    const navigateHome = () => {
-        goto("/");
-    };
+    const navigateTo = (path: string) => {
+        goto(path);
+    }
 
-    const navigateLogin = () => {
-        goto("/login");
-    };
-    const handleLogout = async () => {
-        logout();
-        goto("/logout");
-    };
+    const handleSwitchDrawer = () => {
+        openDrawer = !openDrawer;
+    }
 </script>
 
 <TopAppBar bind:this={topAppBar} variant="standard">
     <Row>
         <Section align="start">
-            <IconButton class="material-icons">menu</IconButton>
+            <IconButton on:click={handleSwitchDrawer} class="material-icons">menu</IconButton>
         </Section>
         <Section>
             <Title
                 class="center"
                 style="width: 100%; text-align: center;"
-                on:click={navigateHome}
+                on:click={() => navigateTo("/")}
             >
                 <div
                     use:Ripple={{ unbounded: false }}
@@ -45,13 +43,13 @@
         <Section align="end" toolbar>
             {#if $page.url.pathname !== "/login"}
                 {#if $user}
-                    <Button on:click={handleLogout} variant="raised">
+                    <Button on:click={() => navigateTo("logout")} variant="raised">
                         <Label>
                             ログアウト
                         </Label>
                     </Button>
                 {:else }
-                    <Button on:click={navigateLogin} variant="raised">
+                    <Button on:click={() => navigateTo("login")} variant="raised">
                         <Label>
                             ログイン
                         </Label>
@@ -60,6 +58,7 @@
             {/if}
         </Section>
     </Row>
+    <Drawer bind:open={openDrawer} />
 </TopAppBar>
 
 <style lang="scss">
