@@ -1,5 +1,8 @@
 import type { Posture } from "$api/generated";
 
+const paths = ["original", "annotated"] as const;
+type Path = typeof paths[number];
+
 export const formatDate = (date: Date | undefined) => {
     if (!date) {
         return "";
@@ -15,12 +18,12 @@ export const formatDate = (date: Date | undefined) => {
     return `${year}-${pad(month, 2)}-${pad(day, 2)}_${pad(hour, 2)}:${pad(minute, 2)}:${pad(second, 2)}.${pad(ms, 3)}`;
 }
 
-export const imageUrl = (userId: number, fileName: string, path: "original" | "annotated" = "original") => {
+export const imageUrl = (userId: number, fileName: string, path: Path = "original") => {
     return `${import.meta.env.VITE_FILE_SERVER_ENDPOINT}/images/${path}/${userId}/${fileName}`;
 }
 
-export const imageUrlFromPosture = (posture: Posture, path: "original" | "annotated" = "original") => {
-    return `${import.meta.env.VITE_FILE_SERVER_ENDPOINT}/images/${path}/${posture.userId}/${formatDate(posture.exCreatedAt)}.jpg`;
+export const imageUrlFromPosture = (posture: Posture, path: Path = "original") => {
+    return imageUrl(posture.userId, formatDate(posture.exCreatedAt) + ".jpg", path);
 }
 
 export const toBearer = (token: string) => {
