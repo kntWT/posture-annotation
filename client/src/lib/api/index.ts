@@ -8,7 +8,7 @@ type CreateConfigParam = {
 
 const createConfig = (param: CreateConfigParam) => {
     return new Configuration({
-        basePath: param.basePath ?? import.meta.env.VITE_API_URL,
+        basePath: param.basePath ?? import.meta.env.VITE_API_SERVER_URL,
         accessToken: param.token ?? "",
     });
 }
