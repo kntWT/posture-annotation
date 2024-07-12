@@ -57,6 +57,9 @@ public interface AnnotationRepository extends JpaRepository<AnnotationEntity, Lo
     public List<AnnotationEntity> findByAnnotaterIdWithFilePath(@Param("annotaterId") Long annotaterId);
 
     @Transactional
+    public Long countByAnnotaterId(Long annotaterId);
+
+    @Transactional
     @Query(
         value = "SELECT a.*, p.user_id, p.ex_created_at FROM annotations as a INNER JOIN postures as p ON a.posture_id = p.id WHERE a.posture_id = :postureId",
         nativeQuery = true

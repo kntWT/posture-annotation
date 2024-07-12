@@ -100,6 +100,12 @@ public class AnnotationController implements AnnotationApi {
     }
 
     @Override
+    public ResponseEntity<Long> getAnnotationCountByAnnotaterId(Long annotaterId) {
+        Long count = annotationService.getAnnotationCountByAnnotaterId(annotaterId);
+        return ResponseEntity.ok(count);
+    }
+
+    @Override
     public ResponseEntity<Annotation> getAnnotationByPostureIdAndAnnotaterId(Long postureId, Long annotaterId) {
         Annotation annotation = annotationService.getAnnotationByPostureIdAndAnnotaterId(postureId, annotaterId);
         if (annotation == null) {

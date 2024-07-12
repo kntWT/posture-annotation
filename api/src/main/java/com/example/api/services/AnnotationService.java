@@ -187,6 +187,11 @@ public class AnnotationService {
     }
 
     @Transactional
+    public Long getAnnotationCountByAnnotaterId(Long annotaterId) {
+        return annotationRepository.countByAnnotaterId(annotaterId);
+    }
+
+    @Transactional
     public List<Annotation> getAnnotationsByPostureId(Long postureId) {
         List<AnnotationEntity> annotations = annotationRepository.findByPostureIdOrderByIdAsc(postureId);
         return AnnotationEntity.toAnnotations(annotations);
