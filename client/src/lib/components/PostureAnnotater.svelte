@@ -428,9 +428,25 @@
             <Label>保存</Label>
         </Button> -->
         <div class="view-controller">
-            <IconButton class="material-icons" on:click={decrementScale}>remove</IconButton>
-            <TextField class="input" type="number" step={step} value={scale.toFixed(2)} on:change={handleInputChange} />
-            <IconButton class="material-icons" on:click={incrementScale}>add</IconButton>
+            <IconButton
+                class="material-icons"
+                on:click={decrementScale}
+            >
+                remove
+            </IconButton>
+            <TextField
+                class="input"
+                type="number"
+                input$step={step}
+                value={scale.toFixed(2)}
+                on:change={handleInputChange}
+            />
+            <IconButton
+                class="material-icons"
+                on:click={incrementScale}
+            >
+                add
+            </IconButton>
         </div>
     </div>
     <P5 {sketch} />
