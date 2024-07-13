@@ -58,7 +58,9 @@
             {/if}
         </Section>
     </Row>
-    <Drawer bind:open={openDrawer} />
+    {#if openDrawer}
+        <Drawer bind:open={openDrawer} />
+    {/if}
 </TopAppBar>
 
 <style lang="scss">
