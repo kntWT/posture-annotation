@@ -6,7 +6,7 @@
     import IconButton from "@smui/icon-button";
     import Button, { Label } from "@smui/button";
     import Ripple from "@smui/ripple";
-    import Drawer from "./Drawer.svelte";
+    import Drawer from "$lib/components/Drawer.svelte";
 
     let topAppBar: TopAppBar;
     let openDrawer: boolean = false;
