@@ -7,7 +7,6 @@
     import type { PageData } from "./$types";
 	import { imageUrlFromPosture } from "$lib/util";
 	import { goto } from "$app/navigation";
-	import { page } from "$app/stores";
     import { annotationHistory, undo, addHistory } from "$lib/store/annotationHistory";
     import Button from "@smui/button";
 
@@ -39,9 +38,14 @@
             return;
         }
         const annotationApi = createAnnotationApi({ token: token, basePath: import.meta.env.VITE_API_ENDPOINT });
-        const createMode: boolean = $page.url.searchParams.get("id") === null;
         try {
-            if (createMode) {
+            const isExist = await annotationApi.getAnnotationByPostureIdAndAnnotaterId({
+                postureId: data.posture.id,
+                annotaterId: data.user.id
+            })
+                .then((res) => res !== null)
+                .catch((e) => false);
+            if (!isExist) {
                 await annotationApi.createAnnotation({ annotationCreateWithFile: annotated });
             } else {
                 await annotationApi.updateAnnotationByPostureIdAndAnnotaterId({
