@@ -1,6 +1,7 @@
 package com.example.api.services;
 
 import java.util.List;
+import java.util.ArrayList;
 import java.nio.file.Paths;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
@@ -22,7 +23,7 @@ import com.generated.model.PostureUpdateMarkerPosition;
 public class PostureService {
 
     @Autowired
-    private final PostureRepository postureRepository;
+    private static PostureRepository postureRepository;
 
     public PostureService(PostureRepository postureRepository) {
         this.postureRepository = postureRepository;
@@ -159,6 +160,49 @@ public class PostureService {
             }
         }
         return updatedCount;
+    }
+
+    @Transactional
+    public static Long lastPostureId() {
+        return postureRepository.findLastId();
+    }
+
+    @Transactional
+    public static List<Posture> createSamplePostures(Long count) {
+        List<PostureEntity> postures = postureRepository.findByOrderByRandomLimitTo(count);
+        Long lastId = lastPostureId();
+        System.out.println("lastId: " + lastId);
+        List<PostureEntity> samplePostures = new ArrayList<PostureEntity>();
+        for (PostureEntity posture : postures) {
+            samplePostures.add(posture
+                .cloneWithoutId()
+                .setId(++lastId)
+                .setAnnotaterId(-1L)
+            );
+        }
+        List<PostureEntity> savedPostures = postureRepository.saveAll(samplePostures);
+        return PostureEntity.toPostures(savedPostures);
+    }
+
+    @Transactional
+    public Posture getRandomSamplePosture() {
+        List<PostureEntity> unannotatedPostures = postureRepository.findSampleDataByOrderByAnnotationCountLimitedTo(100);
+        Collections.shuffle(unannotatedPostures);
+        int index = 0;
+        PostureEntity target = null;
+        while (target == null && index < unannotatedPostures.size()) {
+            try {
+                target = postureRepository
+                    .findByIdWithLock(unannotatedPostures.get(index).getId());
+            } catch (PessimisticLockingFailureException e) {
+                index++;
+            }
+        }
+
+        if (target == null) {
+            return null;
+        }
+        return target.toPosture();
     }
 
 }

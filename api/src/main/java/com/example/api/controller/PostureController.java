@@ -95,4 +95,20 @@ public class PostureController implements PostureApi {
         Long updatedCount = postureService.updatePostureMarkers(markerPositions);
         return ResponseEntity.ok(updatedCount);
     }
+
+    @Override
+    public ResponseEntity<List<Posture>> getSamplePostures() {
+        List<Posture> postures = postureService.getPosturesByAnnotaterId(-1L);
+        return ResponseEntity.ok(postures);
+    }
+
+    @Override
+    public ResponseEntity<Posture> getRandomSamplePosture() {
+        Posture posture = postureService.getRandomPosture();
+        if (posture == null) {
+            ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        
+        return ResponseEntity.ok(posture);
+    }
 }

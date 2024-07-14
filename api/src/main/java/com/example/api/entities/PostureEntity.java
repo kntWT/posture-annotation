@@ -22,7 +22,7 @@ import com.example.api.entities.AnnotationEntity;
 public class PostureEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    // @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
@@ -156,92 +156,207 @@ public class PostureEntity {
         return inId;
     }
 
+    public PostureEntity setInId(Long inId) {
+        this.inId = inId;
+        return this;
+    }
+
     public String getFileName() {
         return fileName;
+    }
+
+    public PostureEntity setFileName(String fileName) {
+        this.fileName = fileName;
+        return this;
     }
 
     public Long getSetNum() {
         return setNum;
     }
 
+    public PostureEntity setSetNum(Long setNum) {
+        this.setNum = setNum;
+        return this;
+    }
+
     public Double getOrientationAlpha() {
         return orientationAlpha;
+    }
+
+    public PostureEntity setOrientationAlpha(Double orientationAlpha) {
+        this.orientationAlpha = orientationAlpha;
+        return this;
     }
 
     public Double getOrientationBeta() {
         return orientationBeta;
     }
 
+    public PostureEntity setOrientationBeta(Double orientationBeta) {
+        this.orientationBeta = orientationBeta;
+        return this;
+    }
+
     public Double getOrientationGamma() {
         return orientationGamma;
+    }
+
+    public PostureEntity setOrientationGamma(Double orientationGamma) {
+        this.orientationGamma = orientationGamma;
+        return this;
     }
 
     public Double getPitch() {
         return pitch;
     }
 
+    public PostureEntity setPitch(Double pitch) {
+        this.pitch = pitch;
+        return this;
+    }
+
     public Double getYaw() {
         return yaw;
+    }
+
+    public PostureEntity setYaw(Double yaw) {
+        this.yaw = yaw;
+        return this;
     }
 
     public Double getRoll() {
         return roll;
     }
 
+    public PostureEntity setRoll(Double roll) {
+        this.roll = roll;
+        return this;
+    }
+
     public Double getNoseX() {
         return noseX;
+    }
+
+    public PostureEntity setNoseX(Double noseX) {
+        this.noseX = noseX;
+        return this;
     }
 
     public Double getNoseY() {
         return noseY;
     }
 
+    public PostureEntity setNoseY(Double noseY) {
+        this.noseY = noseY;
+        return this;
+    }
+
     public Double getNexkX() {
         return nexkX;
+    }
+
+    public PostureEntity setNexkX(Double nexkX) {
+        this.nexkX = nexkX;
+        return this;
     }
 
     public Double getNeckY() {
         return neckY;
     }
 
+    public PostureEntity setNeckY(Double neckY) {
+        this.neckY = neckY;
+        return this;
+    }
+
     public Double getNeckToNose() {
         return neckToNose;
+    }
+
+    public PostureEntity setNeckToNose(Double neckToNose) {
+        this.neckToNose = neckToNose;
+        return this;
     }
 
     public Double getStandardDist() {
         return standardDist;
     }
 
+    public PostureEntity setStandardDist(Double standardDist) {
+        this.standardDist = standardDist;
+        return this;
+    }
+
     public OffsetDateTime getInCreatedAt() {
         return inCreatedAt;
+    }
+
+    public PostureEntity setInCreatedAt(OffsetDateTime inCreatedAt) {
+        this.inCreatedAt = inCreatedAt;
+        return this;
     }
 
     public OffsetDateTime getInUpdatedAt() {
         return inUpdatedAt;
     }
 
+    public PostureEntity setInUpdatedAt(OffsetDateTime inUpdatedAt) {
+        this.inUpdatedAt = inUpdatedAt;
+        return this;
+    }
+
     public Long getUserId() {
         return userId;
+    }
+
+    public PostureEntity setUserId(Long userId) {
+        this.userId = userId;
+        return this;
     }
 
     public String getName() {
         return name;
     }
 
+    public PostureEntity setName(String name) {
+        this.name = name;
+        return this;
+    }
+
     public String getPassword() {
         return password;
+    }
+
+    public PostureEntity setPassword(String password) {
+        this.password = password;
+        return this;
     }
 
     public Double getNeckToNoseStandard() {
         return neckToNoseStandard;
     }
 
+    public PostureEntity setNeckToNoseStandard(Double neckToNoseStandard) {
+        this.neckToNoseStandard = neckToNoseStandard;
+        return this;
+    }
+
     public Double getNeckAngleOffset() {
         return neckAngleOffset;
     }
 
+    public PostureEntity setNeckAngleOffset(Double neckAngleOffset) {
+        this.neckAngleOffset = neckAngleOffset;
+        return this;
+    }
+
     public Long getExId() {
         return exId;
+    }
+
+    public PostureEntity setExId(Long exId) {
+        this.exId = exId;
+        return this;
     }
 
     public Double getNeckAngle() {
@@ -257,7 +372,7 @@ public class PostureEntity {
         return torsoAngle;
     }
 
-    public PostureEntity setTorosAngle(Double torsoAngle) {
+    public PostureEntity setTorsoAngle(Double torsoAngle) {
         this.torsoAngle = torsoAngle;
         return this;
     }
@@ -266,8 +381,18 @@ public class PostureEntity {
         return exCreatedAt;
     }
 
+    public PostureEntity setExCreatedAt(OffsetDateTime exCreatedAt) {
+        this.exCreatedAt = exCreatedAt;
+        return this;
+    }
+
     public OffsetDateTime getUpdatedAt() {
         return updatedAt;
+    }
+
+    public PostureEntity setUpdatedAt(OffsetDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+        return this;
     }
 
     public Long getAnnotaterId() {
@@ -397,6 +522,46 @@ public class PostureEntity {
         return postures.stream()
             .map(posture -> posture.toPosture())
             .collect(Collectors.toList());
+    }
+
+    public PostureEntity cloneWithoutId() {
+        return new PostureEntity()
+            .setInId(this.getInId())
+            .setFileName(this.getFileName())
+            .setSetNum(this.getSetNum())
+            .setOrientationAlpha(this.getOrientationAlpha())
+            .setOrientationBeta(this.getOrientationBeta())
+            .setOrientationGamma(this.getOrientationGamma())
+            .setPitch(this.getPitch())
+            .setYaw(this.getYaw())
+            .setRoll(this.getRoll())
+            .setNoseX(this.getNoseX())
+            .setNoseY(this.getNoseY())
+            .setNexkX(this.getNexkX())
+            .setNeckY(this.getNeckY())
+            .setNeckToNose(this.getNeckToNose())
+            .setStandardDist(this.getStandardDist())
+            .setInCreatedAt(this.getInCreatedAt())
+            .setInUpdatedAt(this.getInUpdatedAt())
+            .setUserId(this.getUserId())
+            .setName(this.getName())
+            .setPassword(this.getPassword())
+            .setNeckToNoseStandard(this.getNeckToNoseStandard())
+            .setNeckAngleOffset(this.getNeckAngleOffset())
+            .setExId(this.getExId())
+            .setExCreatedAt(this.getExCreatedAt())
+            .setUpdatedAt(this.getUpdatedAt())
+            .setNeckAngle(this.getNeckAngle())
+            .setTorsoAngle(this.getTorsoAngle())
+            .setAnnotaterId(this.getAnnotaterId())
+            .setTragusX(this.getTragusX())
+            .setTragusY(this.getTragusY())
+            .setShoulderX(this.getShoulderX())
+            .setShoulderY(this.getShoulderY())
+            .setWaistX(this.getWaistX())
+            .setWaistY(this.getWaistY())
+            .setImageWidth(this.getImageWidth())
+            .setImageHeight(this.getImageHeight());
     }
 
 }
