@@ -25,6 +25,10 @@ paths:
     $ref: './paths/posture.yaml#/posture_{id}'
   /posture/random:
     $ref: './paths/posture.yaml#/posture_random'
+  /posture/sample:
+    $ref: './paths/posture.yaml#/posture_sample'
+  /posture/sample/random:
+    $ref: './paths/posture.yaml#/posture_sample_random'
   /posture/user/{user_id}:
     $ref: './paths/posture.yaml#/posture_user_{user_id}'
   /posture/annotater/{annotater_id}:
