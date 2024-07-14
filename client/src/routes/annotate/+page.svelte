@@ -1,107 +1,41 @@
 <script lang="ts">
-	import { createAnnotationApi } from "$api";
-	import type { AnnotationCreateWithFile, AnnotationUpdateWithFile } from "$api/generated";
-	import PostureAnnotater from "$lib/components/PostureAnnotater.svelte";
-    import { getToken } from "$lib/store/user";
-	import { onMount } from "svelte";
+    import { onMount } from "svelte";
     import type { PageData } from "./$types";
-	import { imageUrlFromPosture } from "$lib/util";
+	import Annotate from "./Annotate.svelte";
 	import { goto } from "$app/navigation";
-    import { annotationHistory, undo, addHistory } from "$lib/store/annotationHistory";
-    import Button from "@smui/button";
 
     export let data: PageData;
 
-    $: isOldest = $annotationHistory.currentIndex === -1;
-
-    onMount(async () => {
+    onMount(() => {
         console.log(data)
     });
 
-    const handleUndo = () => {
-        const dst = undo($annotationHistory);
-        if (dst >= 0) {
-            const path = window.location.pathname;
-            // FIXME: なぜかinvalidateAllしてもページが更新されないので，リソーそを無理矢理変更している
-            data = { ...data, posture: null };
-            goto(`${path}?id=${dst}`, { invalidateAll: true });
-        }
+    const handlePostUndo = (dst: number) => {
+        const path = window.location.pathname;
+        // FIXME: なぜかinvalidateAllしてもページが更新されないので，リソーそを無理矢理変更している
+        data = { ...data, posture: null };
+        goto(`${path}?id=${dst}`, { invalidateAll: true });
     }
 
-    const sendAnnotation = async (annotated: AnnotationCreateWithFile) => {
-        if (!data.posture?.id || !data.user?.id) {
-            return null;
-        }
-        const token = getToken();
-        if (!token || token === "") {
-            alert("ログインしてください");
-            return;
-        }
-        const annotationApi = createAnnotationApi({ token: token, basePath: import.meta.env.VITE_API_ENDPOINT });
-        try {
-            const isExist = await annotationApi.getAnnotationByPostureIdAndAnnotaterId({
-                postureId: data.posture.id,
-                annotaterId: data.user.id
-            })
-                .then((res) => res !== null)
-                .catch((e) => false);
-            if (!isExist) {
-                await annotationApi.createAnnotation({ annotationCreateWithFile: annotated });
-            } else {
-                await annotationApi.updateAnnotationByPostureIdAndAnnotaterId({
-                    postureId: data.posture.id,
-                    annotaterId: data.user.id,
-                    annotationUpdateWithFile: annotated as AnnotationUpdateWithFile
-                });
-            }
-            addHistory(data.posture.id);
-            const path = window.location.pathname;
-            goto(path, { invalidateAll: true });
-            data = { ...data, posture: null };
-        } catch (e) {
-            console.error(e);
-            // FIXME: なぜか再レンダリングしても破棄されたPostureAnnotaterのsubmitが呼ばれてしまうので，無理矢理リセット
-            window.location.href = `/annotate?id=${data.posture?.id}`
-            // alert("データの送信に失敗しました");
-        }
+    const onSuccess = () => {
+        const path = window.location.pathname;
+        goto(path, { invalidateAll: true });
+        data = { ...data, posture: null };
+    }
+
+    const onError = (e?: Error) => {
+        console.error(e);
+        // FIXME: なぜか再レンダリングしても破棄されたPostureAnnotaterのsubmitが呼ばれてしまうので，無理矢理リセット
+        window.location.href = `/annotate?id=${data.posture?.id}`
+        // alert("データの送信に失敗しました");
     }
 
 </script>
 
-<div class="wrapper">
-    <h2>姿勢アノテーション</h2>
-    <Button
-        on:click={handleUndo}
-        disabled={isOldest}
-        variant="raised"
-    >
-        直前に戻る
-    </Button>
-    {#if data.posture }
-        <PostureAnnotater
-            posture={data.posture}
-            imageSrc={imageUrlFromPosture(data.posture, "original")}
-            handleAction={sendAnnotation}
-            showWaist={true}
-            holdShoulder={true}
-        />
-    {:else}
-        <p>データがありません</p>
-    {/if}
-</div>
-
-<style lang="scss">
-    .wrapper {
-        text-align: center;
-        height: fit-content;
-        margin-bottom: 12px;
-
-        h1 {
-            text-align: center;
-        }
-
-        button {
-            padding: 4px 8px;
-        }
-    }
-</style>
+<Annotate
+    posture={data.posture}
+    user={data.user}
+    handlePostUndo={handlePostUndo}
+    onSuccess={onSuccess}
+    onError={onError}
+/>
