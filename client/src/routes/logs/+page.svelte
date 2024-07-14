@@ -2,6 +2,7 @@
 	import AnnotatedCard from "$lib/components/AnnotatedCard.svelte";
 	import { onMount } from "svelte";
 	import type { PageData } from "../$types";
+    import LayoutGrid, { Cell } from "@smui/layout-grid";
 	import { imageUrl } from "$lib/util";
 
     export let data: PageData;
@@ -17,13 +18,16 @@
         <p>データがありません</p>
         <a href="/annotate">アノテーションをする</a>
     {:else}
-        <div class="card-list">
+        <LayoutGrid>
             {#each data.annotations as annotation}
-                <div class="card">
-                    <AnnotatedCard annotation={annotation} imageSrc={imageUrl(annotation.userId, annotation.fileName, "annotated")} />
-                </div>
+                <Cell class="card" spanDevices={{ desktop: 2, tablet: 2, phone: 4 }}>
+                    <AnnotatedCard
+                        annotation={annotation}
+                        imageSrc={imageUrl(annotation.userId, annotation.fileName, "annotated")}
+                    />
+                </Cell>
             {/each}
-        </div>
+        </LayoutGrid>
     {/if}
 </div>
 
@@ -37,16 +41,9 @@
             text-align: center;
         }
 
-        .card-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 12px;
-            justify-content: center;
-
-            .card {
-                margin: auto;
-                width: 80%;
-            }
+        .card {
+            margin: auto;
+            width: 80%;
         }
     }
 </style>
