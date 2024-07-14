@@ -14,6 +14,7 @@
     const menues = [
         { name: "ホーム", path: "/"},
         { name: "ログイン", path: "/login"},
+        { name: "アノテーション練習", path: "/annotate/sample"},
         { name: "アノテーション", path: "/annotate"},
         { name: "アノテーション履歴", path: "/logs"},
     ]
