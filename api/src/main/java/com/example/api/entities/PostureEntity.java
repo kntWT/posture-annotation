@@ -71,12 +71,10 @@ public class PostureEntity {
     @Column(name = "standard_dist", nullable = false)
     private Double standardDist;
 
-    @CreationTimestamp
-    @Column(name = "in_created_at", nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    @Column(name = "in_created_at", nullable = false)
     private OffsetDateTime inCreatedAt;
 
-    @CreationTimestamp
-    @Column(name = "in_updated_at", nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    @Column(name = "in_updated_at", nullable = false)
     private OffsetDateTime inUpdatedAt;
 
     @Column(name = "user_id", nullable = false)
@@ -103,8 +101,7 @@ public class PostureEntity {
     @Column(name = "torso_angle", nullable = false)
     private Double torsoAngle;
 
-    @CreationTimestamp
-    @Column(name = "ex_created_at", nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    @Column(name = "ex_created_at", nullable = false)
     private OffsetDateTime exCreatedAt;
 
     @CreationTimestamp
