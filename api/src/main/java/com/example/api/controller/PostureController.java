@@ -104,7 +104,7 @@ public class PostureController implements PostureApi {
 
     @Override
     public ResponseEntity<Posture> getRandomSamplePosture() {
-        Posture posture = postureService.getRandomPosture();
+        Posture posture = postureService.getRandomSamplePosture();
         if (posture == null) {
             ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
