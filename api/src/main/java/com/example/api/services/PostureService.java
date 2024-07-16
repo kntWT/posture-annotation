@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.dao.PessimisticLockingFailureException;
 
 import com.example.api.repositories.PostureRepository;
+import com.example.api.utils.DateFormatter;
 import com.example.api.utils.SaveFile;
 import com.example.api.entities.PostureEntity;
 import com.generated.model.Posture;
@@ -110,7 +111,11 @@ public class PostureService {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH:mm:ss.SSS");
         String fileName = formatter.format(posture.getExCreatedAt()) + ".jpg";
         String basePath = System.getenv("IMAGE_DIR");
-        String dir = Paths.get(basePath, posture.getUserId().toString()).toString();
+        String dir = Paths.get(
+            basePath,
+            posture.getUserId().toString(),
+            posture.getAnnotaterId().toString()
+        ).toString();
         boolean success = SaveFile.saveBase64Image(fileName, postureUpdateWithFile.getFile(), dir);
         if (!success) {
             return null;
@@ -177,7 +182,7 @@ public class PostureService {
             samplePostures.add(posture
                 .cloneWithoutId()
                 .setId(++lastId)
-                .setAnnotaterId(-1L)
+                .setAnnotaterId(0L)
             );
         }
         List<PostureEntity> savedPostures = postureRepository.saveAll(samplePostures);
