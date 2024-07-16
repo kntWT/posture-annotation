@@ -59,12 +59,6 @@ public class PostureController implements PostureApi {
     }
 
     @Override
-    public ResponseEntity<List<Posture>> getPosturesByAnnotaterId(Long annotaterId) {
-        List<Posture> postures = postureService.getPosturesByAnnotaterId(annotaterId);
-        return ResponseEntity.ok(postures);
-    }
-
-    @Override
     public ResponseEntity<List<Posture>> getPosturesByUserId(Long userId) {
         List<Posture> postures = postureService.getPosturesByUserId(userId);
         return ResponseEntity.ok(postures);
@@ -98,7 +92,7 @@ public class PostureController implements PostureApi {
 
     @Override
     public ResponseEntity<List<Posture>> getSamplePostures() {
-        List<Posture> postures = postureService.getPosturesByAnnotaterId(-1L);
+        List<Posture> postures = postureService.getPosturesByIsSample(true);
         return ResponseEntity.ok(postures);
     }
 

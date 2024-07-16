@@ -108,8 +108,8 @@ public class PostureEntity {
     @Column(name = "updated_at", nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP  ON UPDATE CURRENT_TIMESTAMP")
     private OffsetDateTime updatedAt;
 
-    @Column(name = "annotater_id", nullable = false)
-    private Long annotaterId;
+    @Column(name = "is_sample", nullable = false)
+    private Boolean isSample;
 
     @Column(name = "tragus_x", nullable = true)
     private Double tragusX;
@@ -392,12 +392,12 @@ public class PostureEntity {
         return this;
     }
 
-    public Long getAnnotaterId() {
-        return annotaterId;
+    public Boolean getIsSample() {
+        return isSample;
     }
 
-    public PostureEntity setAnnotaterId(Long annotaterId) {
-        this.annotaterId = annotaterId;
+    public PostureEntity setIsSample(Boolean isSample) {
+        this.isSample = isSample;
         return this;
     }
 
@@ -474,37 +474,36 @@ public class PostureEntity {
     }
 
     public Posture toPosture() {
-        return new Posture(
-            this.getId(),
-            this.getInId(),
-            this.getFileName(),
-            this.getSetNum(),
-            this.getOrientationAlpha(),
-            this.getOrientationBeta(),
-            this.getOrientationGamma(),
-            this.getPitch(),
-            this.getYaw(),
-            this.getRoll(),
-            this.getNoseX(),
-            this.getNoseY(),
-            this.getNexkX(),
-            this.getNeckY(),
-            this.getNeckToNose(),
-            this.getStandardDist(),
-            this.getInCreatedAt(),
-            this.getInUpdatedAt(),
-            this.getUserId(),
-            this.getName(),
-            this.getPassword(),
-            this.getNeckToNoseStandard(),
-            this.getNeckAngleOffset(),
-            this.getExId(),
-            this.getExCreatedAt(),
-            this.getUpdatedAt(),
-            this.getNeckAngle(),
-            this.getTorsoAngle(),
-            this.getAnnotaterId()
-        )
+        return new Posture()
+            .id(this.getId())
+            .inId(this.getInId())
+            .fileName(this.getFileName())
+            .setNum(this.getSetNum())
+            .orientationAlpha(this.getOrientationAlpha())
+            .orientationBeta(this.getOrientationBeta())
+            .orientationGamma(this.getOrientationGamma())
+            .pitch(this.getPitch())
+            .yaw(this.getYaw())
+            .roll(this.getRoll())
+            .noseX(this.getNoseX())
+            .noseY(this.getNoseY())
+            .neckX(this.getNexkX())
+            .neckY(this.getNeckY())
+            .neckToNose(this.getNeckToNose())
+            .standardDist(this.getStandardDist())
+            .inCreatedAt(this.getInCreatedAt())
+            .inUpdatedAt(this.getInUpdatedAt())
+            .userId(this.getUserId())
+            .name(this.getName())
+            .password(this.getPassword())
+            .neckToNoseStandard(this.getNeckToNoseStandard())
+            .neckAngleOffset(this.getNeckAngleOffset())
+            .exId(this.getExId())
+            .neckAngle(this.getNeckAngle())
+            .torsoAngle(this.getTorsoAngle())
+            .exCreatedAt(this.getExCreatedAt())
+            .updatedAt(this.getUpdatedAt())
+            .isSample(this.getIsSample())
             .tragusX(this.getTragusX())
             .tragusY(this.getTragusY())
             .shoulderX(this.getShoulderX())
@@ -550,7 +549,7 @@ public class PostureEntity {
             .setUpdatedAt(this.getUpdatedAt())
             .setNeckAngle(this.getNeckAngle())
             .setTorsoAngle(this.getTorsoAngle())
-            .setAnnotaterId(this.getAnnotaterId())
+            .setIsSample(this.getIsSample())
             .setTragusX(this.getTragusX())
             .setTragusY(this.getTragusY())
             .setShoulderX(this.getShoulderX())

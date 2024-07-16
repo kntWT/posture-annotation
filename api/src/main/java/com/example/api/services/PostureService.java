@@ -47,8 +47,8 @@ public class PostureService {
     }
 
     @Transactional
-    public List<Posture> getPosturesByAnnotaterId(Long annotaterId) {
-        List<PostureEntity> postures = postureRepository.findByAnnotaterId(annotaterId);
+    public List<Posture> getPosturesByIsSample(Boolean isSample) {
+        List<PostureEntity> postures = postureRepository.findByIsSample(isSample);
         return PostureEntity.toPostures(postures);
     }
 
@@ -60,7 +60,6 @@ public class PostureService {
 
     @Transactional
     public Posture getRandomPosture() {
-        // List<PostureEntity> unannotatedPostures = postureRepository.findByAnnotaterIdIsNullLimitedTo(100);
         List<PostureEntity> unannotatedPostures = postureRepository.findOrderByAnnotationCountLimitedTo(100);
         Collections.shuffle(unannotatedPostures);
         int index = 0;
@@ -86,8 +85,7 @@ public class PostureService {
             .updatePostureById(
                 id,
                 postureUpdate.getNeckAngle(),
-                postureUpdate.getTorsoAngle(),
-                postureUpdate.getAnnotaterId()
+                postureUpdate.getTorsoAngle()
             );
         if (updateCount <= 0) {
             return null;
@@ -182,7 +180,7 @@ public class PostureService {
             samplePostures.add(posture
                 .cloneWithoutId()
                 .setId(++lastId)
-                .setAnnotaterId(0L)
+                .setIsSample(true)
             );
         }
         List<PostureEntity> savedPostures = postureRepository.saveAll(samplePostures);
@@ -191,7 +189,7 @@ public class PostureService {
 
     @Transactional
     public Posture getRandomSamplePosture() {
-        List<PostureEntity> unannotatedPostures = postureRepository.findSampleDataByOrderByAnnotationCountLimitedTo(100);
+        List<PostureEntity> unannotatedPostures = postureRepository.findSampleByOrderByAnnotationCountLimitedTo(100);
         Collections.shuffle(unannotatedPostures);
         int index = 0;
         PostureEntity target = null;
