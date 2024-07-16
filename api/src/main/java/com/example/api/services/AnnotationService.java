@@ -75,9 +75,12 @@ public class AnnotationService {
 
         String fileName = annotationWithFile.getFileName();
         String basePath = System.getenv("IMAGE_DIR");
+        String subPath = annotationRepository.isSampleById(annotation.getId())
+            ? "sample"
+            : annotationWithFile.getUserId().toString();
         String dir = Paths.get(
             basePath,
-            annotationWithFile.getUserId().toString(),
+            subPath,
             annotationWithFile.getAnnotaterId().toString()
         ).toString();
         boolean success = SaveFile.saveBase64Image(fileName, annotationWithFile.getFile(), dir);
@@ -168,9 +171,12 @@ public class AnnotationService {
 
         String fileName = annotationWithFile.getFileName();
         String basePath = System.getenv("IMAGE_DIR");
+        String subPath = annotationRepository.isSampleById(annotation.getId())
+            ? "sample"
+            : annotationWithFile.getUserId().toString();
         String dir = Paths.get(
             basePath,
-            annotationWithFile.getUserId().toString(),
+            subPath,
             annotation.getAnnotaterId().toString()
         ).toString();
         boolean success = SaveFile.saveBase64Image(fileName, annotationWithFile.getFile(), dir);
