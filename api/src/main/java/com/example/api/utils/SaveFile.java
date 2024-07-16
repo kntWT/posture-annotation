@@ -30,7 +30,7 @@ public class SaveFile {
     public static boolean saveBase64Image(String fileName, String base64, String dir) {
         if (Files.notExists(Paths.get(dir))) {
             try {
-                Files.createDirectory(Paths.get(dir));
+                Files.createDirectories(Paths.get(dir));
             } catch (IOException e) {
                 e.printStackTrace();
                 return false;
