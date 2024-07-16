@@ -212,6 +212,106 @@ annotation_annotater_{annotater_id}_file_path:
                 $ref: '../components/schemas/annotation.yaml#/AnnotationWithFilePath'
       '403':
         description: forbidden
+annotation_annotater_{annotater_id}_prod:
+  get:
+    description: get annotated posture by annotater id
+    operationId: getProdAnnotationsByAnnotaterId
+    tags:
+      - annotation
+    security: *bearerAuth
+    parameters:
+      - name: annotater_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+    responses:
+      '200':
+        description: ok
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '../components/schemas/annotation.yaml#/Annotation'
+      '403':
+        description: forbidden
+annotation_annotater_{annotater_id}_prod_file_path:
+  get:
+    description: get annotated posture file path by annotater id
+    operationId: getProdAnnotationsWithFilePathByAnnotaterId
+    tags:
+      - annotation
+    security: *bearerAuth
+    parameters:
+      - name: annotater_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+    responses:
+      '200':
+        description: ok
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '../components/schemas/annotation.yaml#/AnnotationWithFilePath'
+      '403':
+        description: forbidden
+annotation_annotater_{annotater_id}_sample:
+  get:
+    description: get annotated posture sample by annotater id
+    operationId: getSampleAnnotationsByAnnotaterId
+    tags:
+      - annotation
+    security: *bearerAuth
+    parameters:
+      - name: annotater_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+    responses:
+      '200':
+        description: ok
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '../components/schemas/annotation.yaml#/Annotation'
+      '403':
+        description: forbidden
+annotation_annotater_{annotater_id}_sample_file_path:
+  get:
+    description: get annotated posture sample by annotater id
+    operationId: getSampleAnnotationsWithFilePathByAnnotaterId
+    tags:
+      - annotation
+    security: *bearerAuth
+    parameters:
+      - name: annotater_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+    responses:
+      '200':
+        description: ok
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '../components/schemas/annotation.yaml#/AnnotationWithFilePath'
+      '403':
+        description: forbidden
 annotation_annotater_{annotater_id}_count:
   get:
     description: get annotated posture count by annotater id
