@@ -47,7 +47,7 @@ CREATE TABLE postures (
     image_width INTEGER DEFAULT NULL,
     image_height INTEGER DEFAULT NULL,
     ex_created_at TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
-    annotater_id INTEGER,
+    is_sample BOOLEAN DEFAULT FALSE,
     updated_at TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP
 );
 
