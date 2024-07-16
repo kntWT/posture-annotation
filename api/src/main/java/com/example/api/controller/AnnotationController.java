@@ -134,4 +134,28 @@ public class AnnotationController implements AnnotationApi {
 
         return ResponseEntity.ok(annotation);
     }
+
+    @Override
+    public ResponseEntity<List<Annotation>> getProdAnnotationsByAnnotaterId(Long annotaterId) {
+        List<Annotation> annotations = annotationService.getProdAnnotationsByAnnotaterId(annotaterId);
+        return ResponseEntity.ok(annotations);
+    }
+
+    @Override
+    public ResponseEntity<List<AnnotationWithFilePath>> getProdAnnotationsWithFilePathByAnnotaterId(Long annotaterId) {
+        List<AnnotationWithFilePath> annotations = annotationService.getProdAnnotationsWithFilePathByAnnotaterId(annotaterId);
+        return ResponseEntity.ok(annotations);
+    }
+
+    @Override
+    public ResponseEntity<List<Annotation>> getSampleAnnotationsByAnnotaterId(Long annotaterId) {
+        List<Annotation> annotations = annotationService.getSampleAnnotationsByAnnotaterId(annotaterId);
+        return ResponseEntity.ok(annotations);
+    }
+
+    @Override
+    public ResponseEntity<List<AnnotationWithFilePath>> getSampleAnnotationsWithFilePathByAnnotaterId(Long annotaterId) {
+        List<AnnotationWithFilePath> annotations = annotationService.getSampleAnnotationsWithFilePathByAnnotaterId(annotaterId);
+        return ResponseEntity.ok(annotations);
+    }
 }

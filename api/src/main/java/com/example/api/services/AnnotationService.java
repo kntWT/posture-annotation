@@ -18,7 +18,6 @@ import com.generated.model.AnnotationUpdateWithFile;
 import com.generated.model.AnnotationCreate;
 import com.generated.model.AnnotationCreateWithFile;
 import com.generated.model.AnnotationWithFilePath;
-import com.example.api.entities.PostureEntity;
 
 @Service
 public class AnnotationService {
@@ -231,6 +230,30 @@ public class AnnotationService {
         }
 
         return updateAnnotationByIdAndSaveFile(annotation.getId(), annotationWithFile);
+    }
+
+    @Transactional
+    public List<Annotation> getProdAnnotationsByAnnotaterId(Long annotaterId) {
+        List<AnnotationEntity> annotations =  annotationRepository.findProdByAnnotaterId(annotaterId);
+        return AnnotationEntity.toAnnotations(annotations);
+    }
+
+    @Transactional
+    public List<AnnotationWithFilePath> getProdAnnotationsWithFilePathByAnnotaterId(Long annotaterId) {
+        List<AnnotationEntity> annotations =  annotationRepository.findProdByAnnotaterIdWithFilePath(annotaterId);
+        return AnnotationEntity.toAnnotationsWithFilePath(annotations);
+    }
+
+    @Transactional
+    public List<Annotation> getSampleAnnotationsByAnnotaterId(Long annotaterId) {
+        List<AnnotationEntity> annotations =  annotationRepository.findSampleByAnnotaterId(annotaterId);
+        return AnnotationEntity.toAnnotations(annotations);
+    }
+
+    @Transactional
+    public List<AnnotationWithFilePath> getSampleAnnotationsWithFilePathByAnnotaterId(Long annotaterId) {
+        List<AnnotationEntity> annotations =  annotationRepository.findSampleByAnnotaterIdWithFilePath(annotaterId);
+        return AnnotationEntity.toAnnotationsWithFilePath(annotations);
     }
 
 }

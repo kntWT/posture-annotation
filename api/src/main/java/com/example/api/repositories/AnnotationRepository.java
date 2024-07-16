@@ -76,4 +76,32 @@ public interface AnnotationRepository extends JpaRepository<AnnotationEntity, Lo
         @Param("annotaterId") Long annotaterId
     );
 
+    @Transactional
+    @Query(
+        value = "SELECT a.* FROM annotations as a WHERE a.annotater_id = :annotaterId AND a.posture_id not in (SELECT p.id FROM postures as p WHERE p.annotater_id = 0) ORDER BY a.id ASC",
+        nativeQuery = true
+    )
+    public List<AnnotationEntity> findProdByAnnotaterId(@Param("annotaterId") Long annotaterId);
+
+    @Transactional
+    @Query(
+        value = "SELECT a.*, p.user_id, p.ex_created_at FROM annotations as a INNER JOIN postures as p on a.posture_id = p.id WHERE a.annotater_id = :annotaterId AND a.posture_id not in (SELECT p.id FROM postures as p WHERE p.annotater_id = 0) ORDER BY a.id ASC",
+        nativeQuery = true
+    )
+    public List<AnnotationEntity> findProdByAnnotaterIdWithFilePath(@Param("annotaterId") Long annotaterId);
+
+    @Transactional
+    @Query(
+        value = "SELECT a.* FROM annotations as a WHERE a.annotater_id = :annotaterId AND a.posture_id in (SELECT p.id FROM postures as p WHERE p.annotater_id = 0) ORDER BY a.id ASC",
+        nativeQuery = true
+    )
+    public List<AnnotationEntity> findSampleByAnnotaterId(@Param("annotaterId") Long annotaterId);
+
+    @Transactional
+    @Query(
+        value = "SELECT a.*, p.user_id, p.ex_created_at FROM annotations as a INNER JOIN postures as p on a.posture_id = p.id WHERE a.annotater_id = :annotaterId AND a.posture_id in (SELECT p.id FROM postures as p WHERE p.annotater_id = 0) ORDER BY a.id ASC",
+        nativeQuery = true
+    )
+    public List<AnnotationEntity> findSampleByAnnotaterIdWithFilePath(@Param("annotaterId") Long annotaterId);
+
 }
