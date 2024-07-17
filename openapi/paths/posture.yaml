@@ -143,31 +143,6 @@ posture_user_{user_id}:
                 $ref: '../components/schemas/posture.yaml#/Posture'
       '403':
         description: forbidden
-posture_annotater_{annotater_id}:
-  get:
-    description: get all postures by annotater id
-    operationId: getPosturesByAnnotaterId
-    tags:
-      - posture
-    security: *bearerAuth
-    parameters:
-      - name: annotater_id
-        in: path
-        required: true
-        schema:
-          type: integer
-          format: int64
-    responses:
-      '200':
-        description: ok
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                $ref: '../components/schemas/posture.yaml#/Posture'
-      '403':
-        description: forbidden
 posture_markers:
   put:
     description: update posture markers

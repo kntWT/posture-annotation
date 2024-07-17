@@ -29,6 +29,7 @@ Posture:
     - neck_angle_offset
     - ex_id
     - ex_created_at
+    - is_sammple
     - updated_at
   properties:
     id:
@@ -104,6 +105,10 @@ Posture:
     ex_created_at:
       type: string
       format: date-time
+    is_sample:
+      type: boolean
+      nullable: false
+      default: false
     updated_at:
       type: string
       format: date-time

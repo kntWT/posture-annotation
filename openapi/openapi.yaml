@@ -31,8 +31,6 @@ paths:
     $ref: './paths/posture.yaml#/posture_sample_random'
   /posture/user/{user_id}:
     $ref: './paths/posture.yaml#/posture_user_{user_id}'
-  /posture/annotater/{annotater_id}:
-    $ref: './paths/posture.yaml#/posture_annotater_{annotater_id}'
   /posture/markers:
     $ref: './paths/posture.yaml#/posture_markers'
   /posture/marker/{id}:
