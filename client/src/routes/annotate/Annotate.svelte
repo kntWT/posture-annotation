@@ -70,7 +70,7 @@
     {#if posture }
         <PostureAnnotater
             posture={posture}
-            imageSrc={imageUrlFromPosture(posture, "original")}
+            imageSrc={imageUrlFromPosture(posture, user?.id ?? 1, "original")}
             handleAction={sendAnnotation}
             showWaist={true}
             holdShoulder={true}

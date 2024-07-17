@@ -3,6 +3,12 @@ import type { Posture } from "$api/generated";
 const paths = ["original", "annotated"] as const;
 type Path = typeof paths[number];
 
+type DirectoryInfo = {
+    userId: number | "sample";
+    annotaterId?: number;
+    fileName: string;
+}
+
 export const formatDate = (date: Date | undefined) => {
     if (!date) {
         return "";
@@ -18,12 +24,20 @@ export const formatDate = (date: Date | undefined) => {
     return `${year}-${pad(month, 2)}-${pad(day, 2)}_${pad(hour, 2)}:${pad(minute, 2)}:${pad(second, 2)}.${pad(ms, 3)}`;
 }
 
-export const imageUrl = (userId: number, fileName: string, path: Path = "original") => {
-    return `${import.meta.env.VITE_FILE_SERVER_ENDPOINT}/images/${path}/${userId}/${fileName}`;
+export const imageUrl = (info: DirectoryInfo, path: Path = "original") => {
+    const baseDir = path === "original"
+        ? `${import.meta.env.VITE_FILE_SERVER_ENDPOINT}/images/${path}/${info.userId}`
+        : `${import.meta.env.VITE_FILE_SERVER_ENDPOINT}/images/${path}/${info.userId}/${info.annotaterId ?? 1}`;
+    return `${baseDir}/${info.fileName}`;
 }
 
-export const imageUrlFromPosture = (posture: Posture, path: Path = "original") => {
-    return imageUrl(posture.userId, formatDate(posture.exCreatedAt) + ".jpg", path);
+export const imageUrlFromPosture = (posture: Posture, annotaterId: number, path: Path = "original") => {
+    const info: DirectoryInfo = {
+        userId: posture.userId,
+        annotaterId,
+        fileName: formatDate(posture.exCreatedAt) + ".jpg"
+    };
+    return imageUrl(info, path);
 }
 
 export const toBearer = (token: string) => {
