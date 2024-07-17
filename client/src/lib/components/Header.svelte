@@ -43,13 +43,13 @@
         <Section align="end" toolbar>
             {#if $page.url.pathname !== "/login"}
                 {#if $user}
-                    <Button on:click={() => navigateTo("logout")} variant="raised">
+                    <Button on:click={() => navigateTo("/logout")} variant="raised">
                         <Label>
                             ログアウト
                         </Label>
                     </Button>
                 {:else }
-                    <Button on:click={() => navigateTo("login")} variant="raised">
+                    <Button on:click={() => navigateTo("/login")} variant="raised">
                         <Label>
                             ログイン
                         </Label>
