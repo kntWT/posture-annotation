@@ -6,9 +6,10 @@
 	export let annotation: Annotation;
 	export let imageSrc: string;
 	export let showWaist: boolean = false;
+    export let navigatePath: string = "/annotate";
 
 	const navigateTo = (id: number) => {
-		goto(`/annotate?id=${id}`, { invalidateAll: true });
+		goto(`${navigatePath}?id=${id}`, { invalidateAll: true });
 	};
 </script>
 
