@@ -14,12 +14,16 @@ export const load: PageServerLoad = async ({ cookies }) => {
     const annotationApi = createAnnotationApi({ token });
     try {
         const user = await userApi.getUserByToken({ authorization: toBearer(token) });
-        const annotations = await annotationApi.getAnnotationsWithFilePathByAnnotaterId(
+        const annotations = await annotationApi.getProdAnnotationsWithFilePathByAnnotaterId(
             { annotaterId: user.id }
         );
-        return { annotations };
+        const samples = await annotationApi.getSampleAnnotationsWithFilePathByAnnotaterId(
+            { annotaterId: user.id }
+        );
+
+        return { annotations, samples };
     } catch (e) {
         console.error(e);
-        return { annotations: [] };
+        return { annotations: [], samples: [] };
     }
 }
