@@ -14,7 +14,7 @@
 
 <Card>
     <PrimaryAction on:click={() => navigateTo(annotation.postureId)}>
-        <Content>
+        <Content style="aspect-ratio: 2/1">
             <span>#{annotation.postureId} ({annotation.updatedAt?.toLocaleDateString?.()})</span><br />
             <span>首の角度: {annotation.neckAngle.toFixed(2)}</span><br />
             {#if showWaist}
