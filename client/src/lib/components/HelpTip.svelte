@@ -11,14 +11,14 @@
     </IconButton>
 </div>
 
-<style lang="scss">
+<style lang="scss" scoped>
     .wrapper {
-        width: 100vw;
         :global(.mdc-icon-button) {
-            position: absolute;
-            left: auto;
-            right: 0;
+            position: fixed;
+            top: auto;
             bottom: 0;
+            right: 0;
+            left: auto;
             margin: 16px;
         }
     }
