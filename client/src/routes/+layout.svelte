@@ -20,7 +20,7 @@
 	</main>
 </div>
 
-<style lang="scss">
+<style lang="scss" scoped>
     @import "$lib/styles/global";
 
     .app {

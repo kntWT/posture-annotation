@@ -6,7 +6,7 @@
 
 <div style={`background-color: ${color}; width: ${width}`}>{content}</div>
 
-<style lang="scss">
+<style lang="scss" scoped>
     div {
         color: var(--color, black);
         display: flex;

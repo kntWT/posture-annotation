@@ -81,7 +81,7 @@
     {/if}
 </div>
 
-<style lang="scss">
+<style lang="scss" scoped>
     .wrapper {
         text-align: center;
         height: fit-content;

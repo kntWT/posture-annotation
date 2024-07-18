@@ -8,7 +8,7 @@
     <div class="error-info">{message || ""}</div>
 </ValidationMessage>
 
-<style lang="scss">
+<style lang="scss" scoped>
     @import "$lib/styles/variables";
     .error-info {
         color: $error-color;

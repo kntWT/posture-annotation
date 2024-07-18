@@ -63,7 +63,7 @@
     {/if}
 </TopAppBar>
 
-<style lang="scss">
+<style lang="scss" scoped>
     :global(.mdc-top-app-bar) {
         position: relative !important;
     }

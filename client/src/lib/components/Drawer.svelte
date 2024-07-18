@@ -61,7 +61,7 @@
     <Scrim />
 </div>
 
-<style lang="scss">
+<style lang="scss" scoped>
     .drawer-container {
         :global(.mdc-drawer) {
             width: 30vw;

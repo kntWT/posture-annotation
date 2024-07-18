@@ -452,7 +452,7 @@
     <P5 {sketch} />
 </div>
 
-<style lang="scss">
+<style lang="scss" scoped>
     #annotater-container {
         text-align: center;
         width: 100vw;

@@ -29,5 +29,5 @@
     </PrimaryAction>
 </Card>
 
-<style lang="scss">
+<style lang="scss" scoped>
 </style>

@@ -64,7 +64,7 @@
     </form>
 </div>
 
-<style lang="scss">
+<style lang="scss" scoped>
     .form {
         margin: 20px;
         text-align: center;
