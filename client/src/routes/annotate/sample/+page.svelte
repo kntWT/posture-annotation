@@ -38,4 +38,5 @@
     handlePostUndo={handlePostUndo}
     onSuccess={onSuccess}
     onError={onError}
+    title="姿勢アノテーション（練習）"
 />
