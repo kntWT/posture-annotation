@@ -25,10 +25,22 @@
 {/if}
 
 <style lang="scss" scoped>
-    :global(.mdc-dialog .mdc-icon-button) {
-        position: absolute;
-        right: 0;
-        top: 0;
-        margin: 16px;
+    :global(.mdc-dialog) {
+        :global( .mdc-icon-button){
+            position: absolute;
+            right: 0;
+            top: 0;
+            margin: 16px;
+        }
+
+        :global(.mdc-dialog__container .mdc-dialog__surface) {
+            width: 80%;
+            max-width: 1200px;
+        }
+
+        // :global(.smui-paper) {
+        //     width: 80%;
+        //     max-width: 800px;
+        // }
     }
 </style>
