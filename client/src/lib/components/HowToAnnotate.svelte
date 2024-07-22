@@ -1,10 +1,30 @@
 <script lang="ts">
-    import Paper, { Title, Content } from "@smui/paper";
+    import Paper, { Title, Content, Subtitle } from "@smui/paper";
     import Accordion, { Header, Content as AccordionContent, Panel } from "@smui-extra/accordion";
+	import { onMount } from "svelte";
+	import List, { Item } from "@smui/list";
+	import Divider from "./Divider.svelte";
+
+    export let topic: string;
+
+    onMount(() => {
+        jumpToTopic(topic);
+    });
+
+    const jumpToTopic = (topic: string) => {
+        const topicEl = Array.from(document.querySelectorAll(".topic-header"))
+            .find(el => el.getAttribute("id") === getTopicId(topic));
+        if (topicEl) {
+            topicEl.scrollIntoView({ behavior: "smooth" });
+        }
+    }
+
+    const getTopicId = (topic: string) => `how-to-annotate-${topic}__header`;
 
     const contents = [
         {
             title: "マーカ位置の調整",
+            topic: "adjust",
             innterHTML: `
                 <ul>
                     <li>マーカの位置をドラッグ&ドロップまたは方向キーで調整することができます．</li>
@@ -23,6 +43,7 @@
         },
         {
             title: "データ送信方法",
+            topic: "send",
             innterHTML: `
                 <p>データの送信方法は以下の2種類かあります</p>
                 <ul>
@@ -37,6 +58,7 @@
         },
         {
             title: "データの修正方法",
+            topic: "modify",
             innterHTML: `
                 <p>直前のデータの修正したい場合</p>
                 <ul>
@@ -54,6 +76,7 @@
         },
         {
             title: "挙動がおかしくなった時",
+            topic: "trouble",
             innterHTML: `
                 <p>
                     データを送信する意図がないのに送信されてしまう，データを送信しても次の画像に切り替わらないなどといった不具合が生じる場合があります．<br/>
@@ -78,6 +101,13 @@
 
 <Paper>
     <Title>アノテーション方法</Title>
+    <Subtitle>目次</Subtitle>
+    <List>
+        {#each contents as content}
+            <Item on:click={() => jumpToTopic(content.topic)}>#{content.title}</Item>
+        {/each}
+    </List>
+    <Divider color="gray" />
     <Content>
         <Accordion multiple>
             {#each contents as content}
@@ -86,6 +116,8 @@
                     variant="outlined"
                     color="primary"
                     nonInteractive
+                    class="topic-header"
+                    id={getTopicId(content.topic)}
                 >
                     <Header>{content.title}</Header>
                     <AccordionContent>
@@ -98,6 +130,11 @@
 </Paper>
 
 <style lang="scss" scoped>
+
+    :global(.divider) {
+        margin: 24px auto !important;
+    }
+
     :global(.smui-accordion__panel) {
         margin-bottom: 24px;
         :global(.smui-accordion__header__title) {
