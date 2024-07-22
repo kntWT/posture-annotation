@@ -1,8 +1,25 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<script lang="ts">
+	import { page } from "$app/stores";
+	import About from "$lib/components/About.svelte";
+    import HowToAnnotate from "$lib/components/HowToAnnotate.svelte";
+	import { onMount } from "svelte";
 
-<style lang="scss">
-h1 {
-    color: blue;
-}
+    let topic = "";
+
+    onMount(() => {
+        topic = $page.url.hash?.substring(1) ?? "";
+    });
+</script>
+
+<div class="wrapper">
+    <About />
+    {#key topic}
+        <HowToAnnotate topic={topic} />
+    {/key}
+</div>
+
+<style lang="scss" scoped>
+    .wrapper {
+        padding: 24px;
+    }
 </style>
