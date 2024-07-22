@@ -58,6 +58,6 @@
 />
 {/key}
 <Modal open={openHelpModal} handleClose={handleCloseHelpModal}>
-    <HowToAnnotate />
+    <HowToAnnotate topic="" />
 </Modal>
 <HelpTip handleClick={handleOpenHelpModal} />
