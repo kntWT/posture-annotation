@@ -4,7 +4,7 @@
     export let width: string = "100%";
 </script>
 
-<div style={`background-color: ${color}; width: ${width}`}>{content}</div>
+<div class="divider" style={`background-color: ${color}; width: ${width}`}>{content}</div>
 
 <style lang="scss" scoped>
     div {
