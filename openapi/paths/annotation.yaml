@@ -212,6 +212,30 @@ annotation_annotater_{annotater_id}_file_path:
                 $ref: '../components/schemas/annotation.yaml#/AnnotationWithFilePath'
       '403':
         description: forbidden
+annotation_annotater_{annotater_id}_count:
+  get:
+    description: get annotated posture count by annotater id
+    operationId: getAnnotationCountByAnnotaterId
+    tags:
+      - annotation
+    security: *bearerAuth
+    parameters:
+      - name: annotater_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+    responses:
+      '200':
+        description: ok
+        content:
+          application/json:
+            schema:
+              type: integer
+              format: int64
+      '403':
+        description: forbidden
 annotation_annotater_{annotater_id}_prod:
   get:
     description: get annotated posture by annotater id
@@ -260,6 +284,30 @@ annotation_annotater_{annotater_id}_prod_file_path:
               type: array
               items:
                 $ref: '../components/schemas/annotation.yaml#/AnnotationWithFilePath'
+      '403':
+        description: forbidden
+annotation_annotater_{annotater_id}_prod_count:
+  get:
+    description: get annotated posture count by annotater id
+    operationId: getProdAnnotationCountByAnnotaterId
+    tags:
+      - annotation
+    security: *bearerAuth
+    parameters:
+      - name: annotater_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+    responses:
+      '200':
+        description: ok
+        content:
+          application/json:
+            schema:
+              type: integer
+              format: int64
       '403':
         description: forbidden
 annotation_annotater_{annotater_id}_sample:
@@ -312,10 +360,10 @@ annotation_annotater_{annotater_id}_sample_file_path:
                 $ref: '../components/schemas/annotation.yaml#/AnnotationWithFilePath'
       '403':
         description: forbidden
-annotation_annotater_{annotater_id}_count:
+annotation_annotater_{annotater_id}_sample_count:
   get:
     description: get annotated posture count by annotater id
-    operationId: getAnnotationCountByAnnotaterId
+    operationId: getSampleAnnotationCountByAnnotaterId
     tags:
       - annotation
     security: *bearerAuth
