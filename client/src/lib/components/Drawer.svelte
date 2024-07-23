@@ -9,7 +9,10 @@
 	import { onMount } from "svelte";
 
     export let open: boolean = false;
-    let annotationCount: number = 0;
+    let annotationCount = {
+        sample: 0,
+        prod: 0,
+    };
 
     const menues = [
         { name: "ホーム", path: "/"},
@@ -23,8 +26,11 @@
         if (!$user) return;
 
         const annotationApi = createAnnotationApi({ token: $user.token, basePath: "http://localhost:5172" });
-        annotationApi.getAnnotationCountByAnnotaterId({ annotaterId: $user.id }).then((res) => {
-            annotationCount = res;
+        annotationApi.getProdAnnotationCountByAnnotaterId({ annotaterId: $user.id }).then((res) => {
+            annotationCount.prod = res;
+        });
+        annotationApi.getSampleAnnotationCountByAnnotaterId({ annotaterId: $user.id }).then((res) => {
+            annotationCount.sample = res;
         });
     });
 
@@ -52,8 +58,14 @@
             </List>
             <Divider color="gray" width="95%" />
             <List>
-                <Item>
-                    <Text>アノテーション数: {annotationCount}件</Text>
+                <Item ripple={false}>
+                    <Text>アノテーション数: {annotationCount.sample + annotationCount.prod}件</Text>
+                </Item>
+                <Item ripple={false}>
+                    <Text>練習用: {annotationCount.sample}件</Text>
+                </Item>
+                <Item ripple={false}>
+                    <Text>本番用: {annotationCount.prod}件</Text>
                 </Item>
             </List>
         </Content>
