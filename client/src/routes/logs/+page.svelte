@@ -17,7 +17,7 @@
             subPath: "sample",
         },
         {
-            title: "アノテーションデータ",
+            title: "本番データ",
             data: data.annotations,
             open: data.annotations.length === 0,
         }
