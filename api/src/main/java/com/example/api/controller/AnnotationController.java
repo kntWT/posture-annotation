@@ -148,6 +148,12 @@ public class AnnotationController implements AnnotationApi {
     }
 
     @Override
+    public ResponseEntity<Long> getProdAnnotationCountByAnnotaterId(Long annotaterId) {
+        Long count = annotationService.getProdAnnotationCountByAnnotaterId(annotaterId);
+        return ResponseEntity.ok(count);
+    }
+
+    @Override
     public ResponseEntity<List<Annotation>> getSampleAnnotationsByAnnotaterId(Long annotaterId) {
         List<Annotation> annotations = annotationService.getSampleAnnotationsByAnnotaterId(annotaterId);
         return ResponseEntity.ok(annotations);
@@ -157,5 +163,11 @@ public class AnnotationController implements AnnotationApi {
     public ResponseEntity<List<AnnotationWithFilePath>> getSampleAnnotationsWithFilePathByAnnotaterId(Long annotaterId) {
         List<AnnotationWithFilePath> annotations = annotationService.getSampleAnnotationsWithFilePathByAnnotaterId(annotaterId);
         return ResponseEntity.ok(annotations);
+    }
+
+    @Override
+    public ResponseEntity<Long> getSampleAnnotationCountByAnnotaterId(Long annotaterId) {
+        Long count = annotationService.getSampleAnnotationCountByAnnotaterId(annotaterId);
+        return ResponseEntity.ok(count);
     }
 }

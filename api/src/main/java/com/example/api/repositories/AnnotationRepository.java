@@ -92,6 +92,16 @@ public interface AnnotationRepository extends JpaRepository<AnnotationEntity, Lo
 
     @Transactional
     @Query(
+        value = "SELECT COUNT(1) FROM annotations as a WHERE a.annotater_id = :annotaterId AND a.posture_id in (SELECT p.id FROM postures as p WHERE p.is_sample = :isSample)",
+        nativeQuery = true
+    )
+    public Long countByAnnotaterIdAndIsSample(
+        @Param("annotaterId") Long annotaterId,
+        @Param("isSample") boolean isSample
+    );
+
+    @Transactional
+    @Query(
         value = "SELECT a.* FROM annotations as a WHERE a.annotater_id = :annotaterId AND a.posture_id in (SELECT p.id FROM postures as p WHERE p.is_sample = TRUE) ORDER BY a.id ASC",
         nativeQuery = true
     )

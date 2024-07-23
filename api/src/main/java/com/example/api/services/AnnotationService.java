@@ -259,6 +259,11 @@ public class AnnotationService {
     }
 
     @Transactional
+    public Long getProdAnnotationCountByAnnotaterId(Long annotaterId) {
+        return annotationRepository.countByAnnotaterIdAndIsSample(annotaterId, false);
+    }
+
+    @Transactional
     public List<Annotation> getSampleAnnotationsByAnnotaterId(Long annotaterId) {
         List<AnnotationEntity> annotations =  annotationRepository.findSampleByAnnotaterId(annotaterId);
         return AnnotationEntity.toAnnotations(annotations);
@@ -268,6 +273,11 @@ public class AnnotationService {
     public List<AnnotationWithFilePath> getSampleAnnotationsWithFilePathByAnnotaterId(Long annotaterId) {
         List<AnnotationEntity> annotations =  annotationRepository.findSampleByAnnotaterIdWithFilePath(annotaterId);
         return AnnotationEntity.toAnnotationsWithFilePath(annotations);
+    }
+
+    @Transactional
+    public Long getSampleAnnotationCountByAnnotaterId(Long annotaterId) {
+        return annotationRepository.countByAnnotaterIdAndIsSample(annotaterId, true);
     }
 
 }
