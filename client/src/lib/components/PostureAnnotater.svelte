@@ -27,16 +27,32 @@
     let scale: number = 1;
     const step = 0.05;
     let submitted: boolean = false;
+    let canvas: HTMLCanvasElement | null = null;
+    let canSubmit: boolean = false;
 
     onMount(() => {
         document.addEventListener("keydown", handleKeyDown);
+        setTimeout(() => {
+            canvas = document.querySelector("canvas");
+            document.addEventListener("mousemove", updateCanSubmit);
+        }, 1000);
     });
 
     onDestroy(() => {
         if (browser) {
             document.removeEventListener("keydown", handleKeyDown);
+            document.removeEventListener("mousemove", updateCanSubmit);
         }
     });
+
+    const updateCanSubmit = (e: MouseEvent) => {
+        if (!canvas) return;
+        canSubmit = canvas === e.target
+            && e.clientX >= canvas.getBoundingClientRect().left
+            && e.clientX <= canvas.getBoundingClientRect().right
+            && e.clientY >= canvas.getBoundingClientRect().top
+            && e.clientY <= canvas.getBoundingClientRect().bottom;
+    }
 
     // FIXME: なぜか型アノテーションが変なのでanyで回避
     const handleInputChange = (e: any) => {
@@ -46,7 +62,7 @@
 
     const handleSubmit = async () => {
         // FIXME: なぜか過去のp5sketchが残っている（マウス座標などが再レンダリングされる直前のもののままmousePressedの送信処理が実行されてしまう）ので，フラグで管理
-        if (submitted) return;
+        if (submitted || !canSubmit) return;
 
         const user = getUser();
         if (!isLoggedIn() || !user) {
@@ -83,6 +99,8 @@
 
     // Enterキーまたはスペースでsubmitできるようにする
     const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.target instanceof HTMLInputElement) return;
+
         if (e.key === "Enter" || e.key === " ") {
             handleSubmit();
         }
