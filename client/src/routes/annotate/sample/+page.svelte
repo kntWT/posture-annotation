@@ -31,7 +31,7 @@
     const onError = (e?: Error) => {
         console.error(e);
         // FIXME: なぜか再レンダリングしても破棄されたPostureAnnotaterのsubmitが呼ばれてしまうので，無理矢理リセット
-        window.location.href = `/annotate?id=${data.posture?.id}`
+        window.location.href = `/annotate/sample?id=${data.posture?.id}`
         // alert("データの送信に失敗しました");
     }
 
@@ -48,6 +48,7 @@
 </script>
 
 <!-- FIXME: モーダルが開いている時にもp5のmousePressedイベントが発火してしまうので，userをnullにして送信できなくする -->
+{#if data.posture && data.user && !openHelpModal}
 {#key user}
 <Annotate
     posture={data.posture}
@@ -58,7 +59,8 @@
     title="姿勢アノテーション（練習）"
 />
 {/key}
+{/if}
 <Modal open={openHelpModal} handleClose={handleCloseHelpModal}>
-    <HowToAnnotate topic="" />
+    <HowToAnnotate topic="" showTableOfContents={false} />
 </Modal>
 <HelpTip handleClick={handleOpenHelpModal} />

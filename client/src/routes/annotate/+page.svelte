@@ -1,5 +1,6 @@
 <script lang="ts">
     import { onMount } from "svelte";
+    import { page } from "$app/stores";
     import type { PageData } from "./$types";
 	import Annotate from "./Annotate.svelte";
 	import { goto } from "$app/navigation";
@@ -48,6 +49,7 @@
 </script>
 
 <!-- FIXME: モーダルが開いている時にもp5のmousePressedイベントが発火してしまうので，userをnullにして送信できなくする -->
+{#if data.posture && data.user && !openHelpModal}
 {#key user}
 <Annotate
     posture={data.posture}
@@ -57,7 +59,8 @@
     onError={onError}
 />
 {/key}
+{/if}
 <Modal open={openHelpModal} handleClose={handleCloseHelpModal}>
-    <HowToAnnotate topic="" />
+    <HowToAnnotate topic="" showTableOfContents={false} />
 </Modal>
 <HelpTip handleClick={handleOpenHelpModal} />
