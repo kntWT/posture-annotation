@@ -6,6 +6,7 @@
 	import Divider from "./Divider.svelte";
 
     export let topic: string;
+    export let showTableOfContents = true;
 
     onMount(() => {
         jumpToTopic(topic);
@@ -101,13 +102,15 @@
 
 <Paper>
     <Title>アノテーション方法</Title>
-    <Subtitle>目次</Subtitle>
-    <List>
-        {#each contents as content}
-            <Item on:click={() => jumpToTopic(content.topic)}>#{content.title}</Item>
-        {/each}
-    </List>
-    <Divider color="gray" />
+    {#if showTableOfContents}
+        <Subtitle>目次</Subtitle>
+        <List>
+            {#each contents as content}
+                <Item on:click={() => jumpToTopic(content.topic)}>#{content.title}</Item>
+            {/each}
+        </List>
+        <Divider color="gray" />
+    {/if}
     <Content>
         <Accordion multiple>
             {#each contents as content}
