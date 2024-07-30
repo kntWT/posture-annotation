@@ -14,14 +14,6 @@
         prod: 0,
     };
 
-    const menues = [
-        { name: "ホーム", path: "/"},
-        { name: "ログイン", path: "/login"},
-        { name: "アノテーション練習", path: "/annotate/sample"},
-        { name: "アノテーション", path: "/annotate"},
-        { name: "アノテーション履歴", path: "/logs"},
-    ]
-
     onMount(() => {
         if (!$user) return;
 
@@ -40,6 +32,14 @@
     }
 
     $: isCurrentPage = (path: string) =>$page.url.pathname === path;
+
+    $: menues = [
+        { name: "ホーム", path: "/"},
+        $user ? { name: "ログアウト", path: "/logout" } : { name: "ログイン", path: "/login"},
+        { name: "アノテーション練習", path: "/annotate/sample"},
+        { name: "アノテーション", path: "/annotate"},
+        { name: "アノテーション履歴", path: "/logs"},
+    ]
 </script>
 
 <div class="drawer-container">
