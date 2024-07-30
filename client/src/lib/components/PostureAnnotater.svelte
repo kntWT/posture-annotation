@@ -102,6 +102,7 @@
         if (e.target instanceof HTMLInputElement) return;
 
         if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
             handleSubmit();
         }
     }
@@ -434,7 +435,6 @@
 
 <div id="annotater-container">
     <div>
-        <h3>#{posture.id}</h3>
         <p>
             <span>首の角度: {correctedNeckAngle.toFixed(2)}</span>
             <br />
@@ -471,10 +471,13 @@
 </div>
 
 <style lang="scss" scoped>
+
+    @import "$lib/styles/variables.scss";
     #annotater-container {
         text-align: center;
         width: 100vw;
-        height: 50vh;
+        height: 75vh;
+        overflow: hidden;
 
         div {
             text-align: center;

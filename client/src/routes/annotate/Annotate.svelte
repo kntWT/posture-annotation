@@ -9,7 +9,6 @@
 
     export let posture: Posture | null = null;
     export let user: User | null = null;
-    export let title: string = "姿勢アノテーション";
 
     export let handlePostUndo: (dst: number) => void;
     export let onSuccess: () => void;
@@ -60,7 +59,6 @@
 </script>
 
 <div class="wrapper">
-    <h2>{title}</h2>
     <Button
         on:click={handleUndo}
         disabled={isOldest}
@@ -73,7 +71,7 @@
             posture={posture}
             imageSrc={imageUrlFromPosture(posture, user?.id ?? 1, "original")}
             handleAction={sendAnnotation}
-            showWaist={true}
+            showWaist={false}
             holdShoulder={true}
         />
     {:else}
@@ -83,6 +81,7 @@
 
 <style lang="scss" scoped>
     .wrapper {
+        padding: 24px 0;
         text-align: center;
         height: fit-content;
         margin-bottom: 12px;
