@@ -37,7 +37,7 @@
                     <li>基本的には肩のみを調整すれば首の角度と平行になりますが，必要に応じて耳のマーカも調整してください．</li>
                     <li>腰のマーカについては特に気にする必要はありません．</li>
                     <li>自動的に顔〜腰が映るように画像の倍率を調整していますが，修正が必要な場合は<span class="material-icons">remove</span><span class="material-icons">add</span>ボタンや数字を直接入力して調整してください．</li>
-                    <li>マーカの調整つが終わったらデータを送信し，次の画像に進んでください．</li>
+                    <li>マーカの調整が終わったらデータを送信し，次の画像に進んでください．</li>
                 </ul>
                 <video style="width: 100%" src="/annotation-demo.mp4" autoplay controls loop />`,
             open: true,
