@@ -22,6 +22,7 @@
 		"@smui-extra/accordion": "^7.0.0",
 		"@smui/button": "^7.0.0",
 		"@smui/card": "^7.0.0",
+		"@smui/data-table": "^7.0.0",
 		"@smui/dialog": "^7.0.0",
 		"@smui/drawer": "^7.0.0",
 		"@smui/icon-button": "^7.0.0",
