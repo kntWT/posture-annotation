@@ -1,8 +1,8 @@
 <script lang="ts">
-	import Form from "./Form.svelte";
-    import Divider from "$lib/components/Divider.svelte";
+	import Form from "$lib/components/login/Form.svelte";
+    import Divider from "$lib/components/common/Divider.svelte";
 	import type { ActionData } from "./$types";
-	import { goto, invalidateAll } from "$app/navigation";
+	import { goto } from "$app/navigation";
 	import { onMount } from "svelte";
 	import type { UserCreate } from "$api/generated";
 

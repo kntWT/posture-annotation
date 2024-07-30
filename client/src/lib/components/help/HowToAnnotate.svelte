@@ -3,7 +3,7 @@
     import Accordion, { Header, Content as AccordionContent, Panel } from "@smui-extra/accordion";
 	import { onMount } from "svelte";
 	import List, { Item } from "@smui/list";
-	import Divider from "./Divider.svelte";
+	import Divider from "$lib/components/common/Divider.svelte";
 
     export let topic: string;
     export let showTableOfContents = true;

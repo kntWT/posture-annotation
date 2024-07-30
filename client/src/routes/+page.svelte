@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from "$app/stores";
-	import About from "$lib/components/About.svelte";
-    import HowToAnnotate from "$lib/components/HowToAnnotate.svelte";
+	import About from "$lib/components/home/About.svelte";
+    import HowToAnnotate from "$lib/components/help/HowToAnnotate.svelte";
 	import { onMount } from "svelte";
 
     let topic = "";

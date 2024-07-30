@@ -6,7 +6,7 @@
     import { validator } from "@felte/validator-zod"
     import { reporter } from '@felte/reporter-svelte';
 	import type { UserCreate } from "$api/generated";
-    import ValidationMessage from "./ValidationMessage.svelte";
+    import ValidationMessage from "$lib/components/login/ValidationMessage.svelte";
 
     export let title: string;
     export let action: string;

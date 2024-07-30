@@ -1,5 +1,5 @@
 <script lang="ts">
-	import AnnotatedCard from "$lib/components/AnnotatedCard.svelte";
+	import AnnotatedCard from "$lib/components/logs/AnnotatedCard.svelte";
 	import { onMount } from "svelte";
 	import type { PageData } from "../$types";
     import LayoutGrid, { Cell } from "@smui/layout-grid";

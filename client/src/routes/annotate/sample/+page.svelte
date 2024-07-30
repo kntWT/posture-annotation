@@ -1,11 +1,11 @@
 <script lang="ts">
     import { onMount } from "svelte";
     import type { PageData } from "./$types";
-	import Annotate from "../Annotate.svelte";
+	import Annotate from "$lib/components/annotate/Annotate.svelte";
 	import { goto } from "$app/navigation";
-	import HelpTip from "$lib/components/HelpTip.svelte";
-	import Modal from "$lib/components/Modal.svelte";
-	import HowToAnnotate from "$lib/components/HowToAnnotate.svelte";
+	import HelpTip from "$lib/components/common/HelpTip.svelte";
+	import Modal from "$lib/components/common/Modal.svelte";
+	import HowToAnnotate from "$lib/components/help/HowToAnnotate.svelte";
 
     export let data: PageData;
 

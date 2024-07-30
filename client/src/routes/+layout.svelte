@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Header from '$lib/components/Header.svelte';
+	import Header from '$lib/components/common/Header.svelte';
     import { onMount } from 'svelte';
     import type { LayoutData } from './$types';
 	import { login } from '$lib/store/user';

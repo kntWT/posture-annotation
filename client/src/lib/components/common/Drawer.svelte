@@ -2,7 +2,7 @@
 	import { createAnnotationApi } from "$api";
 	import { goto } from "$app/navigation";
 	import { page } from "$app/stores";
-	import Divider from "$lib/components/Divider.svelte";
+	import Divider from "$lib/components/common/Divider.svelte";
 	import { user } from "$lib/store/user";
     import Drawer, { Header, Title, Subtitle, Content, Scrim } from "@smui/drawer";
     import List, { Item, Text } from "@smui/list";

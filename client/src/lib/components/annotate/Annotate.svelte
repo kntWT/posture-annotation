@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { createAnnotationApi } from "$api";
 	import type { AnnotationCreateWithFile, AnnotationUpdateWithFile, Posture, User } from "$api/generated";
-	import PostureAnnotater from "$lib/components/PostureAnnotater.svelte";
+	import PostureAnnotater from "$lib/components/annotate/PostureAnnotater.svelte";
     import { getToken } from "$lib/store/user";
 	import { imageUrlFromPosture } from "$lib/util";
     import { annotationHistory, undo, addHistory, type AnnotationHistory } from "$lib/store/annotationHistory";
