@@ -6,7 +6,7 @@ import { createPostureApi } from "$api";
 export const load: PageServerLoad = async ({ cookies, url }) => {
     const token = cookies.get(`${import.meta.env.VITE_COOKIE_PREFIX}token`);
     if (!token || token === '' || token === 'undefined') {
-        redirect(301, '/');
+        redirect(301, '/login');
     }
     const id = url.searchParams.get("id") ?? null;
     const postureApi = createPostureApi({ token });
