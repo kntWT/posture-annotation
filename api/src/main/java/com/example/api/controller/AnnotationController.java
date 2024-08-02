@@ -31,7 +31,36 @@ public class AnnotationController implements AnnotationApi {
     }
 
     @Override
-    public ResponseEntity<Annotation>  createAnnotation(AnnotationCreateWithFile annotationWithFile) {
+    public ResponseEntity<Annotation>  createOrUpdateAnnotation(AnnotationCreateWithFile annotationWithFile) {
+        boolean isExist = annotationService.isAnnotationExistByPostureIdAndAnnotaterId(
+            annotationWithFile.getPostureId(),
+            annotationWithFile.getAnnotaterId()
+        );
+        if (isExist) {
+            AnnotationUpdateWithFile annotationUpdate = new AnnotationUpdateWithFile(
+                annotationWithFile.getTragusX(),
+                annotationWithFile.getTragusY(),
+                annotationWithFile.getShoulderX(),
+                annotationWithFile.getShoulderY(),
+                annotationWithFile.getWaistX(),
+                annotationWithFile.getWaistY(),
+                annotationWithFile.getNeckAngle(),
+                annotationWithFile.getTorsoAngle(),
+                annotationWithFile.getFile(),
+                annotationWithFile.getAnnotaterId(),
+                annotationWithFile.getFileName()
+            );
+            Annotation annotation = annotationService.updateAnnotationByPostureIdAndAnnotaterId(
+                annotationWithFile.getPostureId(),
+                annotationWithFile.getAnnotaterId(),
+                annotationUpdate
+            );
+            if (annotation == null) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            }
+            return ResponseEntity.ok(annotation);
+        }
+
         Annotation annotation = annotationService.createAnnotationAndSaveFile(annotationWithFile);
         if (annotation == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
