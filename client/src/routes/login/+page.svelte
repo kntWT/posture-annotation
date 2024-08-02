@@ -28,7 +28,6 @@
             })
             .then(res => res.json())
             .then((res) => {
-                console.log(res)
                 if (res.status === 200) {
                     window.location.reload();
                 } else {
