@@ -34,21 +34,7 @@
         }
         const annotationApi = createAnnotationApi({ token: token, basePath: import.meta.env.VITE_API_ENDPOINT });
         try {
-            const isExist = await annotationApi.getAnnotationByPostureIdAndAnnotaterId({
-                postureId: posture.id,
-                annotaterId: user.id
-            })
-                .then((res) => res !== null)
-                .catch((e) => false);
-            if (!isExist) {
-                await annotationApi.createAnnotation({ annotationCreateWithFile: annotated });
-            } else {
-                await annotationApi.updateAnnotationByPostureIdAndAnnotaterId({
-                    postureId: posture.id,
-                    annotaterId: user.id,
-                    annotationUpdateWithFile: annotated as AnnotationUpdateWithFile
-                });
-            }
+            await annotationApi.createOrUpdateAnnotation({ annotationCreateWithFile: annotated });
             addHistory(posture.id);
             onSuccess();
         } catch (e) {
