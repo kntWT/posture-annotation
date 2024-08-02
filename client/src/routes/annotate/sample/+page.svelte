@@ -58,8 +58,21 @@
     onError={onError}
 />
 {/key}
+{:else if data.posture === null}
+<p>
+    <strong>お疲れ様です，全てのデータをアノテーションしました！</strong><br/>
+    <strong>本番用のアノテーションに取り組んでください！</strong>
+</p>
 {/if}
 <Modal open={openHelpModal} handleClose={handleCloseHelpModal}>
     <HowToAnnotate topic="" showTableOfContents={false} />
 </Modal>
 <HelpTip handleClick={handleOpenHelpModal} />
+
+<style lang="scss" scoped>
+    p {
+        margin-top: 24px;
+        text-align: center;
+        width: 100%;
+    }
+</style>

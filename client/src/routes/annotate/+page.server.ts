@@ -1,6 +1,7 @@
 import { redirect } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types";
-import { createPostureApi } from "$api";
+import { createPostureApi, userApi } from "$api";
+import { toBearer } from '../../lib/util';
 
 
 export const load: PageServerLoad = async ({ cookies, url }) => {
@@ -14,9 +15,11 @@ export const load: PageServerLoad = async ({ cookies, url }) => {
         if (id && /^[0-9]+$/.test(id)) {
             const posture = await postureApi.getPostureById({ id: parseInt(id) });
             return { posture };
+        } else {
+            const user = await userApi.getUserByToken({ authorization: toBearer(token) });
+            const posture = await postureApi.getRandomPostureByAnnotaterId({ annotaterId: user.id });
+            return { posture };
         }
-        const posture = await postureApi.getRandomPosture();
-        return { posture };
     } catch (e) {
         console.error(e);
         return { posture: null };
