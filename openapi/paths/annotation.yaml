@@ -19,7 +19,7 @@ annotation:
         description: forbidden
   post:
     description: create annotated posture
-    operationId: createAnnotation
+    operationId: createOrUpdateAnnotation
     tags:
       - annotation
     security: *bearerAuth
