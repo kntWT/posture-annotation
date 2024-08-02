@@ -35,11 +35,45 @@ public interface PostureRepository extends JpaRepository<PostureEntity, Long> {
     )
     public List<PostureEntity> findOrderByAnnotationCountLimitedTo(@Param("limit") int limit);
 
+    @Transactional
+    @Query(
+        value = """
+            SELECT p.* FROM postures AS p 
+            LEFT JOIN (SELECT a.posture_id, COUNT(*) AS count FROM annotations AS a GROUP BY a.posture_id) AS counts ON p.id = counts.posture_id 
+            WHERE p.id NOT IN (SELECT a.posture_id FROM annotations AS a WHERE a.annotater_id = :annotaterId) AND is_sample = FALSE 
+            ORDER BY CASE WHEN counts.count > :threshold THEN -1 ELSE COALESCE(counts.count, 0) END DESC, RANDOM() 
+            LIMIT :limit
+        """,
+        nativeQuery = true
+    )
+    public List<PostureEntity> findByAnnotaterIdOrderByAnnotationCountLimitTo(
+        @Param("annotaterId") Long annotaterId,
+        @Param("limit") int limit,
+        @Param("threshold") int threshold
+    );
+
     @Query(
         value = "SELECT p.* FROM postures AS p left join (select a.posture_id, coalesce(count(*), 0) as count from annotations as a group by a.posture_id) as counts on p.id = counts.posture_id WHERE is_sample = TRUE ORDER BY counts.count desc, random() LIMIT :limit",
         nativeQuery = true
     )
     public List<PostureEntity> findSampleByOrderByAnnotationCountLimitedTo(@Param("limit") int limit);
+
+    @Transactional
+    @Query(
+        value = """
+            SELECT p.* FROM postures AS p 
+            LEFT JOIN (SELECT a.posture_id, COUNT(*) AS count FROM annotations AS a GROUP BY a.posture_id) AS counts ON p.id = counts.posture_id 
+            WHERE p.id NOT IN (SELECT a.posture_id FROM annotations AS a WHERE a.annotater_id = :annotaterId) AND is_sample = TRUE 
+            ORDER BY CASE WHEN counts.count > :threshold THEN -1 ELSE COALESCE(counts.count, 0) END DESC, RANDOM() 
+            LIMIT :limit
+        """,
+        nativeQuery = true
+    )
+    public List<PostureEntity> findSampleByAnnotaterIdOrderByAnnotationCountLimitTo(
+        @Param("annotaterId") Long annotaterId,
+        @Param("limit") int limit,
+        @Param("threshold") int threshold
+    );
 
     // @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query(value = "SELECT p.* FROM postures AS p WHERE p.id = :id FOR UPDATE", nativeQuery = true)

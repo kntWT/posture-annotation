@@ -75,6 +75,16 @@ public class PostureController implements PostureApi {
     }
 
     @Override
+    public ResponseEntity<Posture> getRandomPostureByAnnotaterId(Long annotaterId) {
+        Posture posture = postureService.getRandomPostureByAnnotaterId(annotaterId);
+        if (posture == null) {
+            ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        
+        return ResponseEntity.ok(posture);
+    }
+
+    @Override
     public ResponseEntity<Posture> updatePostureMarkerById(Long id, PostureUpdateMarkerPosition postureUpdateMarkerPosition) {
         Posture posture = postureService.updatePostureMarkerById(id, postureUpdateMarkerPosition);
         if (posture == null) {
@@ -99,6 +109,16 @@ public class PostureController implements PostureApi {
     @Override
     public ResponseEntity<Posture> getRandomSamplePosture() {
         Posture posture = postureService.getRandomSamplePosture();
+        if (posture == null) {
+            ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        
+        return ResponseEntity.ok(posture);
+    }
+
+    @Override
+    public ResponseEntity<Posture> getRandomSamplePostureByAnnotaterId(Long annotaterId) {
+        Posture posture = postureService.getRandomSamplePostureByAnnotaterId(annotaterId);
         if (posture == null) {
             ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
