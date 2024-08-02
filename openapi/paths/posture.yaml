@@ -84,6 +84,29 @@ posture_random:
               $ref: '../components/schemas/posture.yaml#/Posture'
       '403':
         description: forbidden
+posture_random_annotater_{annotater_id}:
+  get:
+    description: get random posture by annotater id
+    operationId: getRandomPostureByAnnotaterId
+    tags:
+      - posture
+    security: *bearerAuth
+    parameters:
+      - name: annotater_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+    responses:
+      '200':
+        description: ok
+        content:
+          application/json:
+            schema:
+              $ref: '../components/schemas/posture.yaml#/Posture'
+      '403':
+        description: forbidden
 posture_sample:
   get:
     description: get sample posture
@@ -109,6 +132,29 @@ posture_sample_random:
     tags:
       - posture
     security: *bearerAuth
+    responses:
+      '200':
+        description: ok
+        content:
+          application/json:
+            schema:
+              $ref: '../components/schemas/posture.yaml#/Posture'
+      '403':
+        description: forbidden
+posture_sample_random_annotater_{annotater_id}:
+  get:
+    description: get random sample posture by annotater id
+    operationId: getRandomSamplePostureByAnnotaterId
+    tags:
+      - posture
+    security: *bearerAuth
+    parameters:
+      - name: annotater_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
     responses:
       '200':
         description: ok

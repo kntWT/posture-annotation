@@ -25,10 +25,14 @@ paths:
     $ref: './paths/posture.yaml#/posture_{id}'
   /posture/random:
     $ref: './paths/posture.yaml#/posture_random'
+  /posture/random/annotater/{annotater_id}:
+    $ref: './paths/posture.yaml#/posture_random_annotater_{annotater_id}'
   /posture/sample:
     $ref: './paths/posture.yaml#/posture_sample'
   /posture/sample/random:
     $ref: './paths/posture.yaml#/posture_sample_random'
+  /posture/sample/random/annotater/{annotater_id}:
+    $ref: './paths/posture.yaml#/posture_sample_random_annotater_{annotater_id}'
   /posture/user/{user_id}:
     $ref: './paths/posture.yaml#/posture_user_{user_id}'
   /posture/markers:
