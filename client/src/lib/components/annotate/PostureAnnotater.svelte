@@ -29,29 +29,42 @@
     let submitted: boolean = false;
     let canvas: HTMLCanvasElement | null = null;
     let canSubmit: boolean = false;
+    let isMobile: boolean = false;
 
     onMount(() => {
         document.addEventListener("keydown", handleKeyDown);
         setTimeout(() => {
             canvas = document.querySelector("canvas");
-            document.addEventListener("mousemove", updateCanSubmit);
+            document.addEventListener("mousemove", handleUpdateCanSubmit);
+            document.addEventListener("touchmove", handleUpdateCanSubmit);
         }, 1000);
+        isMobile = navigator.userAgent.indexOf("Mobile") >= 0;
     });
 
     onDestroy(() => {
         if (browser) {
             document.removeEventListener("keydown", handleKeyDown);
-            document.removeEventListener("mousemove", updateCanSubmit);
+            document.removeEventListener("mousemove", handleUpdateCanSubmit);
+            document.removeEventListener("touchmove", handleUpdateCanSubmit);
         }
     });
 
-    const updateCanSubmit = (e: MouseEvent) => {
+    const handleUpdateCanSubmit = (e: MouseEvent | TouchEvent) => {
+        const flag = canvas === e.target
+        if (e instanceof MouseEvent) {
+            updateCanSubmit(e.clientX, e.clientY, flag);
+        } else if (e instanceof TouchEvent) {
+            updateCanSubmit(e.touches[0].clientX, e.touches[0].clientY, flag);
+        }
+    }
+
+    const updateCanSubmit = (x: number, y: number, flag: boolean) => {
         if (!canvas) return;
-        canSubmit = canvas === e.target
-            && e.clientX >= canvas.getBoundingClientRect().left
-            && e.clientX <= canvas.getBoundingClientRect().right
-            && e.clientY >= canvas.getBoundingClientRect().top
-            && e.clientY <= canvas.getBoundingClientRect().bottom;
+        canSubmit = flag
+            && x >= canvas.getBoundingClientRect().left
+            && x <= canvas.getBoundingClientRect().right
+            && y >= canvas.getBoundingClientRect().top
+            && y <= canvas.getBoundingClientRect().bottom;
     }
 
     // FIXME: なぜか型アノテーションが変なのでanyで回避
@@ -149,7 +162,7 @@
             imageOffset.set(0, 0);
             initMarkerPosition();
             adjustFrame([markers.tragus, markers.shoulder, markers.waist]);
-            if (holdShoulder) {
+            if (holdShoulder && !isMobile) {
                 target = markers.shoulder;
             }
         }
@@ -169,11 +182,23 @@
         }
 
         p.mousePressed = () => {
-            mousePressed();
+            if (isMobile) return;
+            mousePressed(p.mouseX, p.mouseY);
         }
 
         p.mouseReleased = () => {
-            mouseReseased();
+            if (isMobile) return;
+            mouseReseased(p.mouseX, p.mouseY);
+        }
+
+        p.touchStarted = () => {
+            if (!isMobile) return;
+            mousePressed(p.touches[0].x, p.touches[0].y);
+        }
+
+        p.touchEnded = () => {
+            if (!isMobile) return;
+            mouseReseased(p.mouseX, p.mouseY);
         }
 
         const drawMarks = () => {
@@ -207,17 +232,17 @@
             }
         }
 
-        const mousePressed = () => {
-            if (!mouseInCanvas()) return;
+        const mousePressed = (x: number, y: number) => {
+            if (!mouseInCanvas(x, y)) return;
 
             const mouse = p.createVector(
-                (p.mouseX - imageOffset.x - p.width/2)/scale + p.width/2,
-                (p.mouseY - imageOffset.y - p.height/2)/scale + p.height/2
+                (x - imageOffset.x - p.width/2)/scale + p.width/2,
+                (y - imageOffset.y - p.height/2)/scale + p.height/2
             );
             if (target === null) {
                 setTarget(mouse);
                 if (target === null && pMouse === null) {
-                    pMouse = p.createVector(p.mouseX, p.mouseY);
+                    pMouse = p.createVector(x, y);
                     handleSubmit();
                 }
             }
@@ -237,8 +262,8 @@
             }
         }
 
-        const mouseReseased = () => {
-            if (!mouseInCanvas()) return;
+        const mouseReseased = (x: number, y: number) => {
+            if (!mouseInCanvas(x, y)) return;
 
             lastTarget = target;
             target = null;
@@ -338,9 +363,9 @@
             target = null;
         }
 
-        const mouseInCanvas = (): boolean => {
-            return p.mouseX >= 0 && p.mouseX <= p.width
-                && p.mouseY >= 0 && p.mouseY <= p.height
+        const mouseInCanvas = (x: number, y: number): boolean => {
+            return x >= 0 && x <= p.width
+                && y >= 0 && y <= p.height
             ;
         }
 
