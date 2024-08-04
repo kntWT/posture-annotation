@@ -33,9 +33,14 @@
             margin: 16px;
         }
 
-        :global(.mdc-dialog__container .mdc-dialog__surface) {
-            width: 80%;
+        :global(.mdc-dialog__container) {
+            width: 90%;
             max-width: 1200px;
+
+            :global(.mdc-dialog__surface) {
+                width: 100%;
+                max-width: 1200px;
+            }
         }
 
         // :global(.smui-paper) {
