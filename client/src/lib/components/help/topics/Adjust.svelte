@@ -60,7 +60,7 @@
                 </Text>
             </Item>
         </List>
-        <video style="width: 100%" src="/annotation-demo.mp4" autoplay controls loop />
+        <video style="width: 100%" src="/annotation-demo.mp4" autoplay playsinline controls loop />
     </Content>
 </Paper>
 
