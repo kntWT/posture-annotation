@@ -123,7 +123,7 @@ public class AnnotationService {
     }
 
     @Transactional
-    public boolean isAnnotationExistByPostureIdAndAnnotaterId(Long annotaterId, Long postureId) {
+    public boolean isAnnotationExistByPostureIdAndAnnotaterId(Long postureId, Long annotaterId) {
         return annotationRepository.existsByPostureIdAndAnnotaterId(postureId, annotaterId);
     }
 
