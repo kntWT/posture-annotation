@@ -6,6 +6,7 @@
 	import HelpTip from "$lib/components/common/HelpTip.svelte";
 	import Modal from "$lib/components/common/Modal.svelte";
 	import HowToAnnotate from "$lib/components/help/HowToAnnotate.svelte";
+	import Button from "@smui/button";
 
     export let data: PageData;
 
@@ -59,10 +60,13 @@
 />
 {/key}
 {:else if data.posture === null}
-<p>
-    <strong>お疲れ様です，全てのデータをアノテーションしました！</strong><br/>
-    <strong>本番用のアノテーションに取り組んでください！</strong>
-</p>
+<div>
+    <div>
+        <strong>お疲れ様です，全てのデータをアノテーションしました！</strong><br/>
+        <strong>本番用のアノテーションに取り組んでください！</strong><br/>
+    </div>
+    <Button variant="raised" color="primary" href="/annotate">本番用アノテーション</Button>
+</div>
 {/if}
 <Modal open={openHelpModal} handleClose={handleCloseHelpModal}>
     <HowToAnnotate topic="" showTableOfContents={false} />
@@ -70,9 +74,13 @@
 <HelpTip handleClick={handleOpenHelpModal} />
 
 <style lang="scss" scoped>
-    p {
+    div {
         margin-top: 24px;
         text-align: center;
         width: 100%;
+
+        :global(.mdc-button) {
+            margin-top: 24px;
+        }
     }
 </style>
