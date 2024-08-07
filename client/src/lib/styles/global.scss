@@ -28,4 +28,19 @@
     p {
         font-size: 1rem;
     }
+
+    :global(.mdc-deprecated-list-item) {
+        height: fit-content;
+        padding: 0.2rem 0;
+
+        :global(.mdc-deprecated-list-item__text) {
+            white-space: normal;
+        }
+        :global(.mdc-deprecated-list-item__primary-text) {
+            white-space: normal;
+        }
+    }
+    :global(.mdc-deprecated-list-item__secondary-text) {
+        white-space: normal;
+    }
 }
