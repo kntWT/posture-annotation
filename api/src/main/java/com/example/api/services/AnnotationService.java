@@ -118,7 +118,7 @@ public class AnnotationService {
     }
 
     @Transactional
-    public boolean isAnnotationExist(Long id) {
+    public boolean isAnnotationExisById(Long id) {
         return annotationRepository.existsById(id);
     }
 
