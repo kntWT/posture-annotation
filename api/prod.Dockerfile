@@ -1,24 +1,23 @@
-FROM openjdk:17-jdk-slim as build-env
+FROM eclipse-temurin
 
-WORKDIR /app
 RUN apt-get update && apt-get install -y maven
-COPY . .
-RUN mvn clean package
-
-FROM debian:12-slim
 
 WORKDIR /app
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends openjdk-17-jre-headless && \
-    apt-get autoremove -y && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+COPY . .
 
-ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64/jre
-ENV PATH=$PATH:$JAVA_HOME/bin
+# maven pluginをskip
+RUN sed -i '/<\/build/i \
+        <plugins>\n\
+            <plugin>\n\
+                <groupId>org.springframework.boot<\/groupId>\n\
+                <artifactId>spring-boot-maven-plugin<\/artifactId>\n\
+                <configuration>\n\
+                    <skip>true<\/skip>\n\
+                <\/configuration>\n\
+            <\/plugin>\n\
+        <\/plugins>' generated/pom.xml
 
-COPY --from=build-env /app/target/*.jar app.jar
+WORKDIR /app/parent
+RUN mvn clean install
 
-EXPOSE 8000
-
-ENTRYPOINT ["java","-jar","app.jar"]
+CMD ["mvn", "spring-boot:run", "-Dspring.profiles.active=api"]
