@@ -1,21 +1,11 @@
-FROM node:20-slim AS base
-ENV PNPM_HOME="/pnpm"
-ENV PATH="$PNPM_HOME:$PATH"
-RUN corepack enable
+FROM node:20-slim as build
 
-FROM base as builder
 WORKDIR /app
-COPY package.json pnpm-lock.yaml ./
-RUN pnpm install --frozen-lockfile
+COPY package*.json ./
 COPY . .
-RUN pnpm build
+RUN npm install
 
-FROM base as app
-WORKDIR /app
-COPY --from=builder /app/build ./build
-COPY --from=builder /app/package.json ./
-COPY --from=builder /app/node_modules ./node_modules
+ENV PORT=5173
+RUN npm run build
 
-EXPOSE 5173
-
-CMD ["PORT=5173", "node", "./build"]
+CMD [ "node", "./build" ]
