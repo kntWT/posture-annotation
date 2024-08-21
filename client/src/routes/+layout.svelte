@@ -1,17 +1,26 @@
 <script lang="ts">
 	import Header from '$lib/components/common/Header.svelte';
-    import { onMount } from 'svelte';
-    import type { LayoutData } from './$types';
+	import { onMount } from 'svelte';
+	import type { LayoutData } from './$types';
 	import { login } from '$lib/store/user';
+	import { base } from '$app/paths';
 
-    export let data: LayoutData;
-    onMount(() => {
-        if (data.user) {
-            login(data.user);
-        }
-    });
+	export let data: LayoutData;
+	onMount(() => {
+		if (data.user) {
+			login(data.user);
+		}
+	});
 </script>
 
+<svelte:head>
+	<link rel="stylesheet" href="{base}/smui.css" media="(prefers-color-scheme: light)" />
+	<link
+		rel="stylesheet"
+		href="{base}/smui-dark.css"
+		media="screen and (prefers-color-scheme: dark)"
+	/>
+</svelte:head>
 <div class="app">
 	<Header />
 
@@ -21,9 +30,9 @@
 </div>
 
 <style lang="scss" scoped>
-    @import "$lib/styles/global";
+	@import '$lib/styles/global';
 
-    .app {
-        @include html;
-    }
+	.app {
+		@include html;
+	}
 </style>
