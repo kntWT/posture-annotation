@@ -1,5 +1,5 @@
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ cookies }) => {
-    cookies.set(`${import.meta.env.VITE_COOKIE_PREFIX}token`, '', { path: "/" });
+    cookies.set(`${import.meta.env.VITE_COOKIE_PREFIX}token`, '', { path: `${import.meta.env.VITE_BASE_PATH}/` });
 }

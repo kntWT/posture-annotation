@@ -1,77 +1,71 @@
 <script lang="ts">
-    import { onMount } from "svelte";
-    import type { PageData } from "./$types";
-	import Annotate from "$lib/components/annotate/Annotate.svelte";
-	import { goto } from "$app/navigation";
-	import HelpTip from "$lib/components/common/HelpTip.svelte";
-	import Modal from "$lib/components/common/Modal.svelte";
-	import HowToAnnotate from "$lib/components/help/HowToAnnotate.svelte";
+	import { onMount } from 'svelte';
+	import type { PageData } from './$types';
+	import Annotate from '$lib/components/annotate/Annotate.svelte';
+	import { goto } from '$app/navigation';
+	import HelpTip from '$lib/components/common/HelpTip.svelte';
+	import Modal from '$lib/components/common/Modal.svelte';
+	import HowToAnnotate from '$lib/components/help/HowToAnnotate.svelte';
 
-    export let data: PageData;
+	export let data: PageData;
 
-    let openHelpModal = false;
+	let openHelpModal = false;
+	const base = import.meta.env.VITE_BASE_PATH;
 
-    onMount(() => {
-        console.log(data)
-    });
+	onMount(() => {
+		console.log(data);
+	});
 
-    const handlePostUndo = (dst: number) => {
-        const path = window.location.pathname;
-        // FIXME: なぜかinvalidateAllしてもページが更新されないので，リソーそを無理矢理変更している
-        data = { ...data, posture: null };
-        goto(`${path}?id=${dst}`, { invalidateAll: true });
-    }
+	const handlePostUndo = (dst: number) => {
+		const path = window.location.pathname;
+		// FIXME: なぜかinvalidateAllしてもページが更新されないので，リソーそを無理矢理変更している
+		data = { ...data, posture: null };
+		goto(`${path}?id=${dst}`, { invalidateAll: true });
+	};
 
-    const onSuccess = () => {
-        const path = window.location.pathname;
-        goto(path, { invalidateAll: true });
-        data = { ...data, posture: null };
-    }
+	const onSuccess = () => {
+		const path = window.location.pathname;
+		goto(path, { invalidateAll: true });
+		data = { ...data, posture: null };
+	};
 
-    const onError = (e?: Error) => {
-        console.error(e);
-        // FIXME: なぜか再レンダリングしても破棄されたPostureAnnotaterのsubmitが呼ばれてしまうので，無理矢理リセット
-        window.location.href = `/annotate?id=${data.posture?.id}`
-        // alert("データの送信に失敗しました");
-    }
+	const onError = (e?: Error) => {
+		console.error(e);
+		// FIXME: なぜか再レンダリングしても破棄されたPostureAnnotaterのsubmitが呼ばれてしまうので，無理矢理リセット
+		window.location.href = `${base}/annotate?id=${data.posture?.id}`;
+		// alert("データの送信に失敗しました");
+	};
 
-    const handleOpenHelpModal = () => {
-        openHelpModal = true;
-    }
+	const handleOpenHelpModal = () => {
+		openHelpModal = true;
+	};
 
-    const handleCloseHelpModal = () => {
-        openHelpModal = false;
-    }
+	const handleCloseHelpModal = () => {
+		openHelpModal = false;
+	};
 
-    $: user = openHelpModal ? null : data.user;
-
+	$: user = openHelpModal ? null : data.user;
 </script>
 
 <!-- FIXME: モーダルが開いている時にもp5のmousePressedイベントが発火してしまうので，userをnullにして送信できなくする -->
 {#if data.posture && data.user && !openHelpModal}
-{#key user}
-<Annotate
-    posture={data.posture}
-    user={user}
-    handlePostUndo={handlePostUndo}
-    onSuccess={onSuccess}
-    onError={onError}
-/>
-{/key}
+	{#key user}
+		<Annotate posture={data.posture} {user} {handlePostUndo} {onSuccess} {onError} />
+	{/key}
 {:else if data.posture === null}
-<p>
-    <strong>お疲れ様です，全てのデータをアノテーションしました！</strong>
-</p>
+	<p>
+		<strong>お疲れ様です，全てのデータをアノテーションしました！</strong>
+	</p>
 {/if}
 <Modal open={openHelpModal} handleClose={handleCloseHelpModal}>
-    <HowToAnnotate topic="" showTableOfContents={false} />
+	<HowToAnnotate topic="" showTableOfContents={false} />
 </Modal>
 <HelpTip handleClick={handleOpenHelpModal} />
 
 <style lang="scss">
-    p {
-        margin-top: 24px;
-        width: 100%;
-        text-align: center;
-    }
+	p {
+		margin-top: 24px;
+		width: 100%;
+		text-align: center;
+	}
 </style>

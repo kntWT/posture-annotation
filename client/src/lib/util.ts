@@ -9,6 +9,8 @@ type DirectoryInfo = {
     fileName: string;
 }
 
+const base = import.meta.env.VITE_BASE_PATH;
+
 export const formatDate = (date: Date | undefined) => {
     if (!date) {
         return "";
@@ -26,8 +28,8 @@ export const formatDate = (date: Date | undefined) => {
 
 export const imageUrl = (info: DirectoryInfo, path: Path = "original") => {
     const baseDir = path === "original"
-        ? `${import.meta.env.VITE_FILE_SERVER_ENDPOINT}/images/${path}/${info.userId}`
-        : `${import.meta.env.VITE_FILE_SERVER_ENDPOINT}/images/${path}/${info.userId}/${info.annotaterId ?? 1}`;
+        ? `${base}/${import.meta.env.VITE_FILE_SERVER_ENDPOINT}/images/${path}/${info.userId}`
+        : `${base}/${import.meta.env.VITE_FILE_SERVER_ENDPOINT}/images/${path}/${info.userId}/${info.annotaterId ?? 1}`;
     return `${baseDir}/${info.fileName}`;
 }
 

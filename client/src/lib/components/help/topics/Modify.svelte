@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { base } from '$app/paths';
 	import Button, { Label } from '@smui/button';
 	import List, { Item, Text } from '@smui/list';
 	import Paper, { Content, Subtitle } from '@smui/paper';
 
+	const base = import.meta.env.VITE_BASE_PATH;
 	const navigateToLogs = () => {
-		goto('/logs');
+		goto(`${base}/logs`);
 	};
 </script>
 

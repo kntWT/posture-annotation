@@ -3,12 +3,11 @@ import type { PageServerLoad, Actions } from './$types';
 import type { User, UserCreate } from '$api/generated/models';
 import { userApi } from '$api';
 
-
 /** @type {import('./$types').PageServerLoad} */
 export const load: PageServerLoad = async ({ cookies }) => {
     const token = cookies.get(`${import.meta.env.VITE_COOKIE_PREFIX}token`);
     if (token && token !== '' && token !== 'undefined') {
-        redirect(301, '/');
+        redirect(301, `${import.meta.env.VITE_BASE_PATH}/`);
     }
 }
 

@@ -3,11 +3,10 @@ import type { PageServerLoad } from "./$types";
 import { createPostureApi, userApi } from "$api";
 import { toBearer } from '../../lib/util';
 
-
 export const load: PageServerLoad = async ({ cookies, url }) => {
     const token = cookies.get(`${import.meta.env.VITE_COOKIE_PREFIX}token`);
     if (!token || token === '' || token === 'undefined') {
-        redirect(301, '/login');
+        redirect(301, `${import.meta.env.BASE_URL}/login`);
     }
     const id = url.searchParams.get("id") ?? null;
     const postureApi = createPostureApi({ token });

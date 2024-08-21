@@ -3,9 +3,9 @@
 	import { onMount } from 'svelte';
 	import type { LayoutData } from './$types';
 	import { login } from '$lib/store/user';
-	import { base } from '$app/paths';
 
 	export let data: LayoutData;
+	const base = import.meta.env.VITE_BASE_PATH;
 	onMount(() => {
 		if (data.user) {
 			login(data.user);

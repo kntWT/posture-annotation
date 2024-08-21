@@ -6,7 +6,7 @@
 	export let annotation: Annotation;
 	export let imageSrc: string;
 	export let showWaist: boolean = false;
-    export let navigatePath: string = "/annotate";
+	export let navigatePath: string = `${import.meta.env.VITE_BASE_PATH}/annotate`;
 
 	const navigateTo = (id: number) => {
 		goto(`${navigatePath}?id=${id}`, { invalidateAll: true });
@@ -14,19 +14,16 @@
 </script>
 
 <Card>
-    <PrimaryAction on:click={() => navigateTo(annotation.postureId)}>
-        <Content style="aspect-ratio: 2/1">
-            <span>#{annotation.postureId} ({annotation.updatedAt?.toLocaleDateString?.()})</span><br />
-            <span>首の角度: {annotation.neckAngle.toFixed(2)}</span><br />
-            {#if showWaist}
-                <span>胴体の角度: {annotation.torsoAngle.toFixed(2)}</span><br />
-            {/if}
-        </Content>
-        <Media
-            style={`background-image: url(${imageSrc})`}
-            aspectRatio="16x9"
-        />
-    </PrimaryAction>
+	<PrimaryAction on:click={() => navigateTo(annotation.postureId)}>
+		<Content style="aspect-ratio: 2/1">
+			<span>#{annotation.postureId} ({annotation.updatedAt?.toLocaleDateString?.()})</span><br />
+			<span>首の角度: {annotation.neckAngle.toFixed(2)}</span><br />
+			{#if showWaist}
+				<span>胴体の角度: {annotation.torsoAngle.toFixed(2)}</span><br />
+			{/if}
+		</Content>
+		<Media style={`background-image: url(${imageSrc})`} aspectRatio="16x9" />
+	</PrimaryAction>
 </Card>
 
 <style lang="scss" scoped>

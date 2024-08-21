@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { base } from '$app/paths';
 	import Button, { Label } from '@smui/button';
 	import DataTable, { Head, Body, Row, Cell } from '@smui/data-table';
 	import List, { Item, Text } from '@smui/list';
@@ -11,6 +10,8 @@
 	const dispatchJumpToSend = () => {
 		dispatch('jumpToTopic', 'send');
 	};
+
+	const base = import.meta.env.VITE_BASE_PATH;
 </script>
 
 <Paper>
