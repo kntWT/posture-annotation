@@ -28,8 +28,8 @@ export const formatDate = (date: Date | undefined) => {
 
 export const imageUrl = (info: DirectoryInfo, path: Path = "original") => {
     const baseDir = path === "original"
-        ? `${base}/${import.meta.env.VITE_FILE_SERVER_ENDPOINT}/images/${path}/${info.userId}`
-        : `${base}/${import.meta.env.VITE_FILE_SERVER_ENDPOINT}/images/${path}/${info.userId}/${info.annotaterId ?? 1}`;
+        ? `${base}${import.meta.env.VITE_FILE_SERVER_ENDPOINT}/images/${path}/${info.userId}`
+        : `${base}${import.meta.env.VITE_FILE_SERVER_ENDPOINT}/images/${path}/${info.userId}/${info.annotaterId ?? 1}`;
     return `${baseDir}/${info.fileName}`;
 }
 

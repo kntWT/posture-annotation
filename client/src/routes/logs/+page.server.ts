@@ -6,7 +6,7 @@ import { toBearer } from '$lib/util';
 export const load: PageServerLoad = async ({ cookies }) => {
     const token = cookies.get(`${import.meta.env.VITE_COOKIE_PREFIX}token`);
     if (!token || token === '' || token === 'undefined') {
-        redirect(301, `${import.meta.env.BASE_URL}/login`);
+        redirect(301, `${import.meta.env.VITE_BASE_PATH}/login`);
     }
 
     const annotationApi = createAnnotationApi({ token });
