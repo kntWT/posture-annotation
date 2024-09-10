@@ -20,7 +20,7 @@
 
 		const annotationApi = createAnnotationApi({
 			token: $user.token,
-			basePath: 'http://localhost:5172'
+			basePath: import.meta.env.VITE_API_CLIENT_URL
 		});
 		annotationApi.getProdAnnotationCountByAnnotaterId({ annotaterId: $user.id }).then((res) => {
 			annotationCount.prod = res;
