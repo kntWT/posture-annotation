@@ -31,7 +31,7 @@ export const actions: Actions = {
 
         try {
             const user: User = await userApi.loginUser({ userCreate: userInfo });
-            cookies.set(`${import.meta.env.VITE_COOKIE_PREFIX}token`, user.token, { path: "/" });
+            cookies.set(`${import.meta.env.VITE_COOKIE_PREFIX}token`, user.token, { path: `${import.meta.env.VITE_BASE_PATH}/` });
             return { status: 200, data: { user } };
         } catch (e) {
             return fail(401, { action: "ログイン", message: "ユーザ名またはパスワードが違います", incorrect: true });
@@ -46,7 +46,7 @@ export const actions: Actions = {
 
         try {
             const user: User = await userApi.createUser({ userCreate: userInfo });
-            cookies.set(`${import.meta.env.VITE_COOKIE_PREFIX}token`, user.token, { path: "/" });
+            cookies.set(`${import.meta.env.VITE_COOKIE_PREFIX}token`, user.token, { path: `${import.meta.env.VITE_BASE_PATH}/` });
             return { status: 200, data: { user } };
         } catch (e) {
             return fail(400, { action: "新規登録", message: "無効なユーザ名またはパスワードです", incorrect: true });
