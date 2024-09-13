@@ -77,6 +77,7 @@
 		text-align: center;
 		height: fit-content;
 		margin-bottom: 12px;
+		overflow: hidden;
 
 		h1 {
 			text-align: center;
