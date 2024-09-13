@@ -490,7 +490,7 @@
 			<IconButton class="material-icons" on:click={incrementScale}>add</IconButton>
 		</div>
 	</div>
-	<P5 {sketch} />
+	<P5 class="anotate-canvas" {sketch} />
 </div>
 
 <style lang="scss" scoped>
@@ -510,9 +510,11 @@
 		text-align: right;
 	}
 
-	canvas {
+	canvas,
+	.annotate-canvas {
 		user-select: none;
 		-webkit-user-select: none;
 		-moz-user-select: none;
+		pointer-events: none;
 	}
 </style>
