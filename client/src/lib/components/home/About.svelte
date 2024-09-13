@@ -22,7 +22,7 @@
 				>としてまず{sampleDataSize}枚の画像をアノテーションしていただきます．
 			</li>
 			<li>
-				その後，<strong><a href="{base}/annotate/sample">本番用</a></strong
+				その後，<strong><a href="{base}/annotate">本番用</a></strong
 				>として{prodDataSize}枚の画像をアノテーションしていただきます．
 			</li>
 		</ul>
