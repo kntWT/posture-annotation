@@ -23,6 +23,12 @@ import com.generated.model.PostureUpdateMarkerPosition;
 @Service
 public class PostureService {
 
+    // n件の中からランダムで取得
+    private final int RANDOM_POOL = 50;
+
+    // n件以上アノテーションが集まってほしいか
+    private final int MAX_NEED_COUNT = 5;
+
     @Autowired
     private static PostureRepository postureRepository;
 
@@ -60,14 +66,14 @@ public class PostureService {
 
     @Transactional
     public Posture getRandomPosture() {
-        List<PostureEntity> unannotatedPostures = postureRepository.findOrderByAnnotationCountLimitedTo(100);
+        List<PostureEntity> unannotatedPostures = postureRepository.findOrderByAnnotationCountLimitedTo(RANDOM_POOL);
         Collections.shuffle(unannotatedPostures);
         int index = 0;
         PostureEntity target = null;
         while (target == null && index < unannotatedPostures.size()) {
             try {
                 target = postureRepository
-                    .findByIdWithLock(unannotatedPostures.get(index).getId());
+                        .findByIdWithLock(unannotatedPostures.get(index).getId());
             } catch (PessimisticLockingFailureException e) {
                 index++;
             }
@@ -81,14 +87,15 @@ public class PostureService {
 
     @Transactional
     public Posture getRandomPostureByAnnotaterId(Long annotaterId) {
-        List<PostureEntity> unannotatedPostures = postureRepository.findByAnnotaterIdOrderByAnnotationCountLimitTo(annotaterId, 100, 5);
+        List<PostureEntity> unannotatedPostures = postureRepository
+                .findByAnnotaterIdOrderByAnnotationCountLimitTo(annotaterId, RANDOM_POOL, MAX_NEED_COUNT);
         Collections.shuffle(unannotatedPostures);
         int index = 0;
         PostureEntity target = null;
         while (target == null && index < unannotatedPostures.size()) {
             try {
                 target = postureRepository
-                    .findByIdWithLock(unannotatedPostures.get(index).getId());
+                        .findByIdWithLock(unannotatedPostures.get(index).getId());
             } catch (PessimisticLockingFailureException e) {
                 index++;
             }
@@ -103,11 +110,10 @@ public class PostureService {
     @Transactional
     public Posture updatePostureById(Long id, PostureUpdate postureUpdate) {
         int updateCount = postureRepository
-            .updatePostureById(
-                id,
-                postureUpdate.getNeckAngle(),
-                postureUpdate.getTorsoAngle()
-            );
+                .updatePostureById(
+                        id,
+                        postureUpdate.getNeckAngle(),
+                        postureUpdate.getTorsoAngle());
         if (updateCount <= 0) {
             return null;
         }
@@ -118,10 +124,9 @@ public class PostureService {
     @Transactional
     public Posture updatePostureByIdAndSaveFile(Long id, PostureUpdateWithFile postureUpdateWithFile) {
         PostureUpdate postureUpdate = new PostureUpdate(
-            postureUpdateWithFile.getNeckAngle(),
-            postureUpdateWithFile.getTorsoAngle(),
-            postureUpdateWithFile.getAnnotaterId()
-        );
+                postureUpdateWithFile.getNeckAngle(),
+                postureUpdateWithFile.getTorsoAngle(),
+                postureUpdateWithFile.getAnnotaterId());
         Posture posture = updatePostureById(id, postureUpdate);
         if (posture == null) {
             return null;
@@ -131,10 +136,9 @@ public class PostureService {
         String fileName = formatter.format(posture.getExCreatedAt()) + ".jpg";
         String basePath = System.getenv("IMAGE_DIR");
         String dir = Paths.get(
-            basePath,
-            posture.getUserId().toString(),
-            posture.getAnnotaterId().toString()
-        ).toString();
+                basePath,
+                posture.getUserId().toString(),
+                posture.getAnnotaterId().toString()).toString();
         boolean success = SaveFile.saveBase64Image(fileName, postureUpdateWithFile.getFile(), dir);
         if (!success) {
             return null;
@@ -146,17 +150,16 @@ public class PostureService {
     @Transactional
     public Posture updatePostureMarkerById(Long id, PostureUpdateMarkerPosition postureUpdate) {
         int updateCount = postureRepository
-            .updatePostureById(
-                id,
-                postureUpdate.getTragusX().get(),
-                postureUpdate.getTragusY().get(),
-                postureUpdate.getShoulderX().get(),
-                postureUpdate.getShoulderY().get(),
-                postureUpdate.getWaistX().get(),
-                postureUpdate.getWaistY().get(),
-                postureUpdate.getImageWidth().get(),
-                postureUpdate.getImageHeight().get()
-            );
+                .updatePostureById(
+                        id,
+                        postureUpdate.getTragusX().get(),
+                        postureUpdate.getTragusY().get(),
+                        postureUpdate.getShoulderX().get(),
+                        postureUpdate.getShoulderY().get(),
+                        postureUpdate.getWaistX().get(),
+                        postureUpdate.getWaistY().get(),
+                        postureUpdate.getImageWidth().get(),
+                        postureUpdate.getImageHeight().get());
         if (updateCount <= 0) {
             return null;
         }
@@ -168,17 +171,16 @@ public class PostureService {
         Long updatedCount = 0L;
         for (PostureUpdateMarkerPosition postureUpdate : postureUpdates) {
             int count = postureRepository
-                .updatePostureById(
-                    postureUpdate.getId().get(),
-                    postureUpdate.getTragusX().get(),
-                    postureUpdate.getTragusY().get(),
-                    postureUpdate.getShoulderX().get(),
-                    postureUpdate.getShoulderY().get(),
-                    postureUpdate.getWaistX().get(),
-                    postureUpdate.getWaistY().get(),
-                    postureUpdate.getImageWidth().get(),
-                    postureUpdate.getImageHeight().get()
-                );
+                    .updatePostureById(
+                            postureUpdate.getId().get(),
+                            postureUpdate.getTragusX().get(),
+                            postureUpdate.getTragusY().get(),
+                            postureUpdate.getShoulderX().get(),
+                            postureUpdate.getShoulderY().get(),
+                            postureUpdate.getWaistX().get(),
+                            postureUpdate.getWaistY().get(),
+                            postureUpdate.getImageWidth().get(),
+                            postureUpdate.getImageHeight().get());
             if (count > 0) {
                 updatedCount++;
             }
@@ -199,10 +201,9 @@ public class PostureService {
         List<PostureEntity> samplePostures = new ArrayList<PostureEntity>();
         for (PostureEntity posture : postures) {
             samplePostures.add(posture
-                .cloneWithoutId()
-                .setId(++lastId)
-                .setIsSample(true)
-            );
+                    .cloneWithoutId()
+                    .setId(++lastId)
+                    .setIsSample(true));
         }
         List<PostureEntity> savedPostures = postureRepository.saveAll(samplePostures);
         return PostureEntity.toPostures(savedPostures);
@@ -210,14 +211,15 @@ public class PostureService {
 
     @Transactional
     public Posture getRandomSamplePosture() {
-        List<PostureEntity> unannotatedPostures = postureRepository.findSampleByOrderByAnnotationCountLimitedTo(100);
+        List<PostureEntity> unannotatedPostures = postureRepository
+                .findSampleByOrderByAnnotationCountLimitedTo(RANDOM_POOL);
         Collections.shuffle(unannotatedPostures);
         int index = 0;
         PostureEntity target = null;
         while (target == null && index < unannotatedPostures.size()) {
             try {
                 target = postureRepository
-                    .findByIdWithLock(unannotatedPostures.get(index).getId());
+                        .findByIdWithLock(unannotatedPostures.get(index).getId());
             } catch (PessimisticLockingFailureException e) {
                 index++;
             }
@@ -231,14 +233,15 @@ public class PostureService {
 
     @Transactional
     public Posture getRandomSamplePostureByAnnotaterId(Long annotaterId) {
-        List<PostureEntity> unannotatedPostures = postureRepository.findSampleByAnnotaterIdOrderByAnnotationCountLimitTo(annotaterId, 100, 5);
+        List<PostureEntity> unannotatedPostures = postureRepository
+                .findSampleByAnnotaterIdOrderByAnnotationCountLimitTo(annotaterId, RANDOM_POOL, MAX_NEED_COUNT);
         Collections.shuffle(unannotatedPostures);
         int index = 0;
         PostureEntity target = null;
         while (target == null && index < unannotatedPostures.size()) {
             try {
                 target = postureRepository
-                    .findByIdWithLock(unannotatedPostures.get(index).getId());
+                        .findByIdWithLock(unannotatedPostures.get(index).getId());
             } catch (PessimisticLockingFailureException e) {
                 index++;
             }
