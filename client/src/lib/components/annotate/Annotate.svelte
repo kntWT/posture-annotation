@@ -87,4 +87,11 @@
 			padding: 4px 8px;
 		}
 	}
+
+	:global(body) {
+		position: fixed !important;
+		-webkit-touch-callout: none;
+		-webkit-user-select: none;
+		user-select: none;
+	}
 </style>

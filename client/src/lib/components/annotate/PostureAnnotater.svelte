@@ -515,6 +515,5 @@
 		user-select: none;
 		-webkit-user-select: none;
 		-moz-user-select: none;
-		pointer-events: none;
 	}
 </style>
