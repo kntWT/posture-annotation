@@ -7,6 +7,7 @@ interface ImportMetaEnv {
     readonly VITE_SAMPLE_DATA_SIZE: number;
     readonly VITE_PROD_DATA_SIZE: number;
     readonly VITE_BASE_PATH: string;
+    readonly VITE_ADMIN_USER_IDS: string;
 }
 
 interface ImportMeta {
