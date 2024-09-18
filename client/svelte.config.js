@@ -1,6 +1,6 @@
 import adapter from '@sveltejs/adapter-node';
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
-import {loadEnv} from 'vite';
+import { loadEnv } from 'vite';
 
 /** @type {import('@sveltejs/kit').Config} */
 const env = loadEnv('', process.cwd());
@@ -19,7 +19,21 @@ const config = {
 			$api: './src/lib/api',
 			$stores: './src/stores',
 		},
-	}
+	},
+    server: {
+        proxy: {
+            '/api': {
+                target: env.VITE_API_SERVER_URL,
+                changeOrigin: true,
+                rewrite: (path) => path.replace(/^\/api/, ''),
+            },
+            '/images': {
+                target: env.VITE_FILE_SERVER_URL,
+                changeOrigin: true,
+                rewrite: (path) => path.replace(/^\/images/, ''),
+            },
+        }
+    }
 };
 
 export default config;
