@@ -5,7 +5,7 @@ Annotation:
     - created_at
     - updated_at
   allOf:
-    - $ref: '#/AnnotationCreate'
+    - $ref: "#/AnnotationCreate"
   properties:
     id:
       type: integer
@@ -58,7 +58,7 @@ AnnotationCreate:
     - posture_id
     - annotater_id
   allOf:
-    - $ref: '#/AnnotationUpdate'
+    - $ref: "#/AnnotationUpdate"
   properties:
     posture_id:
       type: integer
@@ -69,13 +69,13 @@ AnnotationCreate:
 AnnotationUpdateWithFile:
   type: object
   allOf:
-    - $ref: '#/AnnotationUpdate'
-    - $ref: '#/FileInfo'
+    - $ref: "#/AnnotationUpdate"
+    - $ref: "#/FileInfo"
 AnnotationCreateWithFile:
   type: object
   allOf:
-    - $ref: '#/AnnotationCreate'
-    - $ref: '#/FileInfo'
+    - $ref: "#/AnnotationCreate"
+    - $ref: "#/FileInfo"
 FileInfo:
   type: object
   required:
@@ -94,7 +94,7 @@ FileInfo:
 AnnotationWithFilePath:
   type: object
   allOf:
-    - $ref: '#/Annotation'
+    - $ref: "#/Annotation"
   required:
     - user_id
     - file_name
@@ -104,3 +104,32 @@ AnnotationWithFilePath:
       format: int64
     file_name:
       type: string
+AnnotationSummary:
+  type: object
+  required:
+    - posture_id
+    - file_name
+    - annotation_ids
+    - original_neck_angle
+    - avg_neck_angle
+    - std_neck_angle
+  properties:
+    posture_id:
+      type: integer
+      format: int64
+    file_name:
+      type: string
+    annotation_ids:
+      type: array
+      items:
+        type: integer
+        format: int64
+    original_neck_angle:
+      type: number
+      format: double
+    avg_neck_angle:
+      type: number
+      format: double
+    std_neck_angle:
+      type: number
+      format: double

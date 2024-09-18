@@ -10,96 +10,104 @@ servers:
     description: Local development server
 paths:
   /user:
-    $ref: './paths/user.yaml#/user'
+    $ref: "./paths/user.yaml#/user"
   /user/login:
-    $ref: './paths/user.yaml#/login'
+    $ref: "./paths/user.yaml#/login"
   /user/auth:
-    $ref: './paths/user.yaml#/user_auth'
+    $ref: "./paths/user.yaml#/user_auth"
   /user/is_exist:
-    $ref: './paths/user.yaml#/is_exist'
+    $ref: "./paths/user.yaml#/is_exist"
   /user/{id}:
-    $ref: './paths/user.yaml#/user_{id}'
+    $ref: "./paths/user.yaml#/user_{id}"
   /posture:
-    $ref: './paths/posture.yaml#/posture'
+    $ref: "./paths/posture.yaml#/posture"
   /posture/{id}:
-    $ref: './paths/posture.yaml#/posture_{id}'
+    $ref: "./paths/posture.yaml#/posture_{id}"
   /posture/random:
-    $ref: './paths/posture.yaml#/posture_random'
+    $ref: "./paths/posture.yaml#/posture_random"
   /posture/random/annotater/{annotater_id}:
-    $ref: './paths/posture.yaml#/posture_random_annotater_{annotater_id}'
+    $ref: "./paths/posture.yaml#/posture_random_annotater_{annotater_id}"
   /posture/sample:
-    $ref: './paths/posture.yaml#/posture_sample'
+    $ref: "./paths/posture.yaml#/posture_sample"
   /posture/sample/random:
-    $ref: './paths/posture.yaml#/posture_sample_random'
+    $ref: "./paths/posture.yaml#/posture_sample_random"
   /posture/sample/random/annotater/{annotater_id}:
-    $ref: './paths/posture.yaml#/posture_sample_random_annotater_{annotater_id}'
+    $ref: "./paths/posture.yaml#/posture_sample_random_annotater_{annotater_id}"
   /posture/user/{user_id}:
-    $ref: './paths/posture.yaml#/posture_user_{user_id}'
+    $ref: "./paths/posture.yaml#/posture_user_{user_id}"
   /posture/markers:
-    $ref: './paths/posture.yaml#/posture_markers'
+    $ref: "./paths/posture.yaml#/posture_markers"
   /posture/marker/{id}:
-    $ref: './paths/posture.yaml#/posture_marker_{id}'
+    $ref: "./paths/posture.yaml#/posture_marker_{id}"
   /annotation:
-    $ref: './paths/annotation.yaml#/annotation'
+    $ref: "./paths/annotation.yaml#/annotation"
   /annotation/{id}:
-    $ref: './paths/annotation.yaml#/annotation_{id}'
+    $ref: "./paths/annotation.yaml#/annotation_{id}"
   /annotation/{id}/file-path:
-    $ref: './paths/annotation.yaml#/annotation_{id}_file_path'
+    $ref: "./paths/annotation.yaml#/annotation_{id}_file_path"
+  /annotation/{ids}:
+    $ref: "./paths/annotation.yaml#/annotation_{ids}"
+  /annotation/{ids}/file-path:
+    $ref: "./paths/annotation.yaml#/annotation_{ids}_file_path"
   /annotation/posture/{posture_id}:
-    $ref: './paths/annotation.yaml#/annotation_posture_{posture_id}'
+    $ref: "./paths/annotation.yaml#/annotation_posture_{posture_id}"
   /annotation/posture/{posture_id}/file-path:
-    $ref: './paths/annotation.yaml#/annotation_posture_{posture_id}_file_path'
+    $ref: "./paths/annotation.yaml#/annotation_posture_{posture_id}_file_path"
   /annotation/annotater/{annotater_id}:
-    $ref: './paths/annotation.yaml#/annotation_annotater_{annotater_id}'
+    $ref: "./paths/annotation.yaml#/annotation_annotater_{annotater_id}"
   /annotation/annotater/{annotater_id}/file-path:
-    $ref: './paths/annotation.yaml#/annotation_annotater_{annotater_id}_file_path'
+    $ref: "./paths/annotation.yaml#/annotation_annotater_{annotater_id}_file_path"
   /annotation/annotater/{annotater_id}/count:
-    $ref: './paths/annotation.yaml#/annotation_annotater_{annotater_id}_count'
+    $ref: "./paths/annotation.yaml#/annotation_annotater_{annotater_id}_count"
   /annotation/annotater/{annotater_id}/prod:
-    $ref: './paths/annotation.yaml#/annotation_annotater_{annotater_id}_prod'
+    $ref: "./paths/annotation.yaml#/annotation_annotater_{annotater_id}_prod"
   /annotation/annotater/{annotater_id}/prod/file-path:
-    $ref: './paths/annotation.yaml#/annotation_annotater_{annotater_id}_prod_file_path'
+    $ref: "./paths/annotation.yaml#/annotation_annotater_{annotater_id}_prod_file_path"
   /annotation/annotater/{annotater_id}/prod/count:
-    $ref: './paths/annotation.yaml#/annotation_annotater_{annotater_id}_prod_count'
+    $ref: "./paths/annotation.yaml#/annotation_annotater_{annotater_id}_prod_count"
   /annotation/annotater/{annotater_id}/sample:
-    $ref: './paths/annotation.yaml#/annotation_annotater_{annotater_id}_sample'
+    $ref: "./paths/annotation.yaml#/annotation_annotater_{annotater_id}_sample"
   /annotation/annotater/{annotater_id}/sample/file-path:
-    $ref: './paths/annotation.yaml#/annotation_annotater_{annotater_id}_sample_file_path'
+    $ref: "./paths/annotation.yaml#/annotation_annotater_{annotater_id}_sample_file_path"
   /annotation/annotater/{annotater_id}/sample/count:
-    $ref: './paths/annotation.yaml#/annotation_annotater_{annotater_id}_sample_count'
+    $ref: "./paths/annotation.yaml#/annotation_annotater_{annotater_id}_sample_count"
   /annotation/posture/{posture_id}/annotater/{annotater_id}:
-    $ref: './paths/annotation.yaml#/annotation_posture_{posture_id}_annotater_{annotater_id}'
+    $ref: "./paths/annotation.yaml#/annotation_posture_{posture_id}_annotater_{annotater_id}"
   /annotation/posture/{posture_id}/annotater/{annotater_id}/file-path:
-    $ref: './paths/annotation.yaml#/annotation_posture_{posture_id}_annotater_{annotater_id}_file_path'
+    $ref: "./paths/annotation.yaml#/annotation_posture_{posture_id}_annotater_{annotater_id}_file_path"
+  /annotation/summary:
+    $ref: "./paths/annotation.yaml#/annotation_summary"
 components:
   securitySchemes:
     bearerAuth:
-      $ref: './components/securitySchemas/bearerAuth.yaml#/bearerAuth'
+      $ref: "./components/securitySchemas/bearerAuth.yaml#/bearerAuth"
   schemas:
     User:
-      $ref: './components/schemas/user.yaml#/User'
+      $ref: "./components/schemas/user.yaml#/User"
     UserCreate:
-      $ref: './components/schemas/user.yaml#/UserCreate'
+      $ref: "./components/schemas/user.yaml#/UserCreate"
     Posture:
-      $ref: './components/schemas/posture.yaml#/Posture'
+      $ref: "./components/schemas/posture.yaml#/Posture"
     PostureUpdate:
-      $ref: './components/schemas/posture.yaml#/PostureUpdate'
+      $ref: "./components/schemas/posture.yaml#/PostureUpdate"
     PostureUpdateWithFile:
-      $ref: './components/schemas/posture.yaml#/PostureUpdateWithFile'
+      $ref: "./components/schemas/posture.yaml#/PostureUpdateWithFile"
     PostureUpdateMarkerPosition:
-      $ref: './components/schemas/posture.yaml#/PostureUpdateMarkerPosition'
+      $ref: "./components/schemas/posture.yaml#/PostureUpdateMarkerPosition"
     Annotation:
-      $ref: './components/schemas/annotation.yaml#/Annotation'
+      $ref: "./components/schemas/annotation.yaml#/Annotation"
     AnnotationUpdate:
-      $ref: './components/schemas/annotation.yaml#/AnnotationUpdate'
+      $ref: "./components/schemas/annotation.yaml#/AnnotationUpdate"
     AnnotationCreate:
-      $ref: './components/schemas/annotation.yaml#/AnnotationCreate'
+      $ref: "./components/schemas/annotation.yaml#/AnnotationCreate"
     AnnotationUpdateWithFile:
-      $ref: './components/schemas/annotation.yaml#/AnnotationUpdateWithFile'
+      $ref: "./components/schemas/annotation.yaml#/AnnotationUpdateWithFile"
     AnnotationCreateWithFile:
-      $ref: './components/schemas/annotation.yaml#/AnnotationCreateWithFile'
+      $ref: "./components/schemas/annotation.yaml#/AnnotationCreateWithFile"
     AnnotationWithFilePath:
-      $ref: './components/schemas/annotation.yaml#/AnnotationWithFilePath'
+      $ref: "./components/schemas/annotation.yaml#/AnnotationWithFilePath"
+    AnnotationSummary:
+      $ref: "./components/schemas/annotation.yaml#/AnnotationSummary"
   examples:
     UserExample:
       value:

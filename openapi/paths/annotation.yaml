@@ -7,15 +7,15 @@ annotation:
     security: &bearerAuth
       - bearerAuth: []
     responses:
-      '200':
+      "200":
         description: ok
         content:
           application/json:
             schema:
               type: array
               items:
-                $ref: '../components/schemas/annotation.yaml#/Annotation'
-      '403':
+                $ref: "../components/schemas/annotation.yaml#/Annotation"
+      "403":
         description: forbidden
   post:
     description: create annotated posture
@@ -28,15 +28,15 @@ annotation:
       content:
         application/json:
           schema:
-            $ref: '../components/schemas/annotation.yaml#/AnnotationCreateWithFile'
+            $ref: "../components/schemas/annotation.yaml#/AnnotationCreateWithFile"
     responses:
-      '201':
+      "201":
         description: created
         content:
           application/json:
             schema:
-              $ref: '../components/schemas/annotation.yaml#/Annotation'
-      '403':
+              $ref: "../components/schemas/annotation.yaml#/Annotation"
+      "403":
         description: forbidden
 annotation_{id}:
   get:
@@ -53,13 +53,13 @@ annotation_{id}:
           type: integer
           format: int64
     responses:
-      '200':
+      "200":
         description: ok
         content:
           application/json:
             schema:
-              $ref: '../components/schemas/annotation.yaml#/Annotation'
-      '403':
+              $ref: "../components/schemas/annotation.yaml#/Annotation"
+      "403":
         description: forbidden
   put:
     description: update annotated posture by id
@@ -79,15 +79,15 @@ annotation_{id}:
       content:
         application/json:
           schema:
-            $ref: '../components/schemas/annotation.yaml#/AnnotationUpdateWithFile'
+            $ref: "../components/schemas/annotation.yaml#/AnnotationUpdateWithFile"
     responses:
-      '200':
+      "200":
         description: ok
         content:
           application/json:
             schema:
-              $ref: '../components/schemas/annotation.yaml#/Annotation'
-      '403':
+              $ref: "../components/schemas/annotation.yaml#/Annotation"
+      "403":
         description: forbidden
 annotation_{id}_file_path:
   get:
@@ -104,13 +104,71 @@ annotation_{id}_file_path:
           type: integer
           format: int64
     responses:
-      '200':
+      "200":
         description: ok
         content:
           application/json:
             schema:
-              $ref: '../components/schemas/annotation.yaml#/AnnotationWithFilePath'
-      '403':
+              $ref: "../components/schemas/annotation.yaml#/AnnotationWithFilePath"
+      "403":
+        description: forbidden
+annotation_{ids}:
+  get:
+    description: get annotated postures by ids
+    operationId: getAnnotationsById
+    tags:
+      - annotation
+    security: *bearerAuth
+    parameters:
+      - name: ids
+        in: path
+        required: true
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int64
+        style: form
+        explode: false
+    responses:
+      "200":
+        description: ok
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "../components/schemas/annotation.yaml#/Annotation"
+      "403":
+        description: forbidden
+annotation_{ids}_file_path:
+  get:
+    description: get annotated postures file path by ids
+    operationId: getAnnotationsWithFilePathById
+    tags:
+      - annotation
+    security: *bearerAuth
+    parameters:
+      - name: ids
+        in: path
+        required: true
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int64
+        style: form
+        explode: false
+    responses:
+      "200":
+        description: ok
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "../components/schemas/annotation.yaml#/AnnotationWithFilePath"
+      "403":
         description: forbidden
 annotation_posture_{posture_id}:
   get:
@@ -127,15 +185,15 @@ annotation_posture_{posture_id}:
           type: integer
           format: int64
     responses:
-      '200':
+      "200":
         description: ok
         content:
           application/json:
             schema:
               type: array
               items:
-                $ref: '../components/schemas/annotation.yaml#/Annotation'
-      '403':
+                $ref: "../components/schemas/annotation.yaml#/Annotation"
+      "403":
         description: forbidden
 annotation_posture_{posture_id}_file_path:
   get:
@@ -152,15 +210,15 @@ annotation_posture_{posture_id}_file_path:
           type: integer
           format: int64
     responses:
-      '200':
+      "200":
         description: ok
         content:
           application/json:
             schema:
               type: array
               items:
-                $ref: '../components/schemas/annotation.yaml#/AnnotationWithFilePath'
-      '403':
+                $ref: "../components/schemas/annotation.yaml#/AnnotationWithFilePath"
+      "403":
         description: forbidden
 annotation_annotater_{annotater_id}:
   get:
@@ -177,15 +235,15 @@ annotation_annotater_{annotater_id}:
           type: integer
           format: int64
     responses:
-      '200':
+      "200":
         description: ok
         content:
           application/json:
             schema:
               type: array
               items:
-                $ref: '../components/schemas/annotation.yaml#/Annotation'
-      '403':
+                $ref: "../components/schemas/annotation.yaml#/Annotation"
+      "403":
         description: forbidden
 annotation_annotater_{annotater_id}_file_path:
   get:
@@ -202,15 +260,15 @@ annotation_annotater_{annotater_id}_file_path:
           type: integer
           format: int64
     responses:
-      '200':
+      "200":
         description: ok
         content:
           application/json:
             schema:
               type: array
               items:
-                $ref: '../components/schemas/annotation.yaml#/AnnotationWithFilePath'
-      '403':
+                $ref: "../components/schemas/annotation.yaml#/AnnotationWithFilePath"
+      "403":
         description: forbidden
 annotation_annotater_{annotater_id}_count:
   get:
@@ -227,14 +285,14 @@ annotation_annotater_{annotater_id}_count:
           type: integer
           format: int64
     responses:
-      '200':
+      "200":
         description: ok
         content:
           application/json:
             schema:
               type: integer
               format: int64
-      '403':
+      "403":
         description: forbidden
 annotation_annotater_{annotater_id}_prod:
   get:
@@ -251,15 +309,15 @@ annotation_annotater_{annotater_id}_prod:
           type: integer
           format: int64
     responses:
-      '200':
+      "200":
         description: ok
         content:
           application/json:
             schema:
               type: array
               items:
-                $ref: '../components/schemas/annotation.yaml#/Annotation'
-      '403':
+                $ref: "../components/schemas/annotation.yaml#/Annotation"
+      "403":
         description: forbidden
 annotation_annotater_{annotater_id}_prod_file_path:
   get:
@@ -276,15 +334,15 @@ annotation_annotater_{annotater_id}_prod_file_path:
           type: integer
           format: int64
     responses:
-      '200':
+      "200":
         description: ok
         content:
           application/json:
             schema:
               type: array
               items:
-                $ref: '../components/schemas/annotation.yaml#/AnnotationWithFilePath'
-      '403':
+                $ref: "../components/schemas/annotation.yaml#/AnnotationWithFilePath"
+      "403":
         description: forbidden
 annotation_annotater_{annotater_id}_prod_count:
   get:
@@ -301,14 +359,14 @@ annotation_annotater_{annotater_id}_prod_count:
           type: integer
           format: int64
     responses:
-      '200':
+      "200":
         description: ok
         content:
           application/json:
             schema:
               type: integer
               format: int64
-      '403':
+      "403":
         description: forbidden
 annotation_annotater_{annotater_id}_sample:
   get:
@@ -325,15 +383,15 @@ annotation_annotater_{annotater_id}_sample:
           type: integer
           format: int64
     responses:
-      '200':
+      "200":
         description: ok
         content:
           application/json:
             schema:
               type: array
               items:
-                $ref: '../components/schemas/annotation.yaml#/Annotation'
-      '403':
+                $ref: "../components/schemas/annotation.yaml#/Annotation"
+      "403":
         description: forbidden
 annotation_annotater_{annotater_id}_sample_file_path:
   get:
@@ -350,15 +408,15 @@ annotation_annotater_{annotater_id}_sample_file_path:
           type: integer
           format: int64
     responses:
-      '200':
+      "200":
         description: ok
         content:
           application/json:
             schema:
               type: array
               items:
-                $ref: '../components/schemas/annotation.yaml#/AnnotationWithFilePath'
-      '403':
+                $ref: "../components/schemas/annotation.yaml#/AnnotationWithFilePath"
+      "403":
         description: forbidden
 annotation_annotater_{annotater_id}_sample_count:
   get:
@@ -375,14 +433,14 @@ annotation_annotater_{annotater_id}_sample_count:
           type: integer
           format: int64
     responses:
-      '200':
+      "200":
         description: ok
         content:
           application/json:
             schema:
               type: integer
               format: int64
-      '403':
+      "403":
         description: forbidden
 annotation_posture_{posture_id}_annotater_{annotater_id}:
   get:
@@ -405,13 +463,13 @@ annotation_posture_{posture_id}_annotater_{annotater_id}:
           type: integer
           format: int64
     responses:
-      '200':
+      "200":
         description: ok
         content:
           application/json:
             schema:
-              $ref: '../components/schemas/annotation.yaml#/Annotation'
-      '403':
+              $ref: "../components/schemas/annotation.yaml#/Annotation"
+      "403":
         description: forbidden
   put:
     description: update annotated posture by posture id and annotater id
@@ -437,15 +495,15 @@ annotation_posture_{posture_id}_annotater_{annotater_id}:
       content:
         application/json:
           schema:
-            $ref: '../components/schemas/annotation.yaml#/AnnotationUpdateWithFile'
+            $ref: "../components/schemas/annotation.yaml#/AnnotationUpdateWithFile"
     responses:
-      '200':
+      "200":
         description: ok
         content:
           application/json:
             schema:
-              $ref: '../components/schemas/annotation.yaml#/Annotation'
-      '403':
+              $ref: "../components/schemas/annotation.yaml#/Annotation"
+      "403":
         description: forbidden
 annotation_posture_{posture_id}_annotater_{annotater_id}_file_path:
   get:
@@ -468,11 +526,27 @@ annotation_posture_{posture_id}_annotater_{annotater_id}_file_path:
           type: integer
           format: int64
     responses:
-      '200':
+      "200":
         description: ok
         content:
           application/json:
             schema:
-              $ref: '../components/schemas/annotation.yaml#/AnnotationWithFilePath'
-      '403':
+              $ref: "../components/schemas/annotation.yaml#/AnnotationWithFilePath"
+      "403":
+        description: forbidden
+annotation_summary:
+  get:
+    description: get summary of annotation
+    operationId: getAnnotationSummary
+    tags:
+      - annotation
+    security: *bearerAuth
+    responses:
+      "200":
+        description: ok
+        content:
+          application/json:
+            schema:
+              $ref: "../components/schemas/annotation.yaml#/AnnotationSummary"
+      "403":
         description: forbidden
