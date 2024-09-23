@@ -124,6 +124,11 @@ AnnotationSummary:
       items:
         type: integer
         format: int64
+    annotater_ids:
+      type: array
+      items:
+        type: integer
+        format: int64
     original_neck_angle:
       type: number
       format: double
