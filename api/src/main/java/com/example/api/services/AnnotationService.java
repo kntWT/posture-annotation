@@ -12,12 +12,14 @@ import com.example.api.repositories.AnnotationRepository;
 import com.example.api.utils.DateFormatter;
 import com.example.api.utils.SaveFile;
 import com.example.api.entities.AnnotationEntity;
+import com.example.api.entities.AnnotationSummaryEntity;
 import com.generated.model.Annotation;
 import com.generated.model.AnnotationUpdate;
 import com.generated.model.AnnotationUpdateWithFile;
 import com.generated.model.AnnotationCreate;
 import com.generated.model.AnnotationCreateWithFile;
 import com.generated.model.AnnotationWithFilePath;
+import com.generated.model.AnnotationSummary;
 
 @Service
 public class AnnotationService {
@@ -38,17 +40,16 @@ public class AnnotationService {
         }
 
         AnnotationEntity annotation = new AnnotationEntity(
-            postureId,
-            annotaterId,
-            annotationCreate.getTragusX(),
-            annotationCreate.getTragusY(),
-            annotationCreate.getShoulderX(),
-            annotationCreate.getShoulderY(),
-            annotationCreate.getWaistX(),
-            annotationCreate.getWaistY(),
-            annotationCreate.getNeckAngle(),
-            annotationCreate.getTorsoAngle()
-        );
+                postureId,
+                annotaterId,
+                annotationCreate.getTragusX(),
+                annotationCreate.getTragusY(),
+                annotationCreate.getShoulderX(),
+                annotationCreate.getShoulderY(),
+                annotationCreate.getWaistX(),
+                annotationCreate.getWaistY(),
+                annotationCreate.getNeckAngle(),
+                annotationCreate.getTorsoAngle());
 
         return annotationRepository.save(annotation).toAnnotation();
     }
@@ -56,17 +57,16 @@ public class AnnotationService {
     @Transactional
     public Annotation createAnnotationAndSaveFile(AnnotationCreateWithFile annotationWithFile) {
         AnnotationCreate annotationCreate = new AnnotationCreate(
-            annotationWithFile.getPostureId(),
-            annotationWithFile.getAnnotaterId(),
-            annotationWithFile.getTragusX(),
-            annotationWithFile.getTragusY(),
-            annotationWithFile.getShoulderX(),
-            annotationWithFile.getShoulderY(),
-            annotationWithFile.getWaistX(),
-            annotationWithFile.getWaistY(),
-            annotationWithFile.getNeckAngle(),
-            annotationWithFile.getTorsoAngle()
-        );
+                annotationWithFile.getPostureId(),
+                annotationWithFile.getAnnotaterId(),
+                annotationWithFile.getTragusX(),
+                annotationWithFile.getTragusY(),
+                annotationWithFile.getShoulderX(),
+                annotationWithFile.getShoulderY(),
+                annotationWithFile.getWaistX(),
+                annotationWithFile.getWaistY(),
+                annotationWithFile.getNeckAngle(),
+                annotationWithFile.getTorsoAngle());
         Annotation annotation = createAnnotation(annotationCreate);
 
         if (annotation == null) {
@@ -76,13 +76,12 @@ public class AnnotationService {
         String fileName = annotationWithFile.getFileName();
         String basePath = System.getenv("IMAGE_DIR");
         String subPath = annotationRepository.isSampleById(annotation.getId())
-            ? "sample"
-            : annotationWithFile.getUserId().toString();
+                ? "sample"
+                : annotationWithFile.getUserId().toString();
         String dir = Paths.get(
-            basePath,
-            subPath,
-            annotationWithFile.getAnnotaterId().toString()
-        ).toString();
+                basePath,
+                subPath,
+                annotationWithFile.getAnnotaterId().toString()).toString();
         boolean success = SaveFile.saveBase64Image(fileName, annotationWithFile.getFile(), dir);
         if (!success) {
             return null;
@@ -113,8 +112,20 @@ public class AnnotationService {
         if (annotation == null) {
             return null;
         }
-        
+
         return annotation.toAnnotationWithFilePath();
+    }
+
+    @Transactional
+    public List<Annotation> getAnnotationsById(List<Long> ids) {
+        List<AnnotationEntity> annotations = annotationRepository.findAllByIdInOrderByIdAsc(ids);
+        return AnnotationEntity.toAnnotations(annotations);
+    }
+
+    @Transactional
+    public List<AnnotationWithFilePath> getAnnotationsWithFilePathById(List<Long> ids) {
+        List<AnnotationEntity> annotations = annotationRepository.findAllByIdWithFilePathOrderByIdAsc(ids);
+        return AnnotationEntity.toAnnotationsWithFilePath(annotations);
     }
 
     @Transactional
@@ -130,16 +141,15 @@ public class AnnotationService {
     @Transactional
     public Annotation updateAnnotationById(Long id, AnnotationUpdate annotationUpdate) {
         int count = annotationRepository.updateAnnotationById(
-            id,
-            annotationUpdate.getTragusX(),
-            annotationUpdate.getTragusY(),
-            annotationUpdate.getShoulderX(),
-            annotationUpdate.getShoulderY(),
-            annotationUpdate.getWaistX(),
-            annotationUpdate.getWaistY(),
-            annotationUpdate.getNeckAngle(),
-            annotationUpdate.getTorsoAngle()
-        );
+                id,
+                annotationUpdate.getTragusX(),
+                annotationUpdate.getTragusY(),
+                annotationUpdate.getShoulderX(),
+                annotationUpdate.getShoulderY(),
+                annotationUpdate.getWaistX(),
+                annotationUpdate.getWaistY(),
+                annotationUpdate.getNeckAngle(),
+                annotationUpdate.getTorsoAngle());
         if (count <= 0) {
             return null;
         }
@@ -154,15 +164,14 @@ public class AnnotationService {
     @Transactional
     public Annotation updateAnnotationByIdAndSaveFile(Long id, AnnotationUpdateWithFile annotationWithFile) {
         AnnotationUpdate annotationUpdate = new AnnotationUpdate(
-            annotationWithFile.getTragusX(),
-            annotationWithFile.getTragusY(),
-            annotationWithFile.getShoulderX(),
-            annotationWithFile.getShoulderY(),
-            annotationWithFile.getWaistX(),
-            annotationWithFile.getWaistY(),
-            annotationWithFile.getNeckAngle(),
-            annotationWithFile.getTorsoAngle()
-        );
+                annotationWithFile.getTragusX(),
+                annotationWithFile.getTragusY(),
+                annotationWithFile.getShoulderX(),
+                annotationWithFile.getShoulderY(),
+                annotationWithFile.getWaistX(),
+                annotationWithFile.getWaistY(),
+                annotationWithFile.getNeckAngle(),
+                annotationWithFile.getTorsoAngle());
         Annotation annotation = updateAnnotationById(id, annotationUpdate);
 
         if (annotation == null) {
@@ -172,13 +181,12 @@ public class AnnotationService {
         String fileName = annotationWithFile.getFileName();
         String basePath = System.getenv("IMAGE_DIR");
         String subPath = annotationRepository.isSampleById(annotation.getId())
-            ? "sample"
-            : annotationWithFile.getUserId().toString();
+                ? "sample"
+                : annotationWithFile.getUserId().toString();
         String dir = Paths.get(
-            basePath,
-            subPath,
-            annotation.getAnnotaterId().toString()
-        ).toString();
+                basePath,
+                subPath,
+                annotation.getAnnotaterId().toString()).toString();
         boolean success = SaveFile.saveBase64Image(fileName, annotationWithFile.getFile(), dir);
         if (!success) {
             return null;
@@ -228,7 +236,8 @@ public class AnnotationService {
 
     @Transactional
     public AnnotationWithFilePath getAnnotationWithFilePathByPostureIdAndAnnotaterId(Long postureId, Long annotaterId) {
-        AnnotationEntity annotation = annotationRepository.findByPostureIdAndAnnotaterIdWithFilePath(postureId, annotaterId);
+        AnnotationEntity annotation = annotationRepository.findByPostureIdAndAnnotaterIdWithFilePath(postureId,
+                annotaterId);
         if (annotation == null) {
             return null;
         }
@@ -237,7 +246,8 @@ public class AnnotationService {
     }
 
     @Transactional
-    public Annotation updateAnnotationByPostureIdAndAnnotaterId(Long postureId, Long annotaterId, AnnotationUpdateWithFile annotationWithFile) {
+    public Annotation updateAnnotationByPostureIdAndAnnotaterId(Long postureId, Long annotaterId,
+            AnnotationUpdateWithFile annotationWithFile) {
         Annotation annotation = getAnnotationByPostureIdAndAnnotaterId(postureId, annotaterId);
         if (annotation == null) {
             return null;
@@ -248,13 +258,13 @@ public class AnnotationService {
 
     @Transactional
     public List<Annotation> getProdAnnotationsByAnnotaterId(Long annotaterId) {
-        List<AnnotationEntity> annotations =  annotationRepository.findProdByAnnotaterId(annotaterId);
+        List<AnnotationEntity> annotations = annotationRepository.findProdByAnnotaterId(annotaterId);
         return AnnotationEntity.toAnnotations(annotations);
     }
 
     @Transactional
     public List<AnnotationWithFilePath> getProdAnnotationsWithFilePathByAnnotaterId(Long annotaterId) {
-        List<AnnotationEntity> annotations =  annotationRepository.findProdByAnnotaterIdWithFilePath(annotaterId);
+        List<AnnotationEntity> annotations = annotationRepository.findProdByAnnotaterIdWithFilePath(annotaterId);
         return AnnotationEntity.toAnnotationsWithFilePath(annotations);
     }
 
@@ -265,19 +275,29 @@ public class AnnotationService {
 
     @Transactional
     public List<Annotation> getSampleAnnotationsByAnnotaterId(Long annotaterId) {
-        List<AnnotationEntity> annotations =  annotationRepository.findSampleByAnnotaterId(annotaterId);
+        List<AnnotationEntity> annotations = annotationRepository.findSampleByAnnotaterId(annotaterId);
         return AnnotationEntity.toAnnotations(annotations);
     }
 
     @Transactional
     public List<AnnotationWithFilePath> getSampleAnnotationsWithFilePathByAnnotaterId(Long annotaterId) {
-        List<AnnotationEntity> annotations =  annotationRepository.findSampleByAnnotaterIdWithFilePath(annotaterId);
+        List<AnnotationEntity> annotations = annotationRepository.findSampleByAnnotaterIdWithFilePath(annotaterId);
         return AnnotationEntity.toAnnotationsWithFilePath(annotations);
     }
 
     @Transactional
     public Long getSampleAnnotationCountByAnnotaterId(Long annotaterId) {
         return annotationRepository.countByAnnotaterIdAndIsSample(annotaterId, true);
+    }
+
+    @Transactional
+    public List<AnnotationSummary> getAnnotationSummary() {
+        List<AnnotationSummaryEntity> annotationSummary = annotationRepository.getAnnotationSummary();
+        if (annotationSummary.size() <= 0) {
+            return null;
+        }
+
+        return AnnotationSummaryEntity.toAnnotationSummaries(annotationSummary);
     }
 
 }

@@ -17,6 +17,7 @@ import com.generated.model.AnnotationUpdate;
 import com.generated.model.AnnotationCreateWithFile;
 import com.generated.model.AnnotationUpdateWithFile;
 import com.generated.model.AnnotationWithFilePath;
+import com.generated.model.AnnotationSummary;
 
 @RestController
 public class AnnotationController implements AnnotationApi {
@@ -31,30 +32,27 @@ public class AnnotationController implements AnnotationApi {
     }
 
     @Override
-    public ResponseEntity<Annotation>  createOrUpdateAnnotation(AnnotationCreateWithFile annotationWithFile) {
+    public ResponseEntity<Annotation> createOrUpdateAnnotation(AnnotationCreateWithFile annotationWithFile) {
         boolean isExist = annotationService.isAnnotationExistByPostureIdAndAnnotaterId(
-            annotationWithFile.getPostureId(),
-            annotationWithFile.getAnnotaterId()
-        );
+                annotationWithFile.getPostureId(),
+                annotationWithFile.getAnnotaterId());
         if (isExist) {
             AnnotationUpdateWithFile annotationUpdate = new AnnotationUpdateWithFile(
-                annotationWithFile.getTragusX(),
-                annotationWithFile.getTragusY(),
-                annotationWithFile.getShoulderX(),
-                annotationWithFile.getShoulderY(),
-                annotationWithFile.getWaistX(),
-                annotationWithFile.getWaistY(),
-                annotationWithFile.getNeckAngle(),
-                annotationWithFile.getTorsoAngle(),
-                annotationWithFile.getFile(),
-                annotationWithFile.getAnnotaterId(),
-                annotationWithFile.getFileName()
-            );
+                    annotationWithFile.getTragusX(),
+                    annotationWithFile.getTragusY(),
+                    annotationWithFile.getShoulderX(),
+                    annotationWithFile.getShoulderY(),
+                    annotationWithFile.getWaistX(),
+                    annotationWithFile.getWaistY(),
+                    annotationWithFile.getNeckAngle(),
+                    annotationWithFile.getTorsoAngle(),
+                    annotationWithFile.getFile(),
+                    annotationWithFile.getAnnotaterId(),
+                    annotationWithFile.getFileName());
             Annotation annotation = annotationService.updateAnnotationByPostureIdAndAnnotaterId(
-                annotationWithFile.getPostureId(),
-                annotationWithFile.getAnnotaterId(),
-                annotationUpdate
-            );
+                    annotationWithFile.getPostureId(),
+                    annotationWithFile.getAnnotaterId(),
+                    annotationUpdate);
             if (annotation == null) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
             }
@@ -95,6 +93,26 @@ public class AnnotationController implements AnnotationApi {
     }
 
     @Override
+    public ResponseEntity<List<Annotation>> getAnnotationsById(List<Long> ids) {
+        List<Annotation> annotations = annotationService.getAnnotationsById(ids);
+        if (annotations == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+        return ResponseEntity.ok(annotations);
+    }
+
+    @Override
+    public ResponseEntity<List<AnnotationWithFilePath>> getAnnotationsWithFilePathById(List<Long> ids) {
+        List<AnnotationWithFilePath> annotations = annotationService.getAnnotationsWithFilePathById(ids);
+        if (annotations == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+        return ResponseEntity.ok(annotations);
+    }
+
+    @Override
     public ResponseEntity<Annotation> updateAnnotationById(Long id, AnnotationUpdateWithFile annotationUpdate) {
         Annotation annotation = annotationService.updateAnnotationByIdAndSaveFile(id, annotationUpdate);
         if (annotation == null) {
@@ -112,7 +130,8 @@ public class AnnotationController implements AnnotationApi {
 
     @Override
     public ResponseEntity<List<AnnotationWithFilePath>> getAnnotationsWithFilePathByAnnotaterId(Long annotaterId) {
-        List<AnnotationWithFilePath> annotations = annotationService.getAnnotationsWithFilePathByAnnotaterId(annotaterId);
+        List<AnnotationWithFilePath> annotations = annotationService
+                .getAnnotationsWithFilePathByAnnotaterId(annotaterId);
         return ResponseEntity.ok(annotations);
     }
 
@@ -145,8 +164,10 @@ public class AnnotationController implements AnnotationApi {
     }
 
     @Override
-    public ResponseEntity<AnnotationWithFilePath> getAnnotationWithFilePathByPostureIdAndAnnotaterId(Long postureId, Long annotaterId) {
-        AnnotationWithFilePath annotationWithFilePath = annotationService.getAnnotationWithFilePathByPostureIdAndAnnotaterId(postureId, annotaterId);
+    public ResponseEntity<AnnotationWithFilePath> getAnnotationWithFilePathByPostureIdAndAnnotaterId(Long postureId,
+            Long annotaterId) {
+        AnnotationWithFilePath annotationWithFilePath = annotationService
+                .getAnnotationWithFilePathByPostureIdAndAnnotaterId(postureId, annotaterId);
         if (annotationWithFilePath == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
@@ -155,8 +176,10 @@ public class AnnotationController implements AnnotationApi {
     }
 
     @Override
-    public ResponseEntity<Annotation> updateAnnotationByPostureIdAndAnnotaterId(Long postureId, Long annotaterId, AnnotationUpdateWithFile annotationWithFile) {
-        Annotation annotation = annotationService.updateAnnotationByPostureIdAndAnnotaterId(postureId, annotaterId, annotationWithFile);
+    public ResponseEntity<Annotation> updateAnnotationByPostureIdAndAnnotaterId(Long postureId, Long annotaterId,
+            AnnotationUpdateWithFile annotationWithFile) {
+        Annotation annotation = annotationService.updateAnnotationByPostureIdAndAnnotaterId(postureId, annotaterId,
+                annotationWithFile);
         if (annotation == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
@@ -172,7 +195,8 @@ public class AnnotationController implements AnnotationApi {
 
     @Override
     public ResponseEntity<List<AnnotationWithFilePath>> getProdAnnotationsWithFilePathByAnnotaterId(Long annotaterId) {
-        List<AnnotationWithFilePath> annotations = annotationService.getProdAnnotationsWithFilePathByAnnotaterId(annotaterId);
+        List<AnnotationWithFilePath> annotations = annotationService
+                .getProdAnnotationsWithFilePathByAnnotaterId(annotaterId);
         return ResponseEntity.ok(annotations);
     }
 
@@ -189,8 +213,10 @@ public class AnnotationController implements AnnotationApi {
     }
 
     @Override
-    public ResponseEntity<List<AnnotationWithFilePath>> getSampleAnnotationsWithFilePathByAnnotaterId(Long annotaterId) {
-        List<AnnotationWithFilePath> annotations = annotationService.getSampleAnnotationsWithFilePathByAnnotaterId(annotaterId);
+    public ResponseEntity<List<AnnotationWithFilePath>> getSampleAnnotationsWithFilePathByAnnotaterId(
+            Long annotaterId) {
+        List<AnnotationWithFilePath> annotations = annotationService
+                .getSampleAnnotationsWithFilePathByAnnotaterId(annotaterId);
         return ResponseEntity.ok(annotations);
     }
 
@@ -198,5 +224,14 @@ public class AnnotationController implements AnnotationApi {
     public ResponseEntity<Long> getSampleAnnotationCountByAnnotaterId(Long annotaterId) {
         Long count = annotationService.getSampleAnnotationCountByAnnotaterId(annotaterId);
         return ResponseEntity.ok(count);
+    }
+
+    @Override
+    public ResponseEntity<List<AnnotationSummary>> getAnnotationSummary() {
+        List<AnnotationSummary> annotationSummary = annotationService.getAnnotationSummary();
+        if (annotationSummary == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        return ResponseEntity.ok(annotationSummary);
     }
 }

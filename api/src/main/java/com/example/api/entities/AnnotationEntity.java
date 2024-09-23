@@ -29,23 +29,13 @@ import com.example.api.utils.DateFormatter;;
 @Entity
 @Table(name = "annotations")
 @NamedEntityGraphs({
-    @NamedEntityGraph(
-        name = "Annotation.filePath",
-        attributeNodes = {
-            @NamedAttributeNode(value = "posture", subgraph = "posture.userId"),
-            @NamedAttributeNode(value = "posture", subgraph = "posture.exCreatedAt")
-        },
-        subgraphs = {
-            @NamedSubgraph(
-                name = "posture.userId",
-                attributeNodes = @NamedAttributeNode("userId")
-            ),
-            @NamedSubgraph(
-                name = "posture.exCreatedAt",
-                attributeNodes = @NamedAttributeNode("exCreatedAt")
-            )
-        }
-    )
+        @NamedEntityGraph(name = "Annotation.filePath", attributeNodes = {
+                @NamedAttributeNode(value = "posture", subgraph = "posture.userId"),
+                @NamedAttributeNode(value = "posture", subgraph = "posture.exCreatedAt")
+        }, subgraphs = {
+                @NamedSubgraph(name = "posture.userId", attributeNodes = @NamedAttributeNode("userId")),
+                @NamedSubgraph(name = "posture.exCreatedAt", attributeNodes = @NamedAttributeNode("exCreatedAt"))
+        })
 })
 public class AnnotationEntity {
 
@@ -96,20 +86,20 @@ public class AnnotationEntity {
     @JoinColumn(name = "posture_id", referencedColumnName = "id", insertable = false, updatable = false)
     PostureEntity posture;
 
-    AnnotationEntity() {}
+    AnnotationEntity() {
+    }
 
     public AnnotationEntity(
-        Long postureId,
-        Long annotaterId,
-        Double tragusX,
-        Double tragusY,
-        Double shoulderX,
-        Double shoulderY,
-        Double waistX,
-        Double waistY,
-        Double neckAngle,
-        Double torsoAngle
-    ) {
+            Long postureId,
+            Long annotaterId,
+            Double tragusX,
+            Double tragusY,
+            Double shoulderX,
+            Double shoulderY,
+            Double waistX,
+            Double waistY,
+            Double neckAngle,
+            Double torsoAngle) {
         this.postureId = postureId;
         this.annotaterId = annotaterId;
         this.tragusX = tragusX;
@@ -164,50 +154,50 @@ public class AnnotationEntity {
 
     public Annotation toAnnotation() {
         return new Annotation()
-            .id(id)
-            .postureId(postureId)
-            .annotaterId(annotaterId)
-            .tragusX(tragusX)
-            .tragusY(tragusY)
-            .shoulderX(shoulderX)
-            .shoulderY(shoulderY)
-            .waistX(waistX)
-            .waistY(waistY)
-            .neckAngle(neckAngle)
-            .torsoAngle(torsoAngle)
-            .createdAt(createdAt)
-            .updatedAt(updatedAt);
+                .id(id)
+                .postureId(postureId)
+                .annotaterId(annotaterId)
+                .tragusX(tragusX)
+                .tragusY(tragusY)
+                .shoulderX(shoulderX)
+                .shoulderY(shoulderY)
+                .waistX(waistX)
+                .waistY(waistY)
+                .neckAngle(neckAngle)
+                .torsoAngle(torsoAngle)
+                .createdAt(createdAt)
+                .updatedAt(updatedAt);
     }
 
     public static List<Annotation> toAnnotations(List<AnnotationEntity> annotationEntities) {
         return annotationEntities.stream()
-            .map(AnnotationEntity::toAnnotation)
-            .collect(Collectors.toList());
+                .map(AnnotationEntity::toAnnotation)
+                .collect(Collectors.toList());
     }
 
     public AnnotationWithFilePath toAnnotationWithFilePath() {
         return new AnnotationWithFilePath()
-            .id(id)
-            .postureId(postureId)
-            .annotaterId(annotaterId)
-            .tragusX(tragusX)
-            .tragusY(tragusY)
-            .shoulderX(shoulderX)
-            .shoulderY(shoulderY)
-            .waistX(waistX)
-            .waistY(waistY)
-            .neckAngle(neckAngle)
-            .torsoAngle(torsoAngle)
-            .createdAt(createdAt)
-            .updatedAt(updatedAt)
-            .userId(posture.getUserId())
-            .fileName(DateFormatter.format(posture.getExCreatedAt()) + ".jpg");
+                .id(id)
+                .postureId(postureId)
+                .annotaterId(annotaterId)
+                .tragusX(tragusX)
+                .tragusY(tragusY)
+                .shoulderX(shoulderX)
+                .shoulderY(shoulderY)
+                .waistX(waistX)
+                .waistY(waistY)
+                .neckAngle(neckAngle)
+                .torsoAngle(torsoAngle)
+                .createdAt(createdAt)
+                .updatedAt(updatedAt)
+                .userId(posture.getUserId())
+                .fileName(DateFormatter.format(posture.getExCreatedAt()) + ".jpg");
     }
 
     public static List<AnnotationWithFilePath> toAnnotationsWithFilePath(List<AnnotationEntity> annotationEntities) {
         return annotationEntities.stream()
-            .map(AnnotationEntity::toAnnotationWithFilePath)
-            .collect(Collectors.toList());
+                .map(AnnotationEntity::toAnnotationWithFilePath)
+                .collect(Collectors.toList());
     }
 
 }
