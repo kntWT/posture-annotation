@@ -494,7 +494,6 @@
 </div>
 
 <style lang="scss" scoped>
-	@import '$lib/styles/variables.scss';
 	#annotater-container {
 		text-align: center;
 		width: 100vw;
