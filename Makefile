@@ -37,5 +37,9 @@ openapi-generate-api:
 recompile-api:
 	docker compose exec api mvn compile
 
+inject-generated-api:
+	docker cp api/generated/. posture-annotation-api:/app/generated && \
+	docker commit posture-annotation-api posture-annotation-api
+
 npm-install:
 	docker compose exec client npm install
