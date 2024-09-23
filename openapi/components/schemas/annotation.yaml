@@ -110,6 +110,7 @@ AnnotationSummary:
     - posture_id
     - file_name
     - annotation_ids
+    - annotater_ids
     - original_neck_angle
     - avg_neck_angle
     - std_neck_angle
