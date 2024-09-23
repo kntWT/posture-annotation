@@ -547,6 +547,8 @@ annotation_summary:
         content:
           application/json:
             schema:
-              $ref: "../components/schemas/annotation.yaml#/AnnotationSummary"
+              type: array
+              items:
+                $ref: "../components/schemas/annotation.yaml#/AnnotationSummary"
       "403":
         description: forbidden
