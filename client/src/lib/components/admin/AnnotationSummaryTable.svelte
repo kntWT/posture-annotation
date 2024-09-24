@@ -120,12 +120,13 @@
 {/if}
 
 <style lang="scss" scoped>
+	@import '$lib/styles/_variables';
 	:global(.mdc-data-table) {
 		:global(.mdc-data-table__cell.green) {
-			background-color: #66bb6a;
+			background-color: $highlight-green;
 		}
 		:global(.mdc-data-table__cell.red) {
-			background-color: #ef5350;
+			background-color: $highlight-red;
 		}
 	}
 </style>
