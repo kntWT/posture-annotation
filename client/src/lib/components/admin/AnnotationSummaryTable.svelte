@@ -1,12 +1,15 @@
 <script lang="ts">
+	import type { Header } from './types/AnnotationSummaryTable';
+
 	import DataTable, { Head, Body, Row, Cell, Pagination } from '@smui/data-table';
 	import Select, { Option } from '@smui/select';
 	import IconButton from '@smui/icon-button';
 	import { Label } from '@smui/common';
-	import type { AnnotationSummary } from '$api/generated';
 
-	export let data: AnnotationSummary[];
-	export let navigateToDetail: (id: number) => void;
+	type T = $$Generic<Recorc<string, number | string>>;
+	export let data: T[];
+	export let headers: Header<keyof T>[];
+	export let navigateToDetail: (row: T) => void;
 
 	type color = 'green' | 'red' | '';
 	let currentPage = 0;
@@ -39,27 +42,26 @@
 	<DataTable stickyHeader>
 		<Head>
 			<Row>
-				<Cell>id</Cell>
-				<Cell>アノテーション数</Cell>
-				<Cell>もとの首の角度</Cell>
-				<Cell>角度の平均</Cell>
-				<Cell>角度の標準偏差</Cell>
-				<Cell>角度の平均の差</Cell>
-				<Cell>アノテータ</Cell>
+				{#each headers as header}
+					<Cell>{header.display}</Cell>
+				{/each}
 			</Row>
 		</Head>
 		<Body>
 			{#each slice as stats}
-				<Row on:click={() => navigateToDetail(stats.postureId)}>
-					<Cell>#{stats.postureId}</Cell>
-					<Cell numeric>{stats.annotationIds.length}</Cell>
-					<Cell numeric>{stats.originalNeckAngle}</Cell>
-					<Cell numeric>{stats.avgNeckAngle}</Cell>
-					<Cell numeric class={getHighlight(stats.stdNeckAngle, 10)}>{stats.stdNeckAngle}</Cell>
-					<Cell numeric class={getHighlight(stats.avgNeckAngle - stats.originalNeckAngle, 10)}
-						>{stats.avgNeckAngle - stats.originalNeckAngle}</Cell
-					>
-					<Cell numeric>{stats.annotaterIds.toSorted()}</Cell>
+				<Row on:click={() => navigateToDetail(stats)}>
+					{#each headers as head}
+						<Cell
+							numeric={head.isNumeric}
+							class={getHighlight(stats[head.key], head.highlightThreshold)}
+						>
+							{#if head.digit}
+								{stats[head.key].toFixed(head.digit)}
+							{:else}
+								{stats[head.key]}
+							{/if}
+						</Cell>
+					{/each}
 				</Row>
 			{/each}
 		</Body>
