@@ -7,15 +7,15 @@ posture:
     security: &bearerAuth
       - bearerAuth: []
     responses:
-      '200':
+      "200":
         description: ok
         content:
           application/json:
             schema:
               type: array
               items:
-                $ref: '../components/schemas/posture.yaml#/Posture'
-      '403':
+                $ref: "../components/schemas/posture.yaml#/Posture"
+      "403":
         description: forbidden
 posture_{id}:
   get:
@@ -32,13 +32,13 @@ posture_{id}:
           type: integer
           format: int64
     responses:
-      '200':
+      "200":
         description: ok
         content:
           application/json:
             schema:
-              $ref: '../components/schemas/posture.yaml#/Posture'
-      '403':
+              $ref: "../components/schemas/posture.yaml#/Posture"
+      "403":
         description: forbidden
   put:
     description: update posture by id
@@ -58,15 +58,38 @@ posture_{id}:
       content:
         application/json:
           schema:
-            $ref: '../components/schemas/posture.yaml#/PostureUpdateWithFile'
+            $ref: "../components/schemas/posture.yaml#/PostureUpdateWithFile"
     responses:
-      '200':
+      "200":
         description: ok
         content:
           application/json:
             schema:
-              $ref: '../components/schemas/posture.yaml#/Posture'
-      '403':
+              $ref: "../components/schemas/posture.yaml#/Posture"
+      "403":
+        description: forbidden
+posture_{id}_annotations:
+  get:
+    description: get posture and all annotations by posture id
+    operationId: getPostureWithAnnotationsById
+    tags:
+      - posture
+    security: *bearerAuth
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+    responses:
+      "200":
+        description: ok
+        content:
+          application/json:
+            schema:
+              $ref: "../components/schemas/posture.yaml#/PostureWithAnnotations"
+      "403":
         description: forbidden
 posture_random:
   get:
@@ -76,13 +99,13 @@ posture_random:
       - posture
     security: *bearerAuth
     responses:
-      '200':
+      "200":
         description: ok
         content:
           application/json:
             schema:
-              $ref: '../components/schemas/posture.yaml#/Posture'
-      '403':
+              $ref: "../components/schemas/posture.yaml#/Posture"
+      "403":
         description: forbidden
 posture_random_annotater_{annotater_id}:
   get:
@@ -99,13 +122,13 @@ posture_random_annotater_{annotater_id}:
           type: integer
           format: int64
     responses:
-      '200':
+      "200":
         description: ok
         content:
           application/json:
             schema:
-              $ref: '../components/schemas/posture.yaml#/Posture'
-      '403':
+              $ref: "../components/schemas/posture.yaml#/Posture"
+      "403":
         description: forbidden
 posture_sample:
   get:
@@ -115,15 +138,15 @@ posture_sample:
       - posture
     security: *bearerAuth
     responses:
-      '200':
+      "200":
         description: ok
         content:
           application/json:
             schema:
               type: array
               items:
-                $ref: '../components/schemas/posture.yaml#/Posture'
-      '403':
+                $ref: "../components/schemas/posture.yaml#/Posture"
+      "403":
         description: forbidden
 posture_sample_random:
   get:
@@ -133,13 +156,13 @@ posture_sample_random:
       - posture
     security: *bearerAuth
     responses:
-      '200':
+      "200":
         description: ok
         content:
           application/json:
             schema:
-              $ref: '../components/schemas/posture.yaml#/Posture'
-      '403':
+              $ref: "../components/schemas/posture.yaml#/Posture"
+      "403":
         description: forbidden
 posture_sample_random_annotater_{annotater_id}:
   get:
@@ -156,13 +179,13 @@ posture_sample_random_annotater_{annotater_id}:
           type: integer
           format: int64
     responses:
-      '200':
+      "200":
         description: ok
         content:
           application/json:
             schema:
-              $ref: '../components/schemas/posture.yaml#/Posture'
-      '403':
+              $ref: "../components/schemas/posture.yaml#/Posture"
+      "403":
         description: forbidden
 posture_user_{user_id}:
   get:
@@ -179,15 +202,15 @@ posture_user_{user_id}:
           type: integer
           format: int64
     responses:
-      '200':
+      "200":
         description: ok
         content:
           application/json:
             schema:
               type: array
               items:
-                $ref: '../components/schemas/posture.yaml#/Posture'
-      '403':
+                $ref: "../components/schemas/posture.yaml#/Posture"
+      "403":
         description: forbidden
 posture_markers:
   put:
@@ -203,16 +226,16 @@ posture_markers:
           schema:
             type: array
             items:
-              $ref: '../components/schemas/posture.yaml#/PostureUpdateMarkerPosition'
+              $ref: "../components/schemas/posture.yaml#/PostureUpdateMarkerPosition"
     responses:
-      '200':
+      "200":
         description: ok
         content:
           application/json:
             schema:
               type: integer
               format: int64
-      '403':
+      "403":
         description: forbidden
 posture_marker_{id}:
   put:
@@ -233,13 +256,13 @@ posture_marker_{id}:
       content:
         application/json:
           schema:
-            $ref: '../components/schemas/posture.yaml#/PostureUpdateMarkerPosition'
+            $ref: "../components/schemas/posture.yaml#/PostureUpdateMarkerPosition"
     responses:
-      '200':
+      "200":
         description: ok
         content:
           application/json:
             schema:
-              $ref: '../components/schemas/posture.yaml#/Posture'
-      '403':
+              $ref: "../components/schemas/posture.yaml#/Posture"
+      "403":
         description: forbidden

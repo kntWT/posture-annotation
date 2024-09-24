@@ -23,6 +23,8 @@ paths:
     $ref: "./paths/posture.yaml#/posture"
   /posture/{id}:
     $ref: "./paths/posture.yaml#/posture_{id}"
+  /posture/{id}/annotations:
+    $ref: "./paths/posture.yaml#/posture_{id}_annotations"
   /posture/random:
     $ref: "./paths/posture.yaml#/posture_random"
   /posture/random/annotater/{annotater_id}:
@@ -94,6 +96,8 @@ components:
       $ref: "./components/schemas/posture.yaml#/PostureUpdateWithFile"
     PostureUpdateMarkerPosition:
       $ref: "./components/schemas/posture.yaml#/PostureUpdateMarkerPosition"
+    PostureWithAnnotatioins:
+      $ref: "./components/schemas/posture.yaml#/PostureWithAnnotations"
     Annotation:
       $ref: "./components/schemas/annotation.yaml#/Annotation"
     AnnotationUpdate:

@@ -1,8 +1,8 @@
 Posture:
   type: object
   allOf:
-    - $ref: './posture.yaml#/PostureUpdate'
-    - $ref: './posture.yaml#/PostureUpdateMarkerPosition'
+    - $ref: "./posture.yaml#/PostureUpdate"
+    - $ref: "./posture.yaml#/PostureUpdateMarkerPosition"
   required:
     - id
     - in_id
@@ -131,7 +131,7 @@ PostureUpdate:
 PostureUpdateWithFile:
   type: object
   allOf:
-    - $ref: './posture.yaml#/PostureUpdate'
+    - $ref: "./posture.yaml#/PostureUpdate"
   required:
     - file
   properties:
@@ -177,3 +177,15 @@ PostureUpdateMarkerPosition:
       type: number
       format: double
       nullable: true
+PostureWithAnnotations:
+  type: object
+  required:
+    - posture
+    - annotations
+  properties:
+    posture:
+      $ref: "./posture.yaml#/Posture"
+    annotations:
+      type: array
+      items:
+        $ref: "./annotation.yaml#/Annotation"
