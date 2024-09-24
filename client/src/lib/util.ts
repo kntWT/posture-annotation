@@ -24,6 +24,20 @@ export const formatDate = (date: Date | undefined) => {
 	return `${year}-${pad(month, 2)}-${pad(day, 2)}_${pad(hour, 2)}:${pad(minute, 2)}:${pad(second, 2)}.${pad(ms, 3)}`;
 };
 
+type color = 'green' | 'red' | '';
+export const getHighlightColor = (value: number, thres?: number): color => {
+	if (!thres) {
+		return '';
+	}
+	if (value > thres) {
+		return 'green';
+	} else if (value < -thres) {
+		return 'red';
+	} else {
+		return '';
+	}
+};
+
 export const imageUrl = (info: DirectoryInfo, path: Path = 'original') => {
 	const baseDir =
 		path === 'original'

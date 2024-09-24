@@ -6,14 +6,13 @@
 	import IconButton from '@smui/icon-button';
 	import { Label } from '@smui/common';
 	import ToggleImage from '../common/ToggleImage.svelte';
-	import { imageUrlFromPath } from '$lib/util';
+	import { getHighlightColor, imageUrlFromPath } from '$lib/util';
 
 	type T = $$Generic<Recorc<string, number | string>>;
 	export let data: T[];
 	export let headers: Header<keyof T>[];
 	export let navigateToDetail: (row: T) => void;
 
-	type color = 'green' | 'red' | '';
 	let currentPage = 0;
 	let rowsPerPage = 50;
 	$: start = currentPage * rowsPerPage;
@@ -23,19 +22,6 @@
 	$: if (currentPage > lastPage) {
 		currentPage = lastPage;
 	}
-
-	const getHighlight = (value: number, thres?: number): color => {
-		if (!thres) {
-			return '';
-		}
-		if (value > thres) {
-			return 'green';
-		} else if (value < -thres) {
-			return 'red';
-		} else {
-			return '';
-		}
-	};
 </script>
 
 {#if !data}
@@ -55,7 +41,7 @@
 					{#each headers as head}
 						<Cell
 							numeric={head.type === 'number'}
-							class={getHighlight(stats[head.key], head.highlightThreshold)}
+							class={getHighlightColor(stats[head.key], head.highlightThreshold)}
 							on:click={head.clickable === false ? undefined : () => navigateToDetail(stats)}
 						>
 							{#if head.type === 'image'}
