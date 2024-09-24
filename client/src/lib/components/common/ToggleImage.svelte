@@ -1,5 +1,6 @@
 <script lang="ts">
-	import IconButton from '@smui/icon-button';
+	import Button, { Label } from '@smui/button';
+	import IconButton, { Icon } from '@smui/icon-button';
 
 	export let src: string;
 	export let alt: string = '';
@@ -17,8 +18,10 @@
 
 <div>
 	{#if show}
-		画像を非表示
-		<IconButton class="material-icons" on:click={() => (show = false)}>arrow_drop_up</IconButton>
+		<Button variant="outlined" on:click={() => (show = false)}>
+			<Label>画像を非表示</Label>
+			<Icon class="material-icons">arrow_drop_up</Icon>
+		</Button>
 		<br />
 		<img
 			{src}
@@ -27,7 +30,9 @@
 			style={`object-view-box: inset(${viewBox.top}px ${viewBox.right}px ${viewBox.bottom}px ${viewBox.left}px);`}
 		/>
 	{:else}
-		画像を表示
-		<IconButton class="material-icons" on:click={() => (show = true)}>arrow_drop_down</IconButton>
+		<Button variant="outlined" on:click={() => (show = true)}>
+			<Label>画像を表示</Label>
+			<Icon class="material-icons">arrow_drop_down</Icon>
+		</Button>
 	{/if}
 </div>
