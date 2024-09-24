@@ -1,7 +1,8 @@
 export type Header<KEY> = {
 	key: KEY;
 	display: string;
-	isNumeric: boolean;
+	type: 'number' | 'string' | 'image';
 	digit?: number;
 	highlightThreshold?: number;
+	clickable?: boolean;
 };

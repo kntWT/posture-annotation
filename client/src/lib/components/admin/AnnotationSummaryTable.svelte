@@ -5,6 +5,8 @@
 	import Select, { Option } from '@smui/select';
 	import IconButton from '@smui/icon-button';
 	import { Label } from '@smui/common';
+	import ToggleImage from '../common/ToggleImage.svelte';
+	import { imageUrlFromPath } from '$lib/util';
 
 	type T = $$Generic<Recorc<string, number | string>>;
 	export let data: T[];
@@ -49,13 +51,19 @@
 		</Head>
 		<Body>
 			{#each slice as stats}
-				<Row on:click={() => navigateToDetail(stats)}>
+				<Row>
 					{#each headers as head}
 						<Cell
-							numeric={head.isNumeric}
+							numeric={head.type === 'number'}
 							class={getHighlight(stats[head.key], head.highlightThreshold)}
+							on:click={head.clickable === false ? undefined : () => navigateToDetail(stats)}
 						>
-							{#if head.digit}
+							{#if head.type === 'image'}
+								<ToggleImage
+									src={imageUrlFromPath(`original/${stats.fileName}`)}
+									viewBox={{ top: 950, right: 550, bottom: 700, left: 550 }}
+								/>
+							{:else if head.type === 'number' && head.digit}
 								{stats[head.key].toFixed(head.digit)}
 							{:else}
 								{stats[head.key]}

@@ -19,43 +19,49 @@
 		{
 			display: 'id',
 			key: 'postureId',
-			isNumeric: false
+			type: 'string'
 		},
 		{
-			display: 'アノテーション数',
+			display: '画像',
+			key: 'fileName',
+			type: 'image',
+			clickable: false
+		},
+		{
+			display: '件数',
 			key: 'count',
-			isNumeric: true
+			type: 'number'
 		},
 		{
 			display: 'もとの首の角度',
 			key: 'originalNeckAngle',
-			isNumeric: true,
+			type: 'number',
 			digit: 4
 		},
 		{
 			display: '角度の平均',
 			key: 'avgNeckAngle',
-			isNumeric: true,
+			type: 'number',
 			digit: 4
 		},
 		{
 			display: '角度の標準偏差',
 			key: 'stdNeckAngle',
-			isNumeric: true,
+			type: 'number',
 			digit: 4,
 			highlightThreshold: 10
 		},
 		{
 			display: '角度の差',
 			key: 'diffNeckAngle',
-			isNumeric: true,
+			type: 'number',
 			digit: 4,
 			highlightThreshold: 20
 		},
 		{
 			display: 'アノテータ',
 			key: 'annotaterIds',
-			isNumeric: false
+			type: 'string'
 		}
 	];
 
