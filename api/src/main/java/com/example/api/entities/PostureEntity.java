@@ -12,12 +12,19 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.NamedAttributeNode;
+import jakarta.persistence.NamedEntityGraph;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import com.generated.model.Posture;
+import com.generated.model.PostureWithAnnotations;
 import com.example.api.entities.AnnotationEntity;
+import com.generated.model.Annotation;
 
 @Entity
+@NamedEntityGraph(name = "Posture.annotations", attributeNodes = {
+        @NamedAttributeNode(value = "annotations")
+})
 @Table(name = "postures")
 public class PostureEntity {
 
@@ -138,7 +145,8 @@ public class PostureEntity {
     @OneToMany(mappedBy = "posture", fetch = FetchType.LAZY)
     private List<AnnotationEntity> annotations;
 
-    public PostureEntity() {}
+    public PostureEntity() {
+    }
 
     public Long getId() {
         return id;
@@ -473,91 +481,103 @@ public class PostureEntity {
         return this;
     }
 
+    public List<AnnotationEntity> getAnnotations() {
+        return annotations;
+    }
+
     public Posture toPosture() {
         return new Posture()
-            .id(this.getId())
-            .inId(this.getInId())
-            .fileName(this.getFileName())
-            .setNum(this.getSetNum())
-            .orientationAlpha(this.getOrientationAlpha())
-            .orientationBeta(this.getOrientationBeta())
-            .orientationGamma(this.getOrientationGamma())
-            .pitch(this.getPitch())
-            .yaw(this.getYaw())
-            .roll(this.getRoll())
-            .noseX(this.getNoseX())
-            .noseY(this.getNoseY())
-            .neckX(this.getNexkX())
-            .neckY(this.getNeckY())
-            .neckToNose(this.getNeckToNose())
-            .standardDist(this.getStandardDist())
-            .inCreatedAt(this.getInCreatedAt())
-            .inUpdatedAt(this.getInUpdatedAt())
-            .userId(this.getUserId())
-            .name(this.getName())
-            .password(this.getPassword())
-            .neckToNoseStandard(this.getNeckToNoseStandard())
-            .neckAngleOffset(this.getNeckAngleOffset())
-            .exId(this.getExId())
-            .neckAngle(this.getNeckAngle())
-            .torsoAngle(this.getTorsoAngle())
-            .exCreatedAt(this.getExCreatedAt())
-            .updatedAt(this.getUpdatedAt())
-            .isSample(this.getIsSample())
-            .tragusX(this.getTragusX())
-            .tragusY(this.getTragusY())
-            .shoulderX(this.getShoulderX())
-            .shoulderY(this.getShoulderY())
-            .waistX(this.getWaistX())
-            .waistY(this.getWaistY())
-            .imageWidth(this.getImageWidth())
-            .imageHeight(this.getImageHeight());
+                .id(this.getId())
+                .inId(this.getInId())
+                .fileName(this.getFileName())
+                .setNum(this.getSetNum())
+                .orientationAlpha(this.getOrientationAlpha())
+                .orientationBeta(this.getOrientationBeta())
+                .orientationGamma(this.getOrientationGamma())
+                .pitch(this.getPitch())
+                .yaw(this.getYaw())
+                .roll(this.getRoll())
+                .noseX(this.getNoseX())
+                .noseY(this.getNoseY())
+                .neckX(this.getNexkX())
+                .neckY(this.getNeckY())
+                .neckToNose(this.getNeckToNose())
+                .standardDist(this.getStandardDist())
+                .inCreatedAt(this.getInCreatedAt())
+                .inUpdatedAt(this.getInUpdatedAt())
+                .userId(this.getUserId())
+                .name(this.getName())
+                .password(this.getPassword())
+                .neckToNoseStandard(this.getNeckToNoseStandard())
+                .neckAngleOffset(this.getNeckAngleOffset())
+                .exId(this.getExId())
+                .neckAngle(this.getNeckAngle())
+                .torsoAngle(this.getTorsoAngle())
+                .exCreatedAt(this.getExCreatedAt())
+                .updatedAt(this.getUpdatedAt())
+                .isSample(this.getIsSample())
+                .tragusX(this.getTragusX())
+                .tragusY(this.getTragusY())
+                .shoulderX(this.getShoulderX())
+                .shoulderY(this.getShoulderY())
+                .waistX(this.getWaistX())
+                .waistY(this.getWaistY())
+                .imageWidth(this.getImageWidth())
+                .imageHeight(this.getImageHeight());
     }
 
     public static List<Posture> toPostures(List<PostureEntity> postures) {
         return postures.stream()
-            .map(posture -> posture.toPosture())
-            .collect(Collectors.toList());
+                .map(posture -> posture.toPosture())
+                .collect(Collectors.toList());
     }
 
     public PostureEntity cloneWithoutId() {
         return new PostureEntity()
-            .setInId(this.getInId())
-            .setFileName(this.getFileName())
-            .setSetNum(this.getSetNum())
-            .setOrientationAlpha(this.getOrientationAlpha())
-            .setOrientationBeta(this.getOrientationBeta())
-            .setOrientationGamma(this.getOrientationGamma())
-            .setPitch(this.getPitch())
-            .setYaw(this.getYaw())
-            .setRoll(this.getRoll())
-            .setNoseX(this.getNoseX())
-            .setNoseY(this.getNoseY())
-            .setNexkX(this.getNexkX())
-            .setNeckY(this.getNeckY())
-            .setNeckToNose(this.getNeckToNose())
-            .setStandardDist(this.getStandardDist())
-            .setInCreatedAt(this.getInCreatedAt())
-            .setInUpdatedAt(this.getInUpdatedAt())
-            .setUserId(this.getUserId())
-            .setName(this.getName())
-            .setPassword(this.getPassword())
-            .setNeckToNoseStandard(this.getNeckToNoseStandard())
-            .setNeckAngleOffset(this.getNeckAngleOffset())
-            .setExId(this.getExId())
-            .setExCreatedAt(this.getExCreatedAt())
-            .setUpdatedAt(this.getUpdatedAt())
-            .setNeckAngle(this.getNeckAngle())
-            .setTorsoAngle(this.getTorsoAngle())
-            .setIsSample(this.getIsSample())
-            .setTragusX(this.getTragusX())
-            .setTragusY(this.getTragusY())
-            .setShoulderX(this.getShoulderX())
-            .setShoulderY(this.getShoulderY())
-            .setWaistX(this.getWaistX())
-            .setWaistY(this.getWaistY())
-            .setImageWidth(this.getImageWidth())
-            .setImageHeight(this.getImageHeight());
+                .setInId(this.getInId())
+                .setFileName(this.getFileName())
+                .setSetNum(this.getSetNum())
+                .setOrientationAlpha(this.getOrientationAlpha())
+                .setOrientationBeta(this.getOrientationBeta())
+                .setOrientationGamma(this.getOrientationGamma())
+                .setPitch(this.getPitch())
+                .setYaw(this.getYaw())
+                .setRoll(this.getRoll())
+                .setNoseX(this.getNoseX())
+                .setNoseY(this.getNoseY())
+                .setNexkX(this.getNexkX())
+                .setNeckY(this.getNeckY())
+                .setNeckToNose(this.getNeckToNose())
+                .setStandardDist(this.getStandardDist())
+                .setInCreatedAt(this.getInCreatedAt())
+                .setInUpdatedAt(this.getInUpdatedAt())
+                .setUserId(this.getUserId())
+                .setName(this.getName())
+                .setPassword(this.getPassword())
+                .setNeckToNoseStandard(this.getNeckToNoseStandard())
+                .setNeckAngleOffset(this.getNeckAngleOffset())
+                .setExId(this.getExId())
+                .setExCreatedAt(this.getExCreatedAt())
+                .setUpdatedAt(this.getUpdatedAt())
+                .setNeckAngle(this.getNeckAngle())
+                .setTorsoAngle(this.getTorsoAngle())
+                .setIsSample(this.getIsSample())
+                .setTragusX(this.getTragusX())
+                .setTragusY(this.getTragusY())
+                .setShoulderX(this.getShoulderX())
+                .setShoulderY(this.getShoulderY())
+                .setWaistX(this.getWaistX())
+                .setWaistY(this.getWaistY())
+                .setImageWidth(this.getImageWidth())
+                .setImageHeight(this.getImageHeight());
+    }
+
+    public PostureWithAnnotations toPostureWithAnnotations() {
+        Posture posture = this.toPosture();
+        List<Annotation> annotations = AnnotationEntity.toAnnotations(this.getAnnotations());
+        return new PostureWithAnnotations()
+                .posture(posture)
+                .annotations(annotations);
     }
 
 }

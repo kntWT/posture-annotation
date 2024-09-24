@@ -17,10 +17,11 @@ import com.generated.model.Posture;
 import com.generated.model.PostureUpdate;
 import com.generated.model.PostureUpdateWithFile;
 import com.generated.model.PostureUpdateMarkerPosition;
+import com.generated.model.PostureWithAnnotations;
 
 @RestController
 public class PostureController implements PostureApi {
-    
+
     @Autowired
     private PostureRepository postureRepository;
 
@@ -70,7 +71,7 @@ public class PostureController implements PostureApi {
         if (posture == null) {
             ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-        
+
         return ResponseEntity.ok(posture);
     }
 
@@ -80,12 +81,13 @@ public class PostureController implements PostureApi {
         if (posture == null) {
             ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-        
+
         return ResponseEntity.ok(posture);
     }
 
     @Override
-    public ResponseEntity<Posture> updatePostureMarkerById(Long id, PostureUpdateMarkerPosition postureUpdateMarkerPosition) {
+    public ResponseEntity<Posture> updatePostureMarkerById(Long id,
+            PostureUpdateMarkerPosition postureUpdateMarkerPosition) {
         Posture posture = postureService.updatePostureMarkerById(id, postureUpdateMarkerPosition);
         if (posture == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
@@ -112,7 +114,7 @@ public class PostureController implements PostureApi {
         if (posture == null) {
             ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-        
+
         return ResponseEntity.ok(posture);
     }
 
@@ -122,7 +124,17 @@ public class PostureController implements PostureApi {
         if (posture == null) {
             ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-        
+
         return ResponseEntity.ok(posture);
+    }
+
+    @Override
+    public ResponseEntity<PostureWithAnnotations> getPostureWithAnnotationsById(Long id) {
+        PostureWithAnnotations postureWithAnnotations = postureService.getPostureWithAnnotationsById(id);
+        if (postureWithAnnotations == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+        return ResponseEntity.ok(postureWithAnnotations);
     }
 }

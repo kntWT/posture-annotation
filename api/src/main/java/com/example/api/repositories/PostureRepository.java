@@ -2,6 +2,8 @@ package com.example.api.repositories;
 
 import java.util.List;
 import java.util.Optional;
+
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.QueryHints;
@@ -99,4 +101,7 @@ public interface PostureRepository extends JpaRepository<PostureEntity, Long> {
     @Query(value = "SELECT p.* FROM postures AS p WHERE p.is_sample = FALSE ORDER BY random() LIMIT :limit", nativeQuery = true)
     public List<PostureEntity> findByOrderByRandomLimitTo(@Param("limit") Long limit);
 
+    @Transactional
+    @EntityGraph(value = "PostureEntity.annotations", attributePaths = "annotations")
+    public PostureEntity findWithAnnotationsById(Long id);
 }

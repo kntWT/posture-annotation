@@ -19,6 +19,7 @@ import com.generated.model.Posture;
 import com.generated.model.PostureUpdate;
 import com.generated.model.PostureUpdateWithFile;
 import com.generated.model.PostureUpdateMarkerPosition;
+import com.generated.model.PostureWithAnnotations;
 
 @Service
 public class PostureService {
@@ -251,6 +252,16 @@ public class PostureService {
             return null;
         }
         return target.toPosture();
+    }
+
+    @Transactional
+    public PostureWithAnnotations getPostureWithAnnotationsById(Long id) {
+        PostureEntity posture = postureRepository.findById(id).orElse(null);
+        if (posture == null) {
+            return null;
+        }
+
+        return posture.toPostureWithAnnotations();
     }
 
 }
