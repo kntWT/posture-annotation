@@ -15,7 +15,6 @@ import jakarta.persistence.ConstructorResult;
 
 import com.example.api.utils.DateFormatter;
 import com.generated.model.AnnotationSummary;
-import com.vladmihalcea.hibernate.type.array.LongArrayType;
 
 @SqlResultSetMapping(name = "AnnotationSummaryMapping", classes = @ConstructorResult(targetClass = AnnotationSummaryEntity.class, columns = {
         @ColumnResult(name = "posture_id", type = Long.class),
@@ -45,7 +44,6 @@ import com.vladmihalcea.hibernate.type.array.LongArrayType;
         """, resultSetMapping = "AnnotationSummaryMapping")
 public class AnnotationSummaryEntity {
 
-    // @Id
     private Long postureId;
     private String annotationIds;
     private String annotaterIds;
@@ -169,7 +167,7 @@ public class AnnotationSummaryEntity {
     }
 
     public static AnnotationSummary toAnnotationSummary(AnnotationSummaryEntity annotationSummaryEntity) {
-        String fileName = annotationSummaryEntity.getUserId()
+        String fileName = annotationSummaryEntity.getUserId() + "/"
                 + DateFormatter.format(annotationSummaryEntity.getExCreatedAt()) + ".jpg";
         return new AnnotationSummary()
                 .postureId(annotationSummaryEntity.getPostureId())
