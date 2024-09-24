@@ -14,6 +14,7 @@
 		prod: 0
 	};
 	const base = import.meta.env.VITE_BASE_PATH;
+	const adminUserIds = import.meta.env.VITE_ADMIN_USER_IDS.split(',').map(Number);
 
 	onMount(() => {
 		if (!$user) return;
@@ -35,15 +36,16 @@
 		goto(path, { invalidateAll: true });
 	};
 
-	$: isCurrentPage = (path: string) => $page.url.pathname === path;
+	$: isCurrentPage = (path: string) => $page.url.pathname.startsWith(path);
 
 	$: menues = [
 		{ name: 'ホーム', path: `${base}/` },
 		$user ? { name: 'ログアウト', path: `${base}/logout` } : { name: 'ログイン', path: '/login' },
 		{ name: 'アノテーション練習', path: `${base}/annotate/sample` },
 		{ name: 'アノテーション', path: `${base}/annotate` },
-		{ name: 'アノテーション履歴', path: `${base}/logs` }
-	];
+		{ name: 'アノテーション履歴', path: `${base}/logs` },
+		...[$user && adminUserIds.includes($user.id) ? { name: '管理者', path: `${base}/admin` } : null]
+	].filter(Boolean) as { name: string; path: string }[];
 </script>
 
 <div class="drawer-container">
