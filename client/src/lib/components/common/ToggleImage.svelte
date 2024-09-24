@@ -1,10 +1,9 @@
 <script lang="ts">
 	import Button, { Label } from '@smui/button';
-	import IconButton, { Icon } from '@smui/icon-button';
+	import { Icon } from '@smui/icon-button';
 
 	export let src: string;
 	export let alt: string = '';
-	export let width: number | string = 100;
 	export let viewBox: { top: number; right: number; bottom: number; left: number } = {
 		top: 0,
 		right: 0,
@@ -26,7 +25,6 @@
 		<img
 			{src}
 			{alt}
-			{width}
 			style={`object-view-box: inset(${viewBox.top}px ${viewBox.right}px ${viewBox.bottom}px ${viewBox.left}px);`}
 		/>
 	{:else}
