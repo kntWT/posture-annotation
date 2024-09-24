@@ -36,7 +36,10 @@
 		goto(path, { invalidateAll: true });
 	};
 
-	$: isCurrentPage = (path: string) => $page.url.pathname.startsWith(path);
+	$: isCurrentPage = (path: string, strict: boolean = true) => {
+		const pathname = $page.url.pathname;
+		return strict ? pathname === path : pathname.startsWith(path);
+	};
 
 	$: menues = [
 		{ name: 'ホーム', path: `${base}/` },
@@ -57,7 +60,10 @@
 		<Content>
 			<List>
 				{#each menues as { name, path }}
-					<Item on:click={() => navigateTo(path)} activated={isCurrentPage(path)}>
+					<Item
+						on:click={() => navigateTo(path)}
+						activated={isCurrentPage(path, !path.startsWith('/admin'))}
+					>
 						<Text>{name}</Text>
 					</Item>
 				{/each}
