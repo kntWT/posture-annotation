@@ -167,22 +167,22 @@ public class AnnotationSummaryByPostureEntity {
     }
 
     public static AnnotationSummaryByPosture toAnnotationSummaryByPosture(
-            AnnotationSummaryByPostureEntity annotationSummaryEntity) {
-        String fileName = annotationSummaryEntity.getUserId() + "/"
-                + DateFormatter.format(annotationSummaryEntity.getExCreatedAt()) + ".jpg";
+            AnnotationSummaryByPostureEntity entity) {
+        String fileName = entity.getUserId() + "/"
+                + DateFormatter.format(entity.getExCreatedAt()) + ".jpg";
         return new AnnotationSummaryByPosture()
-                .postureId(annotationSummaryEntity.getPostureId())
-                .annotationIds(splitStringToLongList(annotationSummaryEntity.getAnnotationIds()))
-                .annotaterIds(splitStringToLongList(annotationSummaryEntity.getAnnotaterIds()))
-                .originalNeckAngle(annotationSummaryEntity.getOriginalNeckAngle())
-                .avgNeckAngle(annotationSummaryEntity.getAvgNeckAngle())
-                .stdNeckAngle(annotationSummaryEntity.getStdNeckAngle())
+                .postureId(entity.getPostureId())
+                .annotationIds(splitStringToLongList(entity.getAnnotationIds()))
+                .annotaterIds(splitStringToLongList(entity.getAnnotaterIds()))
+                .originalNeckAngle(entity.getOriginalNeckAngle())
+                .avgNeckAngle(entity.getAvgNeckAngle())
+                .stdNeckAngle(entity.getStdNeckAngle())
                 .fileName(fileName);
     }
 
-    public static List<AnnotationSummaryByPosture> toAnnotationSummaries(
-            List<AnnotationSummaryByPostureEntity> annotationSummaryEntities) {
-        return annotationSummaryEntities.stream()
+    public static List<AnnotationSummaryByPosture> toAnnotationSummaryByPostures(
+            List<AnnotationSummaryByPostureEntity> entities) {
+        return entities.stream()
                 .map(AnnotationSummaryByPostureEntity::toAnnotationSummaryByPosture)
                 .toList();
     }
