@@ -79,6 +79,8 @@ paths:
     $ref: "./paths/annotation.yaml#/annotation_posture_{posture_id}_annotater_{annotater_id}_file_path"
   /annotation/summary/posture:
     $ref: "./paths/annotation.yaml#/annotation_summary_posture"
+  /annotation/summary/annotater:
+    $ref: "./paths/annotation.yaml#/annotation_summary_annotater"
 components:
   securitySchemes:
     bearerAuth:
@@ -112,6 +114,8 @@ components:
       $ref: "./components/schemas/annotation.yaml#/AnnotationWithFilePath"
     AnnotationSummaryByPosture:
       $ref: "./components/schemas/annotation.yaml#/AnnotationSummaryByPosture"
+    AnnotationSummaryByAnnotater:
+      $ref: "./components/schemas/annotation.yaml#/AnnotationSummaryByAnnotater"
   examples:
     UserExample:
       value:

@@ -139,3 +139,30 @@ AnnotationSummaryByPosture:
     std_neck_angle:
       type: number
       format: double
+AnnotationSummaryByAnnotater:
+  type: object
+  required:
+    - annotater_id
+    - name
+    - count
+    - avg_diff_original_neck_angle
+    - avg_diff_avg_neck_angle
+    - std_diff_avg_neck_angle
+  properties:
+    annotater_id:
+      type: integer
+      format: int64
+    name:
+      type: string
+    count:
+      type: integer
+      format: int64
+    avg_diff_original_neck_angle:
+      type: number
+      format: double
+    avg_diff_avg_neck_angle:
+      type: number
+      format: double
+    std_diff_avg_neck_angle:
+      type: number
+      format: double
