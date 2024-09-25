@@ -85,6 +85,16 @@ public class AnnotationController implements AnnotationApi {
     }
 
     @Override
+    public ResponseEntity<AnnotationWithPosture> getAnnotationWithPostureById(Long id) {
+        AnnotationWithPosture annotationWithPosture = annotationService.getAnnotationWithPostureById(id);
+        if (annotationWithPosture == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+        return ResponseEntity.ok(annotationWithPosture);
+    }
+
+    @Override
     public ResponseEntity<AnnotationWithFilePath> getAnnotationWithFilePathById(Long id) {
         AnnotationWithFilePath annotationWithFilePath = annotationService.getAnnotationWithFilePathById(id);
         if (annotationWithFilePath == null) {

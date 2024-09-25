@@ -110,6 +110,16 @@ public class AnnotationService {
     }
 
     @Transactional
+    public AnnotationWithPosture getAnnotationWithPostureById(Long id) {
+        AnnotationEntity annotation = annotationRepository.findWithPostureById(id);
+        if (annotation == null) {
+            return null;
+        }
+
+        return AnnotationEntity.toAnnotationWithPosture(annotation);
+    }
+
+    @Transactional
     public AnnotationWithFilePath getAnnotationWithFilePathById(Long id) {
         AnnotationEntity annotation = annotationRepository.findByIdWithFilePath(id);
         if (annotation == null) {

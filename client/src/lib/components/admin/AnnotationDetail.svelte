@@ -1,10 +1,11 @@
 <script lang="ts">
 	import type { Annotation, Posture } from '$api/generated';
 	import { formatDate, getHighlightColor, imageUrl } from '$lib/util';
-	import Card, { Content, Media } from '@smui/card';
+	import Card, { Content, Media, PrimaryAction } from '@smui/card';
 
 	export let annotation: Annotation;
 	export let posture: Posture;
+	export let onClick: (arg?: unknown) => void = () => {};
 
 	const DIGIT = 4;
 
@@ -28,17 +29,19 @@
 </script>
 
 <Card>
-	<Content>
-		<h4>#{annotation.postureId}</h4>
-		<p>もとの角度: {posture.neckAngle.toFixed(DIGIT)}</p>
-		<p>
-			変更後の角度: {annotation.neckAngle.toFixed(DIGIT)}
-			<span class={getHighlightColor(annotation.neckAngle - posture.neckAngle, 20)}
-				>（{formatDiffNeckAngle(annotation.neckAngle - posture.neckAngle)}）</span
-			>
-		</p>
-	</Content>
-	<Media style={`background-image: url(${src})`} aspectRatio="square" />
+	<PrimaryAction on:click={onClick}>
+		<Content>
+			<h4>#{annotation.postureId}</h4>
+			<p>もとの角度: {posture.neckAngle.toFixed(DIGIT)}</p>
+			<p>
+				変更後の角度: {annotation.neckAngle.toFixed(DIGIT)}
+				<span class={getHighlightColor(annotation.neckAngle - posture.neckAngle, 20)}
+					>（{formatDiffNeckAngle(annotation.neckAngle - posture.neckAngle)}）</span
+				>
+			</p>
+		</Content>
+		<Media style={`background-image: url(${src})`} aspectRatio="square" />
+	</PrimaryAction>
 </Card>
 
 <style lang="scss" scoped>
