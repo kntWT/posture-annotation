@@ -1,7 +1,6 @@
 package com.example.api.repositories;
 
 import java.sql.Timestamp;
-import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,6 +12,7 @@ import org.springframework.data.repository.query.Param;
 import jakarta.transaction.Transactional;
 
 import com.example.api.entities.AnnotationEntity;
+import com.example.api.entities.AnnotationSummaryByAnnotaterEntity;
 import com.example.api.entities.AnnotationSummaryByPostureEntity;
 
 @Repository
@@ -195,6 +195,39 @@ public interface AnnotationRepository extends JpaRepository<AnnotationEntity, Lo
                         (Double) row[5],
                         ((Integer) row[6]).longValue(),
                         ((Timestamp) row[7]).toInstant().atOffset(ZoneOffset.ofHours(9))))
+                .toList();
+    }
+
+    @Transactional
+    @Query(value = """
+            SELECT
+                a.annotater_id,
+                MAX(u.name) as name,
+                COUNT(1) AS count,
+                AVG(a.neck_angle - p.neck_angle) AS avg_diff_original_neck_angle,
+                AVG(a.neck_angle - avg.neck_angle) AS avg_diff_avg_neck_angle,
+                COALESCE(STDDEV(a.neck_angle - avg.neck_angle), 0) AS std_diff_avg_neck_angle
+            FROM annotations AS a
+            INNER JOIN users AS u ON a.annotater_id = u.id
+            INNER JOIN postures AS p ON a.posture_id = p.id
+            INNER JOIN (
+                SELECT a.posture_id, AVG(a.neck_angle) AS neck_angle
+                FROM annotations AS a
+                GROUP BY a.posture_id
+            ) AS avg ON a.posture_id = avg.posture_id
+            GROUP BY a.annotater_id
+            """, nativeQuery = true)
+    public List<Object[]> findAnnotationSummaryByAnnotater();
+
+    default public List<AnnotationSummaryByAnnotaterEntity> getAnnotationSummaryByAnnotater() {
+        return findAnnotationSummaryByAnnotater().stream()
+                .map(row -> new AnnotationSummaryByAnnotaterEntity(
+                        ((Integer) row[0]).longValue(),
+                        (String) row[1],
+                        ((Long) row[2]),
+                        (Double) row[3],
+                        (Double) row[4],
+                        (Double) row[5]))
                 .toList();
     }
 

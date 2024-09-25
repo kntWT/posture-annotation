@@ -18,6 +18,7 @@ import com.generated.model.AnnotationCreateWithFile;
 import com.generated.model.AnnotationUpdateWithFile;
 import com.generated.model.AnnotationWithFilePath;
 import com.generated.model.AnnotationSummaryByPosture;
+import com.generated.model.AnnotationSummaryByAnnotater;
 
 @RestController
 public class AnnotationController implements AnnotationApi {
@@ -229,6 +230,16 @@ public class AnnotationController implements AnnotationApi {
     @Override
     public ResponseEntity<List<AnnotationSummaryByPosture>> getAnnotationSummaryByPosture() {
         List<AnnotationSummaryByPosture> annotationSummary = annotationService.getAnnotationSummaryByPosture();
+        if (annotationSummary == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        return ResponseEntity.ok(annotationSummary);
+    }
+
+    @Override
+    public ResponseEntity<List<AnnotationSummaryByAnnotater>> getAnnotationSummaryByAnnotater() {
+        List<AnnotationSummaryByAnnotater> annotationSummary = annotationService
+                .getAnnotationSummaryByAnnotater();
         if (annotationSummary == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
