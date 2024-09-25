@@ -47,7 +47,8 @@
 							{#if head.type === 'image'}
 								<ToggleImage
 									src={imageUrlFromPath(`original/${stats.fileName}`)}
-									viewBox={{ top: 950, right: 550, bottom: 700, left: 550 }}
+									width={150}
+									viewBox={{ top: 40, right: 35, bottom: 35, left: 35 }}
 								/>
 							{:else if head.type === 'number' && head.digit}
 								{stats[head.key].toFixed(head.digit)}
@@ -111,6 +112,7 @@
 		:global(.mdc-data-table__cell.green) {
 			background-color: $highlight-green;
 		}
+
 		:global(.mdc-data-table__cell.red) {
 			background-color: $highlight-red;
 		}

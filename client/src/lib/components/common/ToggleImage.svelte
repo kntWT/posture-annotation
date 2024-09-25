@@ -4,6 +4,7 @@
 
 	export let src: string;
 	export let alt: string = '';
+	export let width: number = 200;
 	export let viewBox: { top: number; right: number; bottom: number; left: number } = {
 		top: 0,
 		right: 0,
@@ -15,22 +16,37 @@
 	let show = showDefault;
 </script>
 
-<div>
-	{#if show}
-		<Button variant="outlined" on:click={() => (show = false)}>
-			<Label>画像を非表示</Label>
-			<Icon class="material-icons">arrow_drop_up</Icon>
-		</Button>
-		<br />
-		<img
-			{src}
-			{alt}
-			style={`object-view-box: inset(${viewBox.top}px ${viewBox.right}px ${viewBox.bottom}px ${viewBox.left}px);`}
-		/>
-	{:else}
-		<Button variant="outlined" on:click={() => (show = true)}>
-			<Label>画像を表示</Label>
-			<Icon class="material-icons">arrow_drop_down</Icon>
-		</Button>
-	{/if}
+<div class="wrapper">
+	<Button variant="outlined" on:click={() => (show = !show)}>
+		<Label>{show ? '画像を非表示' : '画像を非表示'}</Label>
+		<Icon class="material-icons">{show ? 'arrow_drop_up' : 'arrow_drop_down'}</Icon>
+	</Button>
+	<img
+		class={`toggle-image ${show ? 'visible' : 'invisible'}`}
+		width={`${width}px`}
+		{src}
+		{alt}
+		style={`object-view-box: inset(${viewBox.top}% ${viewBox.right}% ${viewBox.bottom}% ${viewBox.left}%);`}
+	/>
 </div>
+
+<style lang="scss" scoped>
+	.wrapper {
+		padding: 8px;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+
+		.toggle-image {
+			margin-top: 8px;
+
+			&.visible {
+				display: block;
+			}
+
+			&.invisible {
+				display: none;
+			}
+		}
+	}
+</style>
