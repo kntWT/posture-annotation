@@ -5,19 +5,18 @@
 	import type { PageData } from './$types';
 	import type { Header } from '$lib/components/admin/types/AnnotationSummaryTable';
 	export let data: PageData;
-	type Data = Omit<AnnotationSummaryByAnnotater, 'annotaterId'> & {
-		annotaterId: number;
-	};
-	const navigateToDetail = (data: Data) => {
+
+	const navigateToDetail = (data: AnnotationSummaryByAnnotater) => {
+		console.log(data.annotaterId);
 		goto(`${import.meta.env.VITE_BASE_PATH}/admin/user/detail?annotater_id=${data.annotaterId}`, {
 			invalidateAll: true
 		});
 	};
-	const headers: Header<keyof Data>[] = [
+	const headers: Header<keyof AnnotationSummaryByAnnotater>[] = [
 		{
 			display: 'id',
 			key: 'annotaterId',
-			type: 'string'
+			type: 'number'
 		},
 		{
 			display: 'ユーザ名',
@@ -51,21 +50,13 @@
 			highlightThreshold: 10
 		}
 	];
-
-	$: summary =
-		data.summary?.map((d) => {
-			return {
-				...d,
-				annotaterId: `#${d.annotaterId}`
-			};
-		}) ?? [];
 </script>
 
 {#if !data.summary}
 	<p>データがありません</p>
 {:else}
 	<div class="wrapper">
-		<AnnotationSummaryByPostureTable {headers} data={summary} {navigateToDetail} />
+		<AnnotationSummaryByPostureTable {headers} data={data.summary} {navigateToDetail} />
 	</div>
 {/if}
 
