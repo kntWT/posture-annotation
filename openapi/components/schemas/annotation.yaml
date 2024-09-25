@@ -66,6 +66,16 @@ AnnotationCreate:
     annotater_id:
       type: integer
       format: int64
+AnnotationWithPosture:
+  type: object
+  required:
+    - annotation
+    - posture
+  properties:
+    annotation:
+      $ref: "#/Annotation"
+    posture:
+      $ref: "./posture.yaml#/Posture"
 AnnotationUpdateWithFile:
   type: object
   allOf:

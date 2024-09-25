@@ -57,6 +57,8 @@ paths:
     $ref: "./paths/annotation.yaml#/annotation_posture_{posture_id}_file_path"
   /annotation/annotater/{annotater_id}:
     $ref: "./paths/annotation.yaml#/annotation_annotater_{annotater_id}"
+  /annotation/annotater/{annotater_id}/posture:
+    $ref: "./paths/annotation.yaml#/annotation_annotater_{annotater_id}_posture"
   /annotation/annotater/{annotater_id}/file-path:
     $ref: "./paths/annotation.yaml#/annotation_annotater_{annotater_id}_file_path"
   /annotation/annotater/{annotater_id}/count:
@@ -110,6 +112,8 @@ components:
       $ref: "./components/schemas/annotation.yaml#/AnnotationUpdateWithFile"
     AnnotationCreateWithFile:
       $ref: "./components/schemas/annotation.yaml#/AnnotationCreateWithFile"
+    AnnotationWithPosture:
+      $ref: "./components/schemas/annotation.yaml#/AnnotationWithPosture"
     AnnotationWithFilePath:
       $ref: "./components/schemas/annotation.yaml#/AnnotationWithFilePath"
     AnnotationSummaryByPosture:
