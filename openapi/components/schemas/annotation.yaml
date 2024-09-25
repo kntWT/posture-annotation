@@ -104,7 +104,7 @@ AnnotationWithFilePath:
       format: int64
     file_name:
       type: string
-AnnotationSummary:
+AnnotationSummaryByPosture:
   type: object
   required:
     - posture_id

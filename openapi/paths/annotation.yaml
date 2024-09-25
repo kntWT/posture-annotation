@@ -537,7 +537,7 @@ annotation_posture_{posture_id}_annotater_{annotater_id}_file_path:
 annotation_summary:
   get:
     description: get summary of annotation
-    operationId: getAnnotationSummary
+    operationId: getAnnotationSummaryByPosture
     tags:
       - annotation
     security: *bearerAuth
@@ -549,6 +549,6 @@ annotation_summary:
             schema:
               type: array
               items:
-                $ref: "../components/schemas/annotation.yaml#/AnnotationSummary"
+                $ref: "../components/schemas/annotation.yaml#/AnnotationSummaryByPosture"
       "403":
         description: forbidden

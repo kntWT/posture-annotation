@@ -110,8 +110,8 @@ components:
       $ref: "./components/schemas/annotation.yaml#/AnnotationCreateWithFile"
     AnnotationWithFilePath:
       $ref: "./components/schemas/annotation.yaml#/AnnotationWithFilePath"
-    AnnotationSummary:
-      $ref: "./components/schemas/annotation.yaml#/AnnotationSummary"
+    AnnotationSummaryByPosture:
+      $ref: "./components/schemas/annotation.yaml#/AnnotationSummaryByPosture"
   examples:
     UserExample:
       value:
