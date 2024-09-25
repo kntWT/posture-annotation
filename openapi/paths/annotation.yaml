@@ -534,7 +534,7 @@ annotation_posture_{posture_id}_annotater_{annotater_id}_file_path:
               $ref: "../components/schemas/annotation.yaml#/AnnotationWithFilePath"
       "403":
         description: forbidden
-annotation_summary:
+annotation_summary_posture:
   get:
     description: get summary of annotation
     operationId: getAnnotationSummaryByPosture

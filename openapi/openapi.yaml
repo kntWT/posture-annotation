@@ -77,8 +77,8 @@ paths:
     $ref: "./paths/annotation.yaml#/annotation_posture_{posture_id}_annotater_{annotater_id}"
   /annotation/posture/{posture_id}/annotater/{annotater_id}/file-path:
     $ref: "./paths/annotation.yaml#/annotation_posture_{posture_id}_annotater_{annotater_id}_file_path"
-  /annotation/summary:
-    $ref: "./paths/annotation.yaml#/annotation_summary"
+  /annotation/summary/posture:
+    $ref: "./paths/annotation.yaml#/annotation_summary_posture"
 components:
   securitySchemes:
     bearerAuth:
