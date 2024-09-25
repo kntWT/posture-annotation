@@ -45,6 +45,8 @@ paths:
     $ref: "./paths/annotation.yaml#/annotation"
   /annotation/{id}:
     $ref: "./paths/annotation.yaml#/annotation_{id}"
+  /annotation/{id}/posture:
+    $ref: "./paths/annotation.yaml#/annotation_{id}_posture"
   /annotation/{id}/file-path:
     $ref: "./paths/annotation.yaml#/annotation_{id}_file_path"
   /annotation/{ids}:
