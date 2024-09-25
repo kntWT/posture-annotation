@@ -18,6 +18,6 @@ export const load: PageServerLoad = async ({ cookies, url }) => {
 		const data = await postureApi.getAnnotationsWithPostureByAnnotaterId({ annotaterId });
 		return { data };
 	} catch (e) {
-		return { annotations: null };
+		return { data: null };
 	}
 };
