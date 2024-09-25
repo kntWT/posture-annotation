@@ -1,11 +1,11 @@
 <script lang="ts">
-	import AnnotationSummaryTable from '$lib/components/admin/AnnotationSummaryTable.svelte';
-	import type { AnnotationSummary } from '$api/generated';
+	import AnnotationSummaryByPostureTable from '$lib/components/admin/AnnotationSummaryTable.svelte';
+	import type { AnnotationSummaryByPosture } from '$api/generated';
 	import { goto } from '$app/navigation';
 	import type { PageData } from './$types';
 	import type { Header } from '$lib/components/admin/types/AnnotationSummaryTable';
 	export let data: PageData;
-	type Data = Omit<AnnotationSummary, 'annotaterIds'> & {
+	type Data = Omit<AnnotationSummaryByPosture, 'annotaterIds'> & {
 		diffNeckAngle: number;
 		count: number;
 		annotaterIds: string;
@@ -80,7 +80,7 @@
 	<p>データがありません</p>
 {:else}
 	<div class="wrapper">
-		<AnnotationSummaryTable {headers} data={summary} {navigateToDetail} />
+		<AnnotationSummaryByPostureTable {headers} data={summary} {navigateToDetail} />
 	</div>
 {/if}
 

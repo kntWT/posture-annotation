@@ -10,7 +10,7 @@ export const load: PageServerLoad = async ({ cookies }) => {
 
 	try {
 		const annotationApi = createAnnotationApi({ token });
-		const summary = await annotationApi.getAnnotationSummary();
+		const summary = await annotationApi.getAnnotationSummaryByPosture();
 		return { summary };
 	} catch (e) {
 		console.log(e);
