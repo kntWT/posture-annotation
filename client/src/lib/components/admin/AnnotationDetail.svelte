@@ -59,7 +59,7 @@
 
 	:global(.mdc-card__media) {
 		background-size: cover;
-		background-position: 50% 30%;
+		background-position: 50% 0%;
 	}
 
 	.green {
