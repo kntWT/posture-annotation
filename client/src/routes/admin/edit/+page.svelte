@@ -15,9 +15,12 @@
 		| '/admin/user/detail';
 
 	export let data: PageData;
-	export let nextPath: { path: AvailablePaths; param: number } | null = null;
+	type NextPath = { path: AvailablePaths; param: number } | undefined;
 
 	const onSuccess = () => {
+		const nextPath = JSON.parse(
+			sessionStorage.getItem(`${import.meta.env.VITE_COOKIE_PREFIX}next_path`) || 'undefined'
+		) as NextPath;
 		if (!nextPath) {
 			goto('/admin', { invalidateAll: true });
 			return;
@@ -29,7 +32,7 @@
 		} else if (nextPath.path === '/admin/user/detail') {
 			param = `?annotater_id=${nextPath.param}`;
 		}
-		goto(`${import.meta.env.VITE_BASE_PATH}${nextPath.path}`, { invalidateAll: true });
+		goto(`${import.meta.env.VITE_BASE_PATH}${nextPath.path}${param}`, { invalidateAll: true });
 	};
 
 	const onError = (e?: Error) => {

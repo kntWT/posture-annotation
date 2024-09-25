@@ -3,10 +3,19 @@
 	import LayoutGrid, { Cell } from '@smui/layout-grid';
 	import type { PageData } from './$types';
 	import { goto } from '$app/navigation';
+	import { page } from '$app/stores';
 
 	export let data: PageData;
 
 	const handleClick = (id: number) => {
+		const annotaterId = parseInt($page.url.searchParams.get('annotater_id') || '');
+		sessionStorage.setItem(
+			`${import.meta.env.VITE_COOKIE_PREFIX}next_path`,
+			JSON.stringify({
+				path: '/admin/user/detail',
+				param: annotaterId
+			})
+		);
 		goto(`${import.meta.env.VITE_BASE_PATH}/admin/edit?annotation_id=${id}`, {
 			invalidateAll: true
 		});
