@@ -17,7 +17,7 @@ import com.generated.model.AnnotationUpdate;
 import com.generated.model.AnnotationCreateWithFile;
 import com.generated.model.AnnotationUpdateWithFile;
 import com.generated.model.AnnotationWithFilePath;
-import com.generated.model.AnnotationSummary;
+import com.generated.model.AnnotationSummaryByPosture;
 
 @RestController
 public class AnnotationController implements AnnotationApi {
@@ -227,8 +227,8 @@ public class AnnotationController implements AnnotationApi {
     }
 
     @Override
-    public ResponseEntity<List<AnnotationSummary>> getAnnotationSummary() {
-        List<AnnotationSummary> annotationSummary = annotationService.getAnnotationSummary();
+    public ResponseEntity<List<AnnotationSummaryByPosture>> getAnnotationSummaryByPosture() {
+        List<AnnotationSummaryByPosture> annotationSummary = annotationService.getAnnotationSummaryByPosture();
         if (annotationSummary == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }

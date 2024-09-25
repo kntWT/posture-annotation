@@ -14,9 +14,9 @@ import jakarta.persistence.ColumnResult;
 import jakarta.persistence.ConstructorResult;
 
 import com.example.api.utils.DateFormatter;
-import com.generated.model.AnnotationSummary;
+import com.generated.model.AnnotationSummaryByPosture;
 
-@SqlResultSetMapping(name = "AnnotationSummaryMapping", classes = @ConstructorResult(targetClass = AnnotationSummaryEntity.class, columns = {
+@SqlResultSetMapping(name = "AnnotationSummaryByPostureMapping", classes = @ConstructorResult(targetClass = AnnotationSummaryByPostureEntity.class, columns = {
         @ColumnResult(name = "posture_id", type = Long.class),
         @ColumnResult(name = "annotation_ids", type = Long[].class),
         @ColumnResult(name = "annotater_ids", type = Long[].class),
@@ -26,7 +26,7 @@ import com.generated.model.AnnotationSummary;
         @ColumnResult(name = "user_id", type = Long.class),
         @ColumnResult(name = "ex_created_at", type = OffsetDateTime.class)
 }))
-@NamedNativeQuery(name = "AnnotationSummaryEntity.findAnnotationSummary", query = """
+@NamedNativeQuery(name = "AnnotationSummaryByPostureEntity.findAnnotationSummaryByPosture", query = """
         SELECT
             posture_id,
             annotation_ids,
@@ -41,8 +41,8 @@ import com.generated.model.AnnotationSummary;
         ORDER BY ex_created_at DESC
         LIMIT :limit
         OFFSET :offset
-        """, resultSetMapping = "AnnotationSummaryMapping")
-public class AnnotationSummaryEntity {
+        """, resultSetMapping = "AnnotationSummaryByPostureMapping")
+public class AnnotationSummaryByPostureEntity {
 
     private Long postureId;
     private String annotationIds;
@@ -58,10 +58,10 @@ public class AnnotationSummaryEntity {
 
     private OffsetDateTime exCreatedAt;
 
-    public AnnotationSummaryEntity() {
+    public AnnotationSummaryByPostureEntity() {
     }
 
-    public AnnotationSummaryEntity(Long postureId, String annotationIds, String annotaterIds,
+    public AnnotationSummaryByPostureEntity(Long postureId, String annotationIds, String annotaterIds,
             Double originalNeckAngle, Double avgNeckAngle, Double stdNeckAngle, Long userId,
             OffsetDateTime exCreatedAt) {
         this.postureId = postureId;
@@ -78,7 +78,7 @@ public class AnnotationSummaryEntity {
         return postureId;
     }
 
-    public AnnotationSummaryEntity setPostureId(Long postureId) {
+    public AnnotationSummaryByPostureEntity setPostureId(Long postureId) {
         this.postureId = postureId;
         return this;
     }
@@ -87,7 +87,7 @@ public class AnnotationSummaryEntity {
         return annotationIds;
     }
 
-    public AnnotationSummaryEntity setAnnotationIds(String annotationIds) {
+    public AnnotationSummaryByPostureEntity setAnnotationIds(String annotationIds) {
         this.annotationIds = annotationIds;
         return this;
     }
@@ -96,7 +96,7 @@ public class AnnotationSummaryEntity {
         return annotaterIds;
     }
 
-    public AnnotationSummaryEntity setAnnotaterIds(String annotaterIds) {
+    public AnnotationSummaryByPostureEntity setAnnotaterIds(String annotaterIds) {
         this.annotaterIds = annotaterIds;
         return this;
     }
@@ -105,7 +105,7 @@ public class AnnotationSummaryEntity {
         return originalNeckAngle;
     }
 
-    public AnnotationSummaryEntity setOriginalNeckAngle(Double originalNeckAngle) {
+    public AnnotationSummaryByPostureEntity setOriginalNeckAngle(Double originalNeckAngle) {
         this.originalNeckAngle = originalNeckAngle;
         return this;
     }
@@ -114,7 +114,7 @@ public class AnnotationSummaryEntity {
         return avgNeckAngle;
     }
 
-    public AnnotationSummaryEntity setAvgNeckAngle(Double avgNeckAngle) {
+    public AnnotationSummaryByPostureEntity setAvgNeckAngle(Double avgNeckAngle) {
         this.avgNeckAngle = avgNeckAngle;
         return this;
     }
@@ -123,7 +123,7 @@ public class AnnotationSummaryEntity {
         return stdNeckAngle;
     }
 
-    public AnnotationSummaryEntity setStdNeckAngle(Double stdNeckAngle) {
+    public AnnotationSummaryByPostureEntity setStdNeckAngle(Double stdNeckAngle) {
         this.stdNeckAngle = stdNeckAngle;
         return this;
     }
@@ -132,7 +132,7 @@ public class AnnotationSummaryEntity {
         return userId;
     }
 
-    public AnnotationSummaryEntity setUserId(Long userId) {
+    public AnnotationSummaryByPostureEntity setUserId(Long userId) {
         this.userId = userId;
         return this;
     }
@@ -141,7 +141,7 @@ public class AnnotationSummaryEntity {
         return exCreatedAt;
     }
 
-    public AnnotationSummaryEntity setExCreatedAt(OffsetDateTime exCreatedAt) {
+    public AnnotationSummaryByPostureEntity setExCreatedAt(OffsetDateTime exCreatedAt) {
         this.exCreatedAt = exCreatedAt;
         return this;
     }
@@ -154,7 +154,7 @@ public class AnnotationSummaryEntity {
 
     @Override
     public String toString() {
-        return "AnnotationSummaryEntity{" +
+        return "AnnotationSummaryByPostureEntity{" +
                 "postureId=" + postureId +
                 ", annotationIds=" + annotationIds +
                 ", annotaterIds=" + annotaterIds +
@@ -166,10 +166,11 @@ public class AnnotationSummaryEntity {
                 '}';
     }
 
-    public static AnnotationSummary toAnnotationSummary(AnnotationSummaryEntity annotationSummaryEntity) {
+    public static AnnotationSummaryByPosture toAnnotationSummaryByPosture(
+            AnnotationSummaryByPostureEntity annotationSummaryEntity) {
         String fileName = annotationSummaryEntity.getUserId() + "/"
                 + DateFormatter.format(annotationSummaryEntity.getExCreatedAt()) + ".jpg";
-        return new AnnotationSummary()
+        return new AnnotationSummaryByPosture()
                 .postureId(annotationSummaryEntity.getPostureId())
                 .annotationIds(splitStringToLongList(annotationSummaryEntity.getAnnotationIds()))
                 .annotaterIds(splitStringToLongList(annotationSummaryEntity.getAnnotaterIds()))
@@ -179,10 +180,10 @@ public class AnnotationSummaryEntity {
                 .fileName(fileName);
     }
 
-    public static List<AnnotationSummary> toAnnotationSummaries(
-            List<AnnotationSummaryEntity> annotationSummaryEntities) {
+    public static List<AnnotationSummaryByPosture> toAnnotationSummaries(
+            List<AnnotationSummaryByPostureEntity> annotationSummaryEntities) {
         return annotationSummaryEntities.stream()
-                .map(AnnotationSummaryEntity::toAnnotationSummary)
+                .map(AnnotationSummaryByPostureEntity::toAnnotationSummaryByPosture)
                 .toList();
     }
 

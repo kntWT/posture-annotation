@@ -12,14 +12,14 @@ import com.example.api.repositories.AnnotationRepository;
 import com.example.api.utils.DateFormatter;
 import com.example.api.utils.SaveFile;
 import com.example.api.entities.AnnotationEntity;
-import com.example.api.entities.AnnotationSummaryEntity;
+import com.example.api.entities.AnnotationSummaryByPostureEntity;
 import com.generated.model.Annotation;
 import com.generated.model.AnnotationUpdate;
 import com.generated.model.AnnotationUpdateWithFile;
 import com.generated.model.AnnotationCreate;
 import com.generated.model.AnnotationCreateWithFile;
 import com.generated.model.AnnotationWithFilePath;
-import com.generated.model.AnnotationSummary;
+import com.generated.model.AnnotationSummaryByPosture;
 
 @Service
 public class AnnotationService {
@@ -291,13 +291,13 @@ public class AnnotationService {
     }
 
     @Transactional
-    public List<AnnotationSummary> getAnnotationSummary() {
-        List<AnnotationSummaryEntity> annotationSummary = annotationRepository.getAnnotationSummary();
+    public List<AnnotationSummaryByPosture> getAnnotationSummaryByPosture() {
+        List<AnnotationSummaryByPostureEntity> annotationSummary = annotationRepository.getAnnotationSummaryByPosture();
         if (annotationSummary.size() <= 0) {
             return null;
         }
 
-        return AnnotationSummaryEntity.toAnnotationSummaries(annotationSummary);
+        return AnnotationSummaryByPostureEntity.toAnnotationSummaries(annotationSummary);
     }
 
 }

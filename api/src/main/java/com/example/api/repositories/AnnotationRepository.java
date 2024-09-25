@@ -13,7 +13,7 @@ import org.springframework.data.repository.query.Param;
 import jakarta.transaction.Transactional;
 
 import com.example.api.entities.AnnotationEntity;
-import com.example.api.entities.AnnotationSummaryEntity;
+import com.example.api.entities.AnnotationSummaryByPostureEntity;
 
 @Repository
 public interface AnnotationRepository extends JpaRepository<AnnotationEntity, Long> {
@@ -182,11 +182,11 @@ public interface AnnotationRepository extends JpaRepository<AnnotationEntity, Lo
             INNER JOIN postures AS p ON a.posture_id = p.id
             GROUP BY a.posture_id
             """, nativeQuery = true)
-    public List<Object[]> findAnnotationSummary();
+    public List<Object[]> findAnnotationSummaryByPosture();
 
-    default public List<AnnotationSummaryEntity> getAnnotationSummary() {
-        return findAnnotationSummary().stream()
-                .map(row -> new AnnotationSummaryEntity(
+    default public List<AnnotationSummaryByPostureEntity> getAnnotationSummaryByPosture() {
+        return findAnnotationSummaryByPosture().stream()
+                .map(row -> new AnnotationSummaryByPostureEntity(
                         ((Integer) row[0]).longValue(),
                         (String) row[1],
                         (String) row[2],
