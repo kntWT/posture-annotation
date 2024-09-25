@@ -22,6 +22,7 @@ import com.generated.model.AnnotationCreateWithFile;
 import com.generated.model.AnnotationWithFilePath;
 import com.generated.model.AnnotationSummaryByPosture;
 import com.generated.model.AnnotationSummaryByAnnotater;
+import com.generated.model.AnnotationWithPosture;
 
 @Service
 public class AnnotationService {
@@ -204,6 +205,16 @@ public class AnnotationService {
     }
 
     @Transactional
+    public List<AnnotationWithPosture> getAnnotationsWithPostureByAnnotaterId(Long annotaterId) {
+        List<AnnotationEntity> annotations = annotationRepository.findAllWithPostureByAnnotaterId(annotaterId);
+        if (annotations == null) {
+            return null;
+        }
+
+        return AnnotationEntity.toAnnotationsWithPosture(annotations);
+    }
+
+    @Transactional
     public List<AnnotationWithFilePath> getAnnotationsWithFilePathByAnnotaterId(Long annotaterId) {
         List<AnnotationEntity> annotations = annotationRepository.findByAnnotaterIdWithFilePath(annotaterId);
         return AnnotationEntity.toAnnotationsWithFilePath(annotations);
@@ -225,6 +236,19 @@ public class AnnotationService {
         List<AnnotationEntity> annotations = annotationRepository.findByPostureIdWithFilePath(postureId);
         return AnnotationEntity.toAnnotationsWithFilePath(annotations);
     }
+
+    // @Transactional
+    // public List<AnnotationEntity> getAnnotationWithPostureByAnnotaterId(Long
+    // annotaterId) {
+    // List<AnnotationEntity> annotations =
+    // annotationRepository.findAllWithPostureByAnnotaterId(annotaterId);
+    // if (annotations == null) {
+    // return null;
+    // }
+    // return annotations;
+
+    // return AnnotationEntity.toPostureWithAnnotations(annotation);
+    // }
 
     @Transactional
     public Annotation getAnnotationByPostureIdAndAnnotaterId(Long postureId, Long annotaterId) {

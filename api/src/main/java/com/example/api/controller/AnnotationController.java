@@ -19,6 +19,7 @@ import com.generated.model.AnnotationUpdateWithFile;
 import com.generated.model.AnnotationWithFilePath;
 import com.generated.model.AnnotationSummaryByPosture;
 import com.generated.model.AnnotationSummaryByAnnotater;
+import com.generated.model.AnnotationWithPosture;
 
 @RestController
 public class AnnotationController implements AnnotationApi {
@@ -126,6 +127,12 @@ public class AnnotationController implements AnnotationApi {
     @Override
     public ResponseEntity<List<Annotation>> getAnnotationsByAnnotaterId(Long annotaterId) {
         List<Annotation> annotations = annotationService.getAnnotationsByAnnotaterId(annotaterId);
+        return ResponseEntity.ok(annotations);
+    }
+
+    @Override
+    public ResponseEntity<List<AnnotationWithPosture>> getAnnotationsWithPostureByAnnotaterId(Long annotaterId) {
+        List<AnnotationWithPosture> annotations = annotationService.getAnnotationsWithPostureByAnnotaterId(annotaterId);
         return ResponseEntity.ok(annotations);
     }
 

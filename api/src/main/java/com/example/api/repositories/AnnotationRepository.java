@@ -30,6 +30,8 @@ public interface AnnotationRepository extends JpaRepository<AnnotationEntity, Lo
 
     public AnnotationEntity findByPostureIdAndAnnotaterId(Long postureId, Long annotaterId);
 
+    public List<AnnotationEntity> findAllWithPostureByAnnotaterId(Long annotaterId);
+
     @Modifying
     @Transactional
     @Query(value = """

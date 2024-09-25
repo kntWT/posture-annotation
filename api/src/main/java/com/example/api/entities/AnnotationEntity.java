@@ -23,8 +23,9 @@ import jakarta.persistence.NamedSubgraph;
 import jakarta.persistence.Table;
 import com.generated.model.Annotation;
 import com.generated.model.AnnotationWithFilePath;
+import com.generated.model.AnnotationWithPosture;
 import com.example.api.entities.PostureEntity;
-import com.example.api.utils.DateFormatter;;
+import com.example.api.utils.DateFormatter;
 
 @Entity
 @Table(name = "annotations")
@@ -197,6 +198,18 @@ public class AnnotationEntity {
     public static List<AnnotationWithFilePath> toAnnotationsWithFilePath(List<AnnotationEntity> annotationEntities) {
         return annotationEntities.stream()
                 .map(AnnotationEntity::toAnnotationWithFilePath)
+                .collect(Collectors.toList());
+    }
+
+    public static AnnotationWithPosture toAnnotationWithPosture(AnnotationEntity entity) {
+        return new AnnotationWithPosture()
+                .annotation(entity.toAnnotation())
+                .posture(entity.getPosture().toPosture());
+    }
+
+    public static List<AnnotationWithPosture> toAnnotationsWithPosture(List<AnnotationEntity> entities) {
+        return entities.stream()
+                .map(AnnotationEntity::toAnnotationWithPosture)
                 .collect(Collectors.toList());
     }
 
