@@ -536,7 +536,7 @@ annotation_posture_{posture_id}_annotater_{annotater_id}_file_path:
         description: forbidden
 annotation_summary_posture:
   get:
-    description: get summary of annotation
+    description: get summary of annotation by posture
     operationId: getAnnotationSummaryByPosture
     tags:
       - annotation
