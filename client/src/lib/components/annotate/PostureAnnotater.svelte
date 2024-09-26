@@ -8,11 +8,13 @@
 	// import Button, { Label } from "@smui/button";
 	import IconButton from '@smui/icon-button';
 	import TextField from '@smui/textfield';
+	import { number } from 'zod';
 
 	type Vector = { x: number; y: number };
 
 	export let handleAction: (data: AnnotationCreateWithFile) => Promise<unknown>;
 	export let posture: Posture;
+	export let annotaterId: number | undefined;
 	export let imageSrc: string;
 	export let showWaist: boolean = false;
 	export let holdShoulder: boolean = false;
@@ -105,7 +107,7 @@
 			waistY: waist.y,
 			neckAngle: correctedNeckAngle,
 			torsoAngle: correctedTorsoAngle,
-			annotaterId: user.id,
+			annotaterId: annotaterId || user.id,
 			postureId: posture.id
 		};
 		await handleAction(data);

@@ -68,6 +68,7 @@
 	{#if data.data?.posture && data.data.annotation}
 		<PostureAnnotater
 			posture={data.data.posture}
+			annotaterId={data.data.annotation.annotaterId}
 			imageSrc={imageUrlFromPosture(
 				data.data.posture,
 				data.data.annotation.annotaterId,
