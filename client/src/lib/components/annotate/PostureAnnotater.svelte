@@ -5,10 +5,8 @@
 	import { browser } from '$app/environment';
 	import type p5 from 'p5';
 	import P5 from 'p5-svelte';
-	// import Button, { Label } from "@smui/button";
 	import IconButton from '@smui/icon-button';
 	import TextField from '@smui/textfield';
-	import { number } from 'zod';
 
 	type Vector = { x: number; y: number };
 
