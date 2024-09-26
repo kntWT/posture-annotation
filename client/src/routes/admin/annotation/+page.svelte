@@ -5,9 +5,7 @@
 	import type { PageData } from './$types';
 	import type { Header } from '$lib/components/admin/types/AnnotationSummaryTable';
 	import type { Option } from '$lib/components/dataIntercepter/types/Option';
-	import type { FilterOptionKeys } from '$lib/components/dataIntercepter/types/FilterOption';
 	import DataSortFilter from '$lib/components/dataIntercepter/DataSortFilter.svelte';
-	import { filterOptions } from '$lib/components/dataIntercepter/config';
 	export let data: PageData;
 	type Data = Omit<AnnotationSummaryByPosture, 'annotaterIds'> & {
 		diffNeckAngle: number;
@@ -77,63 +75,20 @@
 		{ label: '角度の標準偏差', key: 'stdNeckAngle', type: 'number' },
 		{ label: '角度の差', key: 'diffNeckAngle', type: 'number' }
 	];
-	let filters: { value: string; key: Key | undefined; option: Option<Key>[] }[] = [];
-	let filterOptionKey: FilterOptionKeys = 'equal';
 
-	$: filteredSummary = () => {
-		let summary =
-			data.summary?.map((d) => {
-				return {
-					...d,
-					diffNeckAngle: d.avgNeckAngle - d.originalNeckAngle,
-					count: d.annotationIds.length,
-					annotaterIds: d.annotaterIds.toSorted().join(', ')
-				};
-			}) ?? [];
-		filters.forEach((filter) => {
-			const option = optionTemplate.find((o) => o.key === filter.key);
-			if (!option) return;
-			const key = option.key;
+	let formatData: Data[] = [
+		...(data?.summary?.map((d) => ({
+			...d,
+			diffNeckAngle: d.avgNeckAngle - d.originalNeckAngle,
+			count: d.annotationIds.length,
+			annotaterIds: d.annotaterIds.join(', ')
+		})) || [])
+	];
 
-			let value: unknown;
-			switch (option.type) {
-				case 'number':
-					value = Number(filter.value);
-					break;
-				case 'date':
-					value = new Date(filter.value).getTime();
-					break;
-				case 'string':
-					value = filter.value;
-					break;
-			}
-			summary = summary.filter((d) => {
-				const filterOpt = filterOptions.find((f) => f.key === filterOptionKey);
-				if (!filterOpt) return false;
-				const { key: currentKey } = filterOpt;
-				const t = typeof d[key];
-				switch (currentKey) {
-					case 'above':
-						return d[key] > (value as typeof t);
-					case 'greater':
-						return d[key] >= (value as typeof t);
-					case 'below':
-						return d[key] < (value as typeof t);
-					case 'less':
-						return d[key] <= (value as typeof t);
-					case 'equal':
-						return d[key] === value;
-					case 'notEqual':
-						return d[key] !== value;
-				}
-			});
-		});
-
-		return summary;
-	};
+	let filteredData: Data[] = [...formatData];
 
 	$: counts = {
-		display: filteredSummary().length,
+		display: filteredData.length,
 		total: data.summary?.length ?? 0
 	};
 </script>
@@ -145,13 +100,12 @@
 		<div class="container">
 			<DataSortFilter
 				{optionTemplate}
-				bind:filters
-				{filterOptions}
-				bind:filterOptionKey
+				bind:data={formatData}
 				bind:counts
+				on:updateData={(e) => (filteredData = e.detail)}
 			/>
 		</div>
-		<AnnotationSummaryByPostureTable {headers} data={filteredSummary()} {navigateToDetail} />
+		<AnnotationSummaryByPostureTable {headers} bind:data={filteredData} {navigateToDetail} />
 	</div>
 {/if}
 
