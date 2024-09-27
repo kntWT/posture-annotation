@@ -45,6 +45,7 @@ import com.generated.model.AnnotationSummaryByPosture;
 public class AnnotationSummaryByPostureEntity {
 
     private Long postureId;
+    private Boolean isSample;
     private String annotationIds;
     private String annotaterIds;
 
@@ -61,10 +62,11 @@ public class AnnotationSummaryByPostureEntity {
     public AnnotationSummaryByPostureEntity() {
     }
 
-    public AnnotationSummaryByPostureEntity(Long postureId, String annotationIds, String annotaterIds,
+    public AnnotationSummaryByPostureEntity(Long postureId, Boolean isSample, String annotationIds, String annotaterIds,
             Double originalNeckAngle, Double avgNeckAngle, Double stdNeckAngle, Long userId,
             OffsetDateTime exCreatedAt) {
         this.postureId = postureId;
+        this.isSample = isSample;
         this.annotationIds = annotationIds;
         this.annotaterIds = annotaterIds;
         this.originalNeckAngle = originalNeckAngle;
@@ -80,6 +82,15 @@ public class AnnotationSummaryByPostureEntity {
 
     public AnnotationSummaryByPostureEntity setPostureId(Long postureId) {
         this.postureId = postureId;
+        return this;
+    }
+
+    public Boolean getIsSample() {
+        return isSample;
+    }
+
+    public AnnotationSummaryByPostureEntity setIsSample(Boolean isSample) {
+        this.isSample = isSample;
         return this;
     }
 
@@ -156,6 +167,7 @@ public class AnnotationSummaryByPostureEntity {
     public String toString() {
         return "AnnotationSummaryByPostureEntity{" +
                 "postureId=" + postureId +
+                ", isSample=" + isSample +
                 ", annotationIds=" + annotationIds +
                 ", annotaterIds=" + annotaterIds +
                 ", originalNeckAngle=" + originalNeckAngle +
@@ -172,6 +184,7 @@ public class AnnotationSummaryByPostureEntity {
                 + DateFormatter.format(entity.getExCreatedAt()) + ".jpg";
         return new AnnotationSummaryByPosture()
                 .postureId(entity.getPostureId())
+                .isSample(entity.getIsSample())
                 .annotationIds(splitStringToLongList(entity.getAnnotationIds()))
                 .annotaterIds(splitStringToLongList(entity.getAnnotaterIds()))
                 .originalNeckAngle(entity.getOriginalNeckAngle())

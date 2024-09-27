@@ -175,6 +175,7 @@ public interface AnnotationRepository extends JpaRepository<AnnotationEntity, Lo
     @Query(value = """
             SELECT
                 a.posture_id,
+                BOOL_AND(p.is_sample) AS is_sample,
                 STRING_AGG(CAST(a.id AS TEXT), ',') AS annotation_ids,
                 STRING_AGG(CAST(a.annotater_id AS TEXT), ',') AS annotater_ids,
                 MAX(p.neck_angle) AS original_neck_angle,
@@ -192,13 +193,14 @@ public interface AnnotationRepository extends JpaRepository<AnnotationEntity, Lo
         return findAnnotationSummaryByPosture().stream()
                 .map(row -> new AnnotationSummaryByPostureEntity(
                         ((Integer) row[0]).longValue(),
-                        (String) row[1],
+                        (Boolean) row[1],
                         (String) row[2],
-                        ((Float) row[3]).doubleValue(),
-                        (Double) row[4],
+                        (String) row[3],
+                        ((Float) row[4]).doubleValue(),
                         (Double) row[5],
-                        ((Integer) row[6]).longValue(),
-                        ((Timestamp) row[7]).toInstant().atOffset(ZoneOffset.ofHours(9))))
+                        (Double) row[6],
+                        ((Integer) row[7]).longValue(),
+                        ((Timestamp) row[8]).toInstant().atOffset(ZoneOffset.ofHours(9))))
                 .toList();
     }
 
