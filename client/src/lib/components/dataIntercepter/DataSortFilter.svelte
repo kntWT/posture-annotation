@@ -14,6 +14,7 @@
 	import DropdownFilter from './DropdownFilter.svelte';
 	import Accordion, { Content, Header, Panel } from '@smui-extra/accordion';
 	import Tooltip, { Wrapper, RichActions } from '@smui/tooltip';
+	import DropdownSort from './DropdownSort.svelte';
 
 	type T = $$Generic;
 	type Key = keyof T;
@@ -28,6 +29,9 @@
 		result: FilterOptionKeys | Pick<CheckboxOption, 'value'>[];
 	};
 	let filters: Filter[] = [];
+
+	let sortKey: Key | undefined;
+	let sortValue: 'asc' | 'desc' = 'asc';
 
 	const remoteFilter = (i: number) => {
 		filters = filters.filter((f, index) => index !== i);
@@ -95,7 +99,7 @@
 	};
 
 	$: {
-		let filtered = [...data];
+		let processed = [...data];
 		filters.forEach((filter) => {
 			const option = optionTemplate.find((o) => o.key === filter.key);
 			if (!option) return;
@@ -115,15 +119,23 @@
 			}
 			switch (filter.type) {
 				case 'dropdown':
-					filtered = filterByDropdown(filtered, filter, key, value);
+					processed = filterByDropdown(processed, filter, key, value);
 					break;
 				case 'checkbox':
-					filtered = filterByCheckbox(filtered, filter, key);
+					processed = filterByCheckbox(processed, filter, key);
 					break;
 			}
 		});
+		processed = processed.sort((a, b) => {
+			if (!sortKey) return 0;
+			if (sortValue === 'asc') {
+				return a[sortKey] > b[sortKey] ? 1 : -1;
+			} else {
+				return a[sortKey] < b[sortKey] ? 1 : -1;
+			}
+		});
 		// NOTE: なぜかsetTimeoutを使わないとfilterの変更がUIに反映されない
-		setTimeout(() => update(filtered), 0);
+		setTimeout(() => update(processed), 0);
 	}
 </script>
 
@@ -133,29 +145,36 @@
 			<p class="center">{counts.display}/{counts.total}件表示</p>
 		</Header>
 		<Content>
-			{#each filters as filter, i}
-				<div class="center filter-container">
-					{#if filter.type === 'checkbox' && Array.isArray(filter.result)}
-						<CheckboxFilter
-							bind:options={filter.option}
-							bind:key={filter.key}
-							bind:checks={filter.result}
-							checkboxOptions={checkboxOption(filter)}
-						/>
-					{:else if filter.type === 'dropdown' && (isFilterOptionKeys(filter.result) || filter.result === undefined)}
-						<DropdownFilter
-							bind:options={filter.option}
-							bind:key={filter.key}
-							bind:value={filter.value}
-							bind:filterOptionKey={filter.result}
-							{filterOptions}
-						/>
-					{:else}
-						<p>some error occured</p>
-					{/if}
-					<IconButton class="material-icons" on:click={() => remoteFilter(i)}>remove</IconButton>
-				</div>
-			{/each}
+			<div class="sort-container">
+				<h4>ソート条件</h4>
+				<DropdownSort bind:options={optionTemplate} bind:key={sortKey} bind:value={sortValue} />
+			</div>
+			<div class="filter-container">
+				<h4>フィルター条件</h4>
+				{#each filters as filter, i}
+					<div class="center filter-container">
+						{#if filter.type === 'checkbox' && Array.isArray(filter.result)}
+							<CheckboxFilter
+								bind:options={filter.option}
+								bind:key={filter.key}
+								bind:checks={filter.result}
+								checkboxOptions={checkboxOption(filter)}
+							/>
+						{:else if filter.type === 'dropdown' && (isFilterOptionKeys(filter.result) || filter.result === undefined)}
+							<DropdownFilter
+								bind:options={filter.option}
+								bind:key={filter.key}
+								bind:value={filter.value}
+								bind:filterOptionKey={filter.result}
+								{filterOptions}
+							/>
+						{:else}
+							<p>some error occured</p>
+						{/if}
+						<IconButton class="material-icons" on:click={() => remoteFilter(i)}>remove</IconButton>
+					</div>
+				{/each}
+			</div>
 			<div class="center add-button-wrapper">
 				<Wrapper rich>
 					<Icon class="material-icons">add</Icon>
@@ -175,6 +194,10 @@
 	.center {
 		margin: auto 0;
 		text-align: center;
+	}
+
+	.filter-container {
+		margin-top: 16px;
 	}
 
 	:global(.smui-accordion) {
