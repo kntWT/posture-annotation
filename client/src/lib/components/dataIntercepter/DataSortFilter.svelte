@@ -52,6 +52,7 @@
 			if (!filterOpt) return false;
 			const { key: currentKey } = filterOpt;
 			const t = typeof d[key];
+			const v = typeof d[key] === 'number' ? Math.abs(d[key]) : d[key];
 			switch (currentKey) {
 				case 'above':
 					return d[key] > (value as typeof t);
