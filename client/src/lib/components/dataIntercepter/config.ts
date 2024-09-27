@@ -1,4 +1,4 @@
-import type { FilterOption } from './types/FilterOption';
+import type { FilterOption } from './types/Option';
 
 export const filterOptions: FilterOption[] = [
 	{ key: 'above', label: 'より大きい', availableTypes: ['number', 'date'] },

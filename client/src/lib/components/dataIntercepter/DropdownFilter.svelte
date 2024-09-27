@@ -1,7 +1,5 @@
 <script lang="ts">
-	import { z } from 'zod';
-
-	import type { FilterOption, FilterOptionKeys } from './types/FilterOption';
+	import type { FilterOption, FilterOptionKeys } from './types/Option';
 
 	import type { Option } from './types/Option';
 

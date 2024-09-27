@@ -4,8 +4,8 @@
 	import { goto } from '$app/navigation';
 	import type { PageData } from './$types';
 	import type { Header } from '$lib/components/admin/types/AnnotationSummaryTable';
-	import type { Option } from '$lib/components/dataIntercepter/types/Option';
 	import DataSortFilter from '$lib/components/dataIntercepter/DataSortFilter.svelte';
+	import type { Option } from '$lib/components/dataIntercepter/types/Option';
 	export let data: PageData;
 	type Data = Omit<AnnotationSummaryByPosture, 'annotaterIds'> & {
 		diffNeckAngle: number;
@@ -69,11 +69,37 @@
 	];
 
 	const optionTemplate: Option<Key>[] = [
-		{ label: '件数', key: 'count', type: 'number' },
-		{ label: 'もとの首の角度', key: 'originalNeckAngle', type: 'number' },
-		{ label: '角度の平均', key: 'avgNeckAngle', type: 'number' },
-		{ label: '角度の標準偏差', key: 'stdNeckAngle', type: 'number' },
-		{ label: '角度の差', key: 'diffNeckAngle', type: 'number' }
+		{ label: '件数', key: 'count', type: 'number', availableUiTypes: ['dropdown'] },
+		{
+			label: 'もとの首の角度',
+			key: 'originalNeckAngle',
+			type: 'number',
+			availableUiTypes: ['dropdown']
+		},
+		{ label: '角度の平均', key: 'avgNeckAngle', type: 'number', availableUiTypes: ['dropdown'] },
+		{
+			label: '角度の標準偏差',
+			key: 'stdNeckAngle',
+			type: 'number',
+			availableUiTypes: ['dropdown']
+		},
+		{ label: '角度の差', key: 'diffNeckAngle', type: 'number', availableUiTypes: ['dropdown'] },
+		{
+			label: '本番用',
+			key: 'isSample',
+			type: 'boolean',
+			availableUiTypes: ['checkbox'],
+			checkboxConfigs: [
+				{
+					label: '本番用',
+					value: 'false'
+				},
+				{
+					label: 'サンプル',
+					value: 'true'
+				}
+			]
+		}
 	];
 
 	let formatData: Data[] = [
