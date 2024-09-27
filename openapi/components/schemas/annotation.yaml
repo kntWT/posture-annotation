@@ -128,6 +128,8 @@ AnnotationSummaryByPosture:
     posture_id:
       type: integer
       format: int64
+    is_sample:
+      type: boolean
     file_name:
       type: string
     annotation_ids:
