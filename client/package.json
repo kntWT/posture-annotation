@@ -35,6 +35,7 @@
 		"@smui/paper": "^7.0.0",
 		"@smui/select": "^7.0.0",
 		"@smui/textfield": "^7.0.0",
+		"@smui/tooltip": "^7.0.0",
 		"@smui/top-app-bar": "^7.0.0",
 		"@sveltejs/adapter-auto": "^3.0.0",
 		"@sveltejs/adapter-node": "^5.0.1",
