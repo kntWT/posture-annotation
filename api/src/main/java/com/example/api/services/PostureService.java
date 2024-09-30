@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.dao.PessimisticLockingFailureException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import com.example.api.repositories.PostureRepository;
 import com.example.api.utils.DateFormatter;
@@ -38,8 +40,8 @@ public class PostureService {
     }
 
     @Transactional
-    public List<Posture> getPostures() {
-        List<PostureEntity> postures = postureRepository.findAll();
+    public List<Posture> getPostures(Pageable pageable) {
+        List<PostureEntity> postures = postureRepository.findAll(pageable).getContent();
         return PostureEntity.toPostures(postures);
     }
 
@@ -54,14 +56,14 @@ public class PostureService {
     }
 
     @Transactional
-    public List<Posture> getPosturesByIsSample(Boolean isSample) {
-        List<PostureEntity> postures = postureRepository.findByIsSample(isSample);
+    public List<Posture> getPosturesByIsSample(Boolean isSample, Pageable pageable) {
+        List<PostureEntity> postures = postureRepository.findByIsSample(isSample, pageable).getContent();
         return PostureEntity.toPostures(postures);
     }
 
     @Transactional
-    public List<Posture> getPosturesByUserId(Long userId) {
-        List<PostureEntity> postures = postureRepository.findByUserId(userId);
+    public List<Posture> getPosturesByUserId(Long userId, Pageable pageable) {
+        List<PostureEntity> postures = postureRepository.findByUserId(userId, pageable).getContent();
         return PostureEntity.toPostures(postures);
     }
 

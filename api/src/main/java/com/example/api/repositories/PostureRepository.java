@@ -3,6 +3,8 @@ package com.example.api.repositories;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
@@ -26,7 +28,11 @@ public interface PostureRepository extends JpaRepository<PostureEntity, Long> {
 
     public List<PostureEntity> findByUserId(Long userId);
 
+    public Page<PostureEntity> findByUserId(Long userId, Pageable pageable);
+
     public List<PostureEntity> findByIsSample(Boolean isSample);
+
+    public Page<PostureEntity> findByIsSample(Boolean isSample, Pageable pageable);
 
     @Query(value = "SELECT p.* FROM postures AS p WHERE p.is_sample = FALSE ORDER BY random() LIMIT :limit", nativeQuery = true)
     public List<PostureEntity> findProdByLimitedTo(@Param("limit") int limit);

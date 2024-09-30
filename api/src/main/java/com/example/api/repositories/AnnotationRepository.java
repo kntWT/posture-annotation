@@ -3,6 +3,9 @@ package com.example.api.repositories;
 import java.sql.Timestamp;
 import java.time.ZoneOffset;
 import java.util.List;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -20,17 +23,25 @@ public interface AnnotationRepository extends JpaRepository<AnnotationEntity, Lo
 
     public List<AnnotationEntity> findAllByOrderByIdAsc();
 
+    public Page<AnnotationEntity> findAllByOrderByIdAsc(Pageable pageable);
+
     public List<AnnotationEntity> findAllByIdInOrderByIdAsc(Iterable<Long> ids);
 
     public boolean existsByPostureIdAndAnnotaterId(Long postureId, Long annotaterId);
 
     public List<AnnotationEntity> findByPostureIdOrderByIdAsc(Long postureId);
 
+    public Page<AnnotationEntity> findByPostureIdOrderByIdAsc(Long postureId, Pageable pageable);
+
     public List<AnnotationEntity> findByAnnotaterIdOrderByIdAsc(Long annotaterId);
+
+    public Page<AnnotationEntity> findByAnnotaterIdOrderByIdAsc(Long annotaterId, Pageable pageable);
 
     public AnnotationEntity findByPostureIdAndAnnotaterId(Long postureId, Long annotaterId);
 
     public List<AnnotationEntity> findAllWithPostureByAnnotaterId(Long annotaterId);
+
+    public Page<AnnotationEntity> findAllWithPostureByAnnotaterId(Long annotaterId, Pageable pageable);
 
     public AnnotationEntity findWithPostureById(Long id);
 
@@ -85,6 +96,14 @@ public interface AnnotationRepository extends JpaRepository<AnnotationEntity, Lo
     public List<AnnotationEntity> findByAnnotaterIdWithFilePath(@Param("annotaterId") Long annotaterId);
 
     @Transactional
+    @Query(value = """
+            SELECT a.*, p.user_id, p.ex_created_at FROM annotations as a
+            INNER JOIN postures as p ON a.posture_id = p.id
+            WHERE a.annotater_id = :annotaterId
+            """, nativeQuery = true)
+    public Page<AnnotationEntity> findByAnnotaterIdWithFilePath(@Param("annotaterId") Long annotaterId, Pageable page);
+
+    @Transactional
     public Long countByAnnotaterId(Long annotaterId);
 
     @Transactional
@@ -94,6 +113,14 @@ public interface AnnotationRepository extends JpaRepository<AnnotationEntity, Lo
             WHERE a.posture_id = :postureId
             """, nativeQuery = true)
     public List<AnnotationEntity> findByPostureIdWithFilePath(@Param("postureId") Long postureId);
+
+    @Transactional
+    @Query(value = """
+            SELECT a.*, p.user_id, p.ex_created_at FROM annotations as a
+            INNER JOIN postures as p ON a.posture_id = p.id
+            WHERE a.posture_id = :postureId
+            """, nativeQuery = true)
+    public Page<AnnotationEntity> findByPostureIdWithFilePath(@Param("postureId") Long postureId, Pageable pageable);
 
     @Transactional
     @Query(value = """
@@ -116,6 +143,15 @@ public interface AnnotationRepository extends JpaRepository<AnnotationEntity, Lo
 
     @Transactional
     @Query(value = """
+            SELECT a.* FROM annotations as a
+            WHERE a.annotater_id = :annotaterId AND a.posture_id NOT IN
+                (SELECT p.id FROM postures as p WHERE p.is_sample = TRUE)
+            ORDER BY a.id ASC
+            """, nativeQuery = true)
+    public Page<AnnotationEntity> findProdByAnnotaterId(@Param("annotaterId") Long annotaterId, Pageable pageable);
+
+    @Transactional
+    @Query(value = """
             SELECT a.*, p.user_id, p.ex_created_at FROM annotations as a
             INNER JOIN postures as p on a.posture_id = p.id
             WHERE a.annotater_id = :annotaterId AND a.posture_id NOT IN
@@ -123,6 +159,17 @@ public interface AnnotationRepository extends JpaRepository<AnnotationEntity, Lo
             ORDER BY a.id ASC
             """, nativeQuery = true)
     public List<AnnotationEntity> findProdByAnnotaterIdWithFilePath(@Param("annotaterId") Long annotaterId);
+
+    @Transactional
+    @Query(value = """
+            SELECT a.*, p.user_id, p.ex_created_at FROM annotations as a
+            INNER JOIN postures as p on a.posture_id = p.id
+            WHERE a.annotater_id = :annotaterId AND a.posture_id NOT IN
+                (SELECT p.id FROM postures as p WHERE p.is_sample = TRUE)
+            ORDER BY a.id ASC
+            """, nativeQuery = true)
+    public Page<AnnotationEntity> findProdByAnnotaterIdWithFilePath(@Param("annotaterId") Long annotaterId,
+            Pageable pageable);
 
     @Transactional
     @Query(value = """
@@ -145,6 +192,15 @@ public interface AnnotationRepository extends JpaRepository<AnnotationEntity, Lo
 
     @Transactional
     @Query(value = """
+            SELECT a.* FROM annotations as a
+            WHERE a.annotater_id = :annotaterId AND a.posture_id IN
+                (SELECT p.id FROM postures as p WHERE p.is_sample = TRUE)
+            ORDER BY a.id ASC
+            """, nativeQuery = true)
+    public Page<AnnotationEntity> findSampleByAnnotaterId(@Param("annotaterId") Long annotaterId, Pageable pageable);
+
+    @Transactional
+    @Query(value = """
             SELECT a.*, p.user_id, p.ex_created_at FROM annotations as a
             INNER JOIN postures as p on a.posture_id = p.id
             WHERE a.annotater_id = :annotaterId AND a.posture_id IN
@@ -152,6 +208,17 @@ public interface AnnotationRepository extends JpaRepository<AnnotationEntity, Lo
             ORDER BY a.id ASC
             """, nativeQuery = true)
     public List<AnnotationEntity> findSampleByAnnotaterIdWithFilePath(@Param("annotaterId") Long annotaterId);
+
+    @Transactional
+    @Query(value = """
+            SELECT a.*, p.user_id, p.ex_created_at FROM annotations as a
+            INNER JOIN postures as p on a.posture_id = p.id
+            WHERE a.annotater_id = :annotaterId AND a.posture_id IN
+                (SELECT p.id FROM postures as p WHERE p.is_sample = TRUE)
+            ORDER BY a.id ASC
+            """, nativeQuery = true)
+    public Page<AnnotationEntity> findSampleByAnnotaterIdWithFilePath(@Param("annotaterId") Long annotaterId,
+            Pageable pageable);
 
     @Transactional
     @Query(value = """
@@ -189,8 +256,41 @@ public interface AnnotationRepository extends JpaRepository<AnnotationEntity, Lo
             """, nativeQuery = true)
     public List<Object[]> findAnnotationSummaryByPosture();
 
+    @Transactional
+    @Query(value = """
+            SELECT
+                a.posture_id,
+                BOOL_AND(p.is_sample) AS is_sample,
+                STRING_AGG(CAST(a.id AS TEXT), ',') AS annotation_ids,
+                STRING_AGG(CAST(a.annotater_id AS TEXT), ',') AS annotater_ids,
+                MAX(p.neck_angle) AS original_neck_angle,
+                AVG(a.neck_angle) AS avg_neck_angle,
+                COALESCE(STDDEV(a.neck_angle), 0) AS std_neck_angle,
+                MAX(p.user_id) AS user_id,
+                MAX(p.ex_created_at) AS ex_created_at
+            FROM annotations AS a
+            INNER JOIN postures AS p ON a.posture_id = p.id
+            GROUP BY a.posture_id
+            """, nativeQuery = true)
+    public Page<Object[]> findAnnotationSummaryByPosture(Pageable pageable);
+
     default public List<AnnotationSummaryByPostureEntity> getAnnotationSummaryByPosture() {
         return findAnnotationSummaryByPosture().stream()
+                .map(row -> new AnnotationSummaryByPostureEntity(
+                        ((Integer) row[0]).longValue(),
+                        (Boolean) row[1],
+                        (String) row[2],
+                        (String) row[3],
+                        ((Float) row[4]).doubleValue(),
+                        (Double) row[5],
+                        (Double) row[6],
+                        ((Integer) row[7]).longValue(),
+                        ((Timestamp) row[8]).toInstant().atOffset(ZoneOffset.ofHours(9))))
+                .toList();
+    }
+
+    default public List<AnnotationSummaryByPostureEntity> getAnnotationSummaryByPosture(Pageable pageable) {
+        return findAnnotationSummaryByPosture(pageable).getContent().stream()
                 .map(row -> new AnnotationSummaryByPostureEntity(
                         ((Integer) row[0]).longValue(),
                         (Boolean) row[1],
@@ -225,8 +325,41 @@ public interface AnnotationRepository extends JpaRepository<AnnotationEntity, Lo
             """, nativeQuery = true)
     public List<Object[]> findAnnotationSummaryByAnnotater();
 
+    @Transactional
+    @Query(value = """
+            SELECT
+                a.annotater_id,
+                MAX(u.name) as name,
+                COUNT(1) AS count,
+                AVG(a.neck_angle - p.neck_angle) AS avg_diff_original_neck_angle,
+                AVG(a.neck_angle - avg.neck_angle) AS avg_diff_avg_neck_angle,
+                COALESCE(STDDEV(a.neck_angle - avg.neck_angle), 0) AS std_diff_avg_neck_angle
+            FROM annotations AS a
+            INNER JOIN users AS u ON a.annotater_id = u.id
+            INNER JOIN postures AS p ON a.posture_id = p.id
+            INNER JOIN (
+                SELECT a.posture_id, AVG(a.neck_angle) AS neck_angle
+                FROM annotations AS a
+                GROUP BY a.posture_id
+            ) AS avg ON a.posture_id = avg.posture_id
+            GROUP BY a.annotater_id
+            """, nativeQuery = true)
+    public Page<Object[]> findAnnotationSummaryByAnnotater(Pageable pageable);
+
     default public List<AnnotationSummaryByAnnotaterEntity> getAnnotationSummaryByAnnotater() {
         return findAnnotationSummaryByAnnotater().stream()
+                .map(row -> new AnnotationSummaryByAnnotaterEntity(
+                        ((Integer) row[0]).longValue(),
+                        (String) row[1],
+                        ((Long) row[2]),
+                        (Double) row[3],
+                        (Double) row[4],
+                        (Double) row[5]))
+                .toList();
+    }
+
+    default public List<AnnotationSummaryByAnnotaterEntity> getAnnotationSummaryByAnnotater(Pageable pageable) {
+        return findAnnotationSummaryByAnnotater(pageable).getContent().stream()
                 .map(row -> new AnnotationSummaryByAnnotaterEntity(
                         ((Integer) row[0]).longValue(),
                         (String) row[1],
