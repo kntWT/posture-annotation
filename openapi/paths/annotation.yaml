@@ -6,6 +6,22 @@ annotation:
       - annotation
     security: &bearerAuth
       - bearerAuth: []
+    parameters:
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int64
+          minimum: 0
+      - name: size
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int64
+          minimum: 0
+    x-spring-paginated: true
     responses:
       "200":
         description: ok
@@ -207,6 +223,21 @@ annotation_posture_{posture_id}:
         schema:
           type: integer
           format: int64
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int64
+          minimum: 0
+      - name: size
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int64
+          minimum: 0
+    x-spring-paginated: true
     responses:
       "200":
         description: ok
@@ -232,6 +263,21 @@ annotation_posture_{posture_id}_file_path:
         schema:
           type: integer
           format: int64
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int64
+          minimum: 0
+      - name: size
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int64
+          minimum: 0
+    x-spring-paginated: true
     responses:
       "200":
         description: ok
@@ -257,6 +303,21 @@ annotation_annotater_{annotater_id}:
         schema:
           type: integer
           format: int64
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int64
+          minimum: 0
+      - name: size
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int64
+          minimum: 0
+    x-spring-paginated: true
     responses:
       "200":
         description: ok
@@ -282,6 +343,21 @@ annotation_annotater_{annotater_id}_posture:
         schema:
           type: integer
           format: int64
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int64
+          minimum: 0
+      - name: size
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int64
+          minimum: 0
+    x-spring-paginated: true
     responses:
       "200":
         description: ok
@@ -307,6 +383,21 @@ annotation_annotater_{annotater_id}_file_path:
         schema:
           type: integer
           format: int64
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int64
+          minimum: 0
+      - name: size
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int64
+          minimum: 0
+    x-spring-paginated: true
     responses:
       "200":
         description: ok
@@ -356,6 +447,21 @@ annotation_annotater_{annotater_id}_prod:
         schema:
           type: integer
           format: int64
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int64
+          minimum: 0
+      - name: size
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int64
+          minimum: 0
+    x-spring-paginated: true
     responses:
       "200":
         description: ok
@@ -381,6 +487,21 @@ annotation_annotater_{annotater_id}_prod_file_path:
         schema:
           type: integer
           format: int64
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int64
+          minimum: 0
+      - name: size
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int64
+          minimum: 0
+    x-spring-paginated: true
     responses:
       "200":
         description: ok
@@ -430,6 +551,21 @@ annotation_annotater_{annotater_id}_sample:
         schema:
           type: integer
           format: int64
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int64
+          minimum: 0
+      - name: size
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int64
+          minimum: 0
+    x-spring-paginated: true
     responses:
       "200":
         description: ok
@@ -448,6 +584,7 @@ annotation_annotater_{annotater_id}_sample_file_path:
     tags:
       - annotation
     security: *bearerAuth
+    x-spring-paginated: true
     parameters:
       - name: annotater_id
         in: path
@@ -455,6 +592,20 @@ annotation_annotater_{annotater_id}_sample_file_path:
         schema:
           type: integer
           format: int64
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int64
+          minimum: 0
+      - name: size
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int64
+          minimum: 0
     responses:
       "200":
         description: ok
@@ -589,6 +740,22 @@ annotation_summary_posture:
     tags:
       - annotation
     security: *bearerAuth
+    x-spring-paginated: true
+    parameters:
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int64
+          minimum: 0
+      - name: size
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int64
+          minimum: 0
     responses:
       "200":
         description: ok
@@ -607,6 +774,22 @@ annotation_summary_annotater:
     tags:
       - annotation
     security: *bearerAuth
+    x-spring-paginated: true
+    parameters:
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int64
+          minimum: 0
+      - name: size
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int64
+          minimum: 0
     responses:
       "200":
         description: ok
