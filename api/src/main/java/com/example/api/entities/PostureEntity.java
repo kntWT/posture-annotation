@@ -67,7 +67,7 @@ public class PostureEntity {
     private Double noseY;
 
     @Column(name = "neck_x", nullable = false)
-    private Double nexkX;
+    private Double neckX;
 
     @Column(name = "neck_y", nullable = false)
     private Double neckY;
@@ -256,12 +256,12 @@ public class PostureEntity {
         return this;
     }
 
-    public Double getNexkX() {
-        return nexkX;
+    public Double getNeckX() {
+        return neckX;
     }
 
-    public PostureEntity setNexkX(Double nexkX) {
-        this.nexkX = nexkX;
+    public PostureEntity setNeckX(Double neckX) {
+        this.neckX = neckX;
         return this;
     }
 
@@ -499,7 +499,7 @@ public class PostureEntity {
                 .roll(this.getRoll())
                 .noseX(this.getNoseX())
                 .noseY(this.getNoseY())
-                .neckX(this.getNexkX())
+                .neckX(this.getNeckX())
                 .neckY(this.getNeckY())
                 .neckToNose(this.getNeckToNose())
                 .standardDist(this.getStandardDist())
@@ -545,7 +545,7 @@ public class PostureEntity {
                 .setRoll(this.getRoll())
                 .setNoseX(this.getNoseX())
                 .setNoseY(this.getNoseY())
-                .setNexkX(this.getNexkX())
+                .setNeckX(this.getNeckX())
                 .setNeckY(this.getNeckY())
                 .setNeckToNose(this.getNeckToNose())
                 .setStandardDist(this.getStandardDist())
