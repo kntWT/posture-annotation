@@ -229,6 +229,17 @@ public class AnnotationController implements AnnotationApi {
     }
 
     @Override
+    public ResponseEntity<List<AnnotationWithPosture>> getProdAnnotationsWithPostureByAnnotaterId(Long annotaterId,
+            Long page,
+            Long size,
+            Pageable pageable) {
+        List<AnnotationWithPosture> annotations = annotationService.getProdAnnotationsWithPostureByAnnotaterId(
+                annotaterId,
+                pageable);
+        return ResponseEntity.ok(annotations);
+    }
+
+    @Override
     public ResponseEntity<Long> getProdAnnotationCountByAnnotaterId(Long annotaterId) {
         Long count = annotationService.getProdAnnotationCountByAnnotaterId(annotaterId);
         return ResponseEntity.ok(count);
@@ -246,6 +257,14 @@ public class AnnotationController implements AnnotationApi {
             Long annotaterId, Long page, Long size, Pageable pageable) {
         List<AnnotationWithFilePath> annotations = annotationService
                 .getSampleAnnotationsWithFilePathByAnnotaterId(annotaterId, pageable);
+        return ResponseEntity.ok(annotations);
+    }
+
+    @Override
+    public ResponseEntity<List<AnnotationWithPosture>> getSampleAnnotationsWithPostureByAnnotaterId(Long annotaterId,
+            Long page, Long size, Pageable pageable) {
+        List<AnnotationWithPosture> annotations = annotationService
+                .getSampleAnnotationsWithPostureByAnnotaterId(annotaterId, pageable);
         return ResponseEntity.ok(annotations);
     }
 

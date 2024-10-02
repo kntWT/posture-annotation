@@ -123,7 +123,7 @@ public class AnnotationService {
 
     @Transactional
     public AnnotationWithFilePath getAnnotationWithFilePathById(Long id) {
-        AnnotationEntity annotation = annotationRepository.findByIdWithFilePath(id);
+        AnnotationEntity annotation = annotationRepository.findWithFilePathById(id);
         if (annotation == null) {
             return null;
         }
@@ -314,6 +314,21 @@ public class AnnotationService {
     }
 
     @Transactional
+    public List<AnnotationWithPosture> getProdAnnotationsWithPostureByAnnotaterId(Long annotaterId, Pageable pageable) {
+        List<AnnotationEntity> annotations = annotationRepository
+                .findProdWithPostureByAnnotaterId(annotaterId, pageable)
+                .getContent();
+        if (annotations == null) {
+            return null;
+        }
+        for (AnnotationEntity annotation : annotations) {
+            System.out.println(DateFormatter.format(annotation.getPosture().getExCreatedAt()));
+        }
+
+        return AnnotationEntity.toAnnotationsWithPosture(annotations);
+    }
+
+    @Transactional
     public Long getProdAnnotationCountByAnnotaterId(Long annotaterId) {
         return annotationRepository.countByAnnotaterIdAndIsSample(annotaterId, false);
     }
@@ -332,6 +347,19 @@ public class AnnotationService {
                 .findSampleByAnnotaterIdWithFilePath(annotaterId, pageable)
                 .getContent();
         return AnnotationEntity.toAnnotationsWithFilePath(annotations);
+    }
+
+    @Transactional
+    public List<AnnotationWithPosture> getSampleAnnotationsWithPostureByAnnotaterId(Long annotaterId,
+            Pageable pageable) {
+        List<AnnotationEntity> annotations = annotationRepository
+                .findSampleWithPostureByAnnotaterId(annotaterId, pageable)
+                .getContent();
+        if (annotations == null) {
+            return null;
+        }
+
+        return AnnotationEntity.toAnnotationsWithPosture(annotations);
     }
 
     @Transactional

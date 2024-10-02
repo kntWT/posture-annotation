@@ -162,13 +162,28 @@ public interface AnnotationRepository extends JpaRepository<AnnotationEntity, Lo
 
     @Transactional
     @Query(value = """
-            SELECT a.*, p.user_id, p.ex_created_at FROM annotations as a
-            INNER JOIN postures as p on a.posture_id = p.id
-            WHERE a.annotater_id = :annotaterId AND a.posture_id NOT IN
-                (SELECT p.id FROM postures as p WHERE p.is_sample = TRUE)
-            ORDER BY a.id ASC
-            """, nativeQuery = true)
+            SELECT a FROM AnnotationEntity a
+            JOIN FETCH a.posture p
+            WHERE a.annotaterId = :annotaterId AND p.isSample = false
+            """)
     public Page<AnnotationEntity> findProdByAnnotaterIdWithFilePath(@Param("annotaterId") Long annotaterId,
+            Pageable pageable);
+
+    @Transactional
+    @Query(value = """
+            SELECT a FROM AnnotationEntity a
+            JOIN FETCH a.posture p
+            WHERE a.annotaterId = :annotaterId AND p.isSample = false
+            """)
+    public List<AnnotationEntity> findProdWithPostureByAnnotaterId(@Param("annotaterId") Long annotaterId);
+
+    @Transactional
+    @Query(value = """
+            SELECT a FROM AnnotationEntity a
+            JOIN FETCH a.posture p
+            WHERE a.annotaterId = :annotaterId AND p.isSample = false
+            """)
+    public Page<AnnotationEntity> findProdWithPostureByAnnotaterId(@Param("annotaterId") Long annotaterId,
             Pageable pageable);
 
     @Transactional
@@ -218,6 +233,23 @@ public interface AnnotationRepository extends JpaRepository<AnnotationEntity, Lo
             ORDER BY a.id ASC
             """, nativeQuery = true)
     public Page<AnnotationEntity> findSampleByAnnotaterIdWithFilePath(@Param("annotaterId") Long annotaterId,
+            Pageable pageable);
+
+    @Transactional
+    @Query(value = """
+            SELECT a FROM AnnotationEntity a
+            JOIN FETCH a.posture p
+            WHERE a.annotaterId = :annotaterId AND p.isSample = TRUE
+            """)
+    public List<AnnotationEntity> findSampleWithPostureByAnnotaterId(@Param("annotaterId") Long annotaterId);
+
+    @Transactional
+    @Query(value = """
+            SELECT a FROM AnnotationEntity a
+            JOIN FETCH a.posture p
+            WHERE a.annotaterId = :annotaterId AND p.isSample = TRUE
+            """)
+    public Page<AnnotationEntity> findSampleWithPostureByAnnotaterId(@Param("annotaterId") Long annotaterId,
             Pageable pageable);
 
     @Transactional
