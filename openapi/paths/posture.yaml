@@ -8,20 +8,8 @@ posture:
       - bearerAuth: []
     x-spring-paginated: true
     parameters:
-      - name: page
-        in: query
-        required: false
-        schema:
-          type: integer
-          format: int64
-          minimum: 0
-      - name: size
-        in: query
-        required: false
-        schema:
-          type: integer
-          format: int64
-          minimum: 0
+      - $ref: "../components/parameters/pageable.yaml#/Page"
+      - $ref: "../components/parameters/pageable.yaml#/Size"
     responses:
       "200":
         description: ok
@@ -41,12 +29,7 @@ posture_{id}:
       - posture
     security: *bearerAuth
     parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: integer
-          format: int64
+      - $ref: "../components/parameters/id.yaml#/Id"
     responses:
       "200":
         description: ok
@@ -63,12 +46,7 @@ posture_{id}:
       - posture
     security: *bearerAuth
     parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: integer
-          format: int64
+      - $ref: "../components/parameters/id.yaml#/Id"
     requestBody:
       required: true
       content:
@@ -92,12 +70,7 @@ posture_{id}_annotations:
       - posture
     security: *bearerAuth
     parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: integer
-          format: int64
+      - $ref: "../components/parameters/id.yaml#/Id"
     responses:
       "200":
         description: ok
@@ -131,12 +104,7 @@ posture_random_annotater_{annotater_id}:
       - posture
     security: *bearerAuth
     parameters:
-      - name: annotater_id
-        in: path
-        required: true
-        schema:
-          type: integer
-          format: int64
+      - $ref: "../components/parameters/id.yaml#/AnnotaterId"
     responses:
       "200":
         description: ok
@@ -155,20 +123,8 @@ posture_sample:
     security: *bearerAuth
     x-spring-paginated: true
     parameters:
-      - name: page
-        in: query
-        required: false
-        schema:
-          type: integer
-          format: int64
-          minimum: 0
-      - name: size
-        in: query
-        required: false
-        schema:
-          type: integer
-          format: int64
-          minimum: 0
+      - $ref: "../components/parameters/pageable.yaml#/Page"
+      - $ref: "../components/parameters/pageable.yaml#/Size"
     responses:
       "200":
         description: ok
@@ -204,12 +160,7 @@ posture_sample_random_annotater_{annotater_id}:
       - posture
     security: *bearerAuth
     parameters:
-      - name: annotater_id
-        in: path
-        required: true
-        schema:
-          type: integer
-          format: int64
+      - $ref: "../components/parameters/id.yaml#/AnnotaterId"
     responses:
       "200":
         description: ok
@@ -227,26 +178,9 @@ posture_user_{user_id}:
       - posture
     security: *bearerAuth
     parameters:
-      - name: user_id
-        in: path
-        required: true
-        schema:
-          type: integer
-          format: int64
-      - name: page
-        in: query
-        required: false
-        schema:
-          type: integer
-          format: int64
-          minimum: 0
-      - name: size
-        in: query
-        required: false
-        schema:
-          type: integer
-          format: int64
-          minimum: 0
+      - $ref: "../components/parameters/id.yaml#/UserId"
+      - $ref: "../components/parameters/pageable.yaml#/Page"
+      - $ref: "../components/parameters/pageable.yaml#/Size"
     x-spring-paginated: true
     responses:
       "200":
@@ -292,12 +226,7 @@ posture_marker_{id}:
       - posture
     security: *bearerAuth
     parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: integer
-          format: int64
+      - $ref: "../components/parameters/id.yaml#/Id"
     requestBody:
       required: true
       content:

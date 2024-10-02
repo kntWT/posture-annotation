@@ -9,15 +9,15 @@ user:
       content:
         application/json:
           schema:
-            $ref: '../components/schemas/user.yaml#/UserCreate'
+            $ref: "../components/schemas/user.yaml#/UserCreate"
     responses:
-      '201':
+      "201":
         description: created
         content:
           application/json:
             schema:
-              $ref: '../components/schemas/user.yaml#/User'
-      '400':
+              $ref: "../components/schemas/user.yaml#/User"
+      "400":
         description: bad request
   get:
     description: get all users
@@ -25,15 +25,15 @@ user:
     tags:
       - user
     responses:
-      '200':
+      "200":
         description: ok
         content:
           application/json:
             schema:
               type: array
               items:
-                $ref: '../components/schemas/user.yaml#/User'
-      '403':
+                $ref: "../components/schemas/user.yaml#/User"
+      "403":
         description: forbidden
 login:
   post:
@@ -46,17 +46,17 @@ login:
       content:
         application/json:
           schema:
-            $ref: '../components/schemas/user.yaml#/UserCreate'
+            $ref: "../components/schemas/user.yaml#/UserCreate"
     responses:
-      '200':
+      "200":
         description: ok
         content:
           application/json:
             schema:
-              $ref: '../components/schemas/user.yaml#/User'
-      '400':
+              $ref: "../components/schemas/user.yaml#/User"
+      "400":
         description: bad request
-      '401':
+      "401":
         description: unauthorized
 user_auth:
   get:
@@ -73,13 +73,13 @@ user_auth:
           type: string
           format: password
     responses:
-      '200':
+      "200":
         description: ok
         content:
           application/json:
             schema:
-              $ref: '../components/schemas/user.yaml#/User'
-      '401':
+              $ref: "../components/schemas/user.yaml#/User"
+      "401":
         description: forbidden
 is_exist:
   post:
@@ -92,15 +92,15 @@ is_exist:
       content:
         application/json:
           schema:
-            $ref: '../components/schemas/user.yaml#/UserCreate'
+            $ref: "../components/schemas/user.yaml#/UserCreate"
     responses:
-      '200':
+      "200":
         description: ok
         content:
           application/json:
             schema:
               type: boolean
-      '400':
+      "400":
         description: bad request
 user_{id}:
   get:
@@ -109,20 +109,15 @@ user_{id}:
     tags:
       - user
     parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: integer
-          format: int64
+      - $ref: "../components/parameters/id.yaml#/Id"
     responses:
-      '200':
+      "200":
         description: ok
         content:
           application/json:
             schema:
-              $ref: '../components/schemas/user.yaml#/User'
-      '404':
+              $ref: "../components/schemas/user.yaml#/User"
+      "404":
         description: not found
   put:
     description: update user by id
@@ -137,12 +132,12 @@ user_{id}:
           type: integer
           format: int64
     responses:
-      '200':
+      "200":
         description: ok
         content:
           application/json:
             schema:
-              $ref: '../components/schemas/user.yaml#/User'
+              $ref: "../components/schemas/user.yaml#/User"
   delete:
     description: delete user by id
     operationId: deleteUserById
@@ -156,9 +151,9 @@ user_{id}:
           type: integer
           format: int64
     responses:
-      '204':
+      "204":
         description: no content
-      '403':
+      "403":
         description: forbidden
-      '404':
+      "404":
         description: not found
