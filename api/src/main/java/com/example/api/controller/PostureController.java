@@ -19,6 +19,7 @@ import com.generated.model.PostureUpdate;
 import com.generated.model.PostureUpdateWithFile;
 import com.generated.model.PostureUpdateMarkerPosition;
 import com.generated.model.PostureWithAnnotations;
+import com.generated.model.PostureWithPageInfo;
 
 @RestController
 public class PostureController implements PostureApi {
@@ -34,8 +35,8 @@ public class PostureController implements PostureApi {
     PostureService postureService;
 
     @Override
-    public ResponseEntity<List<Posture>> getPostures(Long page, Long size, Pageable pageable) {
-        List<Posture> postures = postureService.getPostures(pageable);
+    public ResponseEntity<PostureWithPageInfo> getPostures(Long page, Long size, Pageable pageable) {
+        PostureWithPageInfo postures = postureService.getPostures(pageable);
         return ResponseEntity.ok(postures);
     }
 
@@ -61,8 +62,9 @@ public class PostureController implements PostureApi {
     }
 
     @Override
-    public ResponseEntity<List<Posture>> getPosturesByUserId(Long userId, Long page, Long size, Pageable pageable) {
-        List<Posture> postures = postureService.getPosturesByUserId(userId, pageable);
+    public ResponseEntity<PostureWithPageInfo> getPosturesByUserId(Long userId, Long page, Long size,
+            Pageable pageable) {
+        PostureWithPageInfo postures = postureService.getPosturesByUserId(userId, pageable);
         return ResponseEntity.ok(postures);
     }
 
@@ -104,8 +106,8 @@ public class PostureController implements PostureApi {
     }
 
     @Override
-    public ResponseEntity<List<Posture>> getSamplePostures(Long page, Long size, Pageable pageable) {
-        List<Posture> postures = postureService.getPosturesByIsSample(true, pageable);
+    public ResponseEntity<PostureWithPageInfo> getSamplePostures(Long page, Long size, Pageable pageable) {
+        PostureWithPageInfo postures = postureService.getPosturesByIsSample(true, pageable);
         return ResponseEntity.ok(postures);
     }
 

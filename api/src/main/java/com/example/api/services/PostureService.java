@@ -22,6 +22,7 @@ import com.generated.model.PostureUpdate;
 import com.generated.model.PostureUpdateWithFile;
 import com.generated.model.PostureUpdateMarkerPosition;
 import com.generated.model.PostureWithAnnotations;
+import com.generated.model.PostureWithPageInfo;
 
 @Service
 public class PostureService {
@@ -40,9 +41,10 @@ public class PostureService {
     }
 
     @Transactional
-    public List<Posture> getPostures(Pageable pageable) {
-        List<PostureEntity> postures = postureRepository.findAll(pageable).getContent();
-        return PostureEntity.toPostures(postures);
+    public PostureWithPageInfo getPostures(Pageable pageable) {
+        Page<PostureEntity> entity = postureRepository.findAll(pageable);
+        PostureWithPageInfo postures = PostureEntity.toPostureWithPageInfo(entity);
+        return postures;
     }
 
     @Transactional
@@ -52,19 +54,21 @@ public class PostureService {
             return null;
         }
 
-        return posture.toPosture();
+        return PostureEntity.toPosture(posture);
     }
 
     @Transactional
-    public List<Posture> getPosturesByIsSample(Boolean isSample, Pageable pageable) {
-        List<PostureEntity> postures = postureRepository.findByIsSample(isSample, pageable).getContent();
-        return PostureEntity.toPostures(postures);
+    public PostureWithPageInfo getPosturesByIsSample(Boolean isSample, Pageable pageable) {
+        Page<PostureEntity> entity = postureRepository.findByIsSample(isSample, pageable);
+        PostureWithPageInfo postures = PostureEntity.toPostureWithPageInfo(entity);
+        return postures;
     }
 
     @Transactional
-    public List<Posture> getPosturesByUserId(Long userId, Pageable pageable) {
-        List<PostureEntity> postures = postureRepository.findByUserId(userId, pageable).getContent();
-        return PostureEntity.toPostures(postures);
+    public PostureWithPageInfo getPosturesByUserId(Long userId, Pageable pageable) {
+        Page<PostureEntity> entity = postureRepository.findByUserId(userId, pageable);
+        PostureWithPageInfo postures = PostureEntity.toPostureWithPageInfo(entity);
+        return postures;
     }
 
     @Transactional
@@ -85,7 +89,7 @@ public class PostureService {
         if (target == null) {
             return null;
         }
-        return target.toPosture();
+        return PostureEntity.toPosture(target);
     }
 
     @Transactional
@@ -107,7 +111,7 @@ public class PostureService {
         if (target == null) {
             return null;
         }
-        return target.toPosture();
+        return PostureEntity.toPosture(target);
     }
 
     @Transactional
@@ -231,7 +235,7 @@ public class PostureService {
         if (target == null) {
             return null;
         }
-        return target.toPosture();
+        return PostureEntity.toPosture(target);
     }
 
     @Transactional
@@ -253,7 +257,7 @@ public class PostureService {
         if (target == null) {
             return null;
         }
-        return target.toPosture();
+        return PostureEntity.toPosture(target);
     }
 
     @Transactional
@@ -263,7 +267,7 @@ public class PostureService {
             return null;
         }
 
-        return posture.toPostureWithAnnotations();
+        return PostureEntity.toPostureWithAnnotations(posture);
     }
 
 }
