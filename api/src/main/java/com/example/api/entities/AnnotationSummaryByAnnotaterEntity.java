@@ -2,7 +2,10 @@ package com.example.api.entities;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+
 import com.generated.model.AnnotationSummaryByAnnotater;
+import com.generated.model.AnnotationSummaryByAnnotaterWithPageInfo;
 
 import jakarta.persistence.SqlResultSetMapping;
 import jakarta.persistence.ColumnResult;
@@ -114,5 +117,30 @@ public class AnnotationSummaryByAnnotaterEntity {
         return entities.stream()
                 .map(AnnotationSummaryByAnnotaterEntity::toAnnotationSummaryByAnnotater)
                 .toList();
+    }
+
+    public static AnnotationSummaryByAnnotaterWithPageInfo toAnnotationSummaryByAnnotaterWithPageInfo(
+            Page<AnnotationSummaryByAnnotaterEntity> entities) {
+        return new AnnotationSummaryByAnnotaterWithPageInfo()
+                .contents(
+                        AnnotationSummaryByAnnotaterEntity.toAnnotationSummaryByAnnotaters(entities.getContent()))
+                .pageNumber((long) entities.getNumber())
+                .size((long) entities.getSize())
+                .totalPages((long) entities.getTotalPages())
+                .isFirst((boolean) entities.isFirst())
+                .isLast((boolean) entities.isLast());
+    }
+
+    public static AnnotationSummaryByAnnotaterWithPageInfo toAnnotationSummaryByAnnotaterWithPageInfo(
+            List<AnnotationSummaryByAnnotaterEntity> entities, Long pageNumber, Long pageSize, Long totalPages,
+            Boolean isFirst, Boolean isLast) {
+        return new AnnotationSummaryByAnnotaterWithPageInfo()
+                .contents(
+                        AnnotationSummaryByAnnotaterEntity.toAnnotationSummaryByAnnotaters(entities))
+                .pageNumber(pageNumber)
+                .size(pageSize)
+                .totalPages(totalPages)
+                .isFirst(isFirst)
+                .isLast(isLast);
     }
 }

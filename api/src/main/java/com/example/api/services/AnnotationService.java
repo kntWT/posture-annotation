@@ -5,6 +5,7 @@ import java.nio.file.Paths;
 import java.util.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.method.P;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +26,11 @@ import com.generated.model.AnnotationWithFilePath;
 import com.generated.model.AnnotationSummaryByPosture;
 import com.generated.model.AnnotationSummaryByAnnotater;
 import com.generated.model.AnnotationWithPosture;
+import com.generated.model.AnnotationWithPageInfo;
+import com.generated.model.AnnotationWithFilePathAndPageInfo;
+import com.generated.model.AnnotationWithPostureAndPageInfo;
+import com.generated.model.AnnotationSummaryByPostureWithPageInfo;
+import com.generated.model.AnnotationSummaryByAnnotaterWithPageInfo;
 
 @Service
 public class AnnotationService {
@@ -56,7 +62,7 @@ public class AnnotationService {
                 annotationCreate.getNeckAngle(),
                 annotationCreate.getTorsoAngle());
 
-        return annotationRepository.save(annotation).toAnnotation();
+        return AnnotationEntity.toAnnotation(annotationRepository.save(annotation));
     }
 
     @Transactional
@@ -96,9 +102,10 @@ public class AnnotationService {
     }
 
     @Transactional
-    public List<Annotation> getAnnotations(Pageable pageable) {
-        List<AnnotationEntity> annotations = annotationRepository.findAllByOrderByIdAsc(pageable).getContent();
-        return AnnotationEntity.toAnnotations(annotations);
+    public AnnotationWithPageInfo getAnnotations(Pageable pageable) {
+        Page<AnnotationEntity> entity = annotationRepository.findAllByOrderByIdAsc(pageable);
+        AnnotationWithPageInfo annotations = AnnotationEntity.toAnnotationWithPageInfo(entity);
+        return annotations;
     }
 
     @Transactional
@@ -108,7 +115,7 @@ public class AnnotationService {
             return null;
         }
 
-        return annotation.toAnnotation();
+        return AnnotationEntity.toAnnotation(annotation);
     }
 
     @Transactional
@@ -123,7 +130,7 @@ public class AnnotationService {
 
     @Transactional
     public AnnotationWithFilePath getAnnotationWithFilePathById(Long id) {
-        AnnotationEntity annotation = annotationRepository.findWithFilePathById(id);
+        AnnotationEntity annotation = annotationRepository.findByIdWithFilePath(id);
         if (annotation == null) {
             return null;
         }
@@ -173,7 +180,7 @@ public class AnnotationService {
             return null;
         }
 
-        return annotation.toAnnotation();
+        return AnnotationEntity.toAnnotation(annotation);
     }
 
     @Transactional
@@ -211,28 +218,31 @@ public class AnnotationService {
     }
 
     @Transactional
-    public List<Annotation> getAnnotationsByAnnotaterId(Long annotaterId, Pageable pageable) {
-        List<AnnotationEntity> annotations = annotationRepository.findByAnnotaterIdOrderByIdAsc(annotaterId, pageable)
-                .getContent();
-        return AnnotationEntity.toAnnotations(annotations);
+    public AnnotationWithPageInfo getAnnotationsByAnnotaterId(Long annotaterId, Pageable pageable) {
+        Page<AnnotationEntity> entity = annotationRepository.findByAnnotaterIdOrderByIdAsc(annotaterId, pageable);
+        AnnotationWithPageInfo annotations = AnnotationEntity.toAnnotationWithPageInfo(entity);
+        return annotations;
     }
 
     @Transactional
-    public List<AnnotationWithPosture> getAnnotationsWithPostureByAnnotaterId(Long annotaterId, Pageable pageable) {
-        List<AnnotationEntity> annotations = annotationRepository.findAllWithPostureByAnnotaterId(annotaterId, pageable)
-                .getContent();
-        if (annotations == null) {
+    public AnnotationWithPostureAndPageInfo getAnnotationsWithPostureByAnnotaterId(Long annotaterId,
+            Pageable pageable) {
+        Page<AnnotationEntity> entity = annotationRepository.findAllWithPostureByAnnotaterId(annotaterId,
+                pageable);
+        if (entity == null) {
             return null;
         }
+        AnnotationWithPostureAndPageInfo annotations = AnnotationEntity.toAnnotationWithPostureAndPageInfo(entity);
 
-        return AnnotationEntity.toAnnotationsWithPosture(annotations);
+        return annotations;
     }
 
     @Transactional
-    public List<AnnotationWithFilePath> getAnnotationsWithFilePathByAnnotaterId(Long annotaterId, Pageable pageable) {
-        List<AnnotationEntity> annotations = annotationRepository.findByAnnotaterIdWithFilePath(annotaterId, pageable)
-                .getContent();
-        return AnnotationEntity.toAnnotationsWithFilePath(annotations);
+    public AnnotationWithFilePathAndPageInfo getAnnotationsWithFilePathByAnnotaterId(Long annotaterId,
+            Pageable pageable) {
+        Page<AnnotationEntity> entity = annotationRepository.findByAnnotaterIdWithFilePath(annotaterId, pageable);
+        AnnotationWithFilePathAndPageInfo annotations = AnnotationEntity.toAnnotationWithFilePathAndPageInfo(entity);
+        return annotations;
     }
 
     @Transactional
@@ -241,28 +251,27 @@ public class AnnotationService {
     }
 
     @Transactional
-    public List<Annotation> getAnnotationsByPostureId(Long postureId, Pageable pageable) {
-        List<AnnotationEntity> annotations = annotationRepository.findByPostureIdOrderByIdAsc(postureId, pageable)
-                .getContent();
-        return AnnotationEntity.toAnnotations(annotations);
+    public AnnotationWithPageInfo getAnnotationsByPostureId(Long postureId, Pageable pageable) {
+        Page<AnnotationEntity> entity = annotationRepository.findByPostureIdOrderByIdAsc(postureId, pageable);
+        AnnotationWithPageInfo annotations = AnnotationEntity.toAnnotationWithPageInfo(entity);
+        return annotations;
     }
 
     @Transactional
-    public List<AnnotationWithFilePath> getAnnotationsWithFilePathByPostureId(Long postureId, Pageable pageable) {
-        List<AnnotationEntity> annotations = annotationRepository.findByPostureIdWithFilePath(postureId, pageable)
-                .getContent();
-        return AnnotationEntity.toAnnotationsWithFilePath(annotations);
+    public AnnotationWithFilePathAndPageInfo getAnnotationsWithFilePathByPostureId(Long postureId, Pageable pageable) {
+        Page<AnnotationEntity> entity = annotationRepository.findByPostureIdWithFilePath(postureId, pageable);
+        AnnotationWithFilePathAndPageInfo annotations = AnnotationEntity.toAnnotationWithFilePathAndPageInfo(entity);
+        return annotations;
     }
 
     @Transactional
-    public List<AnnotationWithPosture> getAnnotationWithPostureByAnnotaterId(Long annotaterId, Pageable pageable) {
-        List<AnnotationEntity> annotations = annotationRepository.findAllWithPostureByAnnotaterId(annotaterId, pageable)
-                .getContent();
-        if (annotations == null) {
+    public AnnotationWithPostureAndPageInfo getAnnotationWithPostureByAnnotaterId(Long annotaterId, Pageable pageable) {
+        Page<AnnotationEntity> entity = annotationRepository.findAllWithPostureByAnnotaterId(annotaterId, pageable);
+        if (entity == null) {
             return null;
         }
-
-        return AnnotationEntity.toAnnotationsWithPosture(annotations);
+        AnnotationWithPostureAndPageInfo annotations = AnnotationEntity.toAnnotationWithPostureAndPageInfo(entity);
+        return annotations;
     }
 
     @Transactional
@@ -272,7 +281,7 @@ public class AnnotationService {
             return null;
         }
 
-        return annotation.toAnnotation();
+        return AnnotationEntity.toAnnotation(annotation);
     }
 
     @Transactional
@@ -298,34 +307,31 @@ public class AnnotationService {
     }
 
     @Transactional
-    public List<Annotation> getProdAnnotationsByAnnotaterId(Long annotaterId, Pageable pageable) {
-        List<AnnotationEntity> annotations = annotationRepository.findProdByAnnotaterId(annotaterId, pageable)
-                .getContent();
-        return AnnotationEntity.toAnnotations(annotations);
+    public AnnotationWithPageInfo getProdAnnotationsByAnnotaterId(Long annotaterId, Pageable pageable) {
+        Page<AnnotationEntity> entity = annotationRepository.findProdByAnnotaterId(annotaterId, pageable);
+        AnnotationWithPageInfo annotations = AnnotationEntity.toAnnotationWithPageInfo(entity);
+        return annotations;
     }
 
     @Transactional
-    public List<AnnotationWithFilePath> getProdAnnotationsWithFilePathByAnnotaterId(Long annotaterId,
+    public AnnotationWithFilePathAndPageInfo getProdAnnotationsWithFilePathByAnnotaterId(Long annotaterId,
             Pageable pageable) {
-        List<AnnotationEntity> annotations = annotationRepository
-                .findProdByAnnotaterIdWithFilePath(annotaterId, pageable)
-                .getContent();
-        return AnnotationEntity.toAnnotationsWithFilePath(annotations);
+        Page<AnnotationEntity> entity = annotationRepository
+                .findProdByAnnotaterIdWithFilePath(annotaterId, pageable);
+        AnnotationWithFilePathAndPageInfo annotations = AnnotationEntity.toAnnotationWithFilePathAndPageInfo(entity);
+        return annotations;
     }
 
     @Transactional
-    public List<AnnotationWithPosture> getProdAnnotationsWithPostureByAnnotaterId(Long annotaterId, Pageable pageable) {
-        List<AnnotationEntity> annotations = annotationRepository
-                .findProdWithPostureByAnnotaterId(annotaterId, pageable)
-                .getContent();
-        if (annotations == null) {
+    public AnnotationWithPostureAndPageInfo getProdAnnotationsWithPostureByAnnotaterId(Long annotaterId,
+            Pageable pageable) {
+        Page<AnnotationEntity> entity = annotationRepository
+                .findProdWithPostureByAnnotaterId(annotaterId, pageable);
+        if (entity == null) {
             return null;
         }
-        for (AnnotationEntity annotation : annotations) {
-            System.out.println(DateFormatter.format(annotation.getPosture().getExCreatedAt()));
-        }
-
-        return AnnotationEntity.toAnnotationsWithPosture(annotations);
+        AnnotationWithPostureAndPageInfo annotations = AnnotationEntity.toAnnotationWithPostureAndPageInfo(entity);
+        return annotations;
     }
 
     @Transactional
@@ -334,32 +340,31 @@ public class AnnotationService {
     }
 
     @Transactional
-    public List<Annotation> getSampleAnnotationsByAnnotaterId(Long annotaterId, Pageable pageable) {
-        List<AnnotationEntity> annotations = annotationRepository.findSampleByAnnotaterId(annotaterId, pageable)
-                .getContent();
-        return AnnotationEntity.toAnnotations(annotations);
+    public AnnotationWithPageInfo getSampleAnnotationsByAnnotaterId(Long annotaterId, Pageable pageable) {
+        Page<AnnotationEntity> entity = annotationRepository.findSampleByAnnotaterId(annotaterId, pageable);
+        AnnotationWithPageInfo annotations = AnnotationEntity.toAnnotationWithPageInfo(entity);
+        return annotations;
     }
 
     @Transactional
-    public List<AnnotationWithFilePath> getSampleAnnotationsWithFilePathByAnnotaterId(Long annotaterId,
+    public AnnotationWithFilePathAndPageInfo getSampleAnnotationsWithFilePathByAnnotaterId(Long annotaterId,
             Pageable pageable) {
-        List<AnnotationEntity> annotations = annotationRepository
-                .findSampleByAnnotaterIdWithFilePath(annotaterId, pageable)
-                .getContent();
-        return AnnotationEntity.toAnnotationsWithFilePath(annotations);
+        Page<AnnotationEntity> entity = annotationRepository
+                .findSampleByAnnotaterIdWithFilePath(annotaterId, pageable);
+        AnnotationWithFilePathAndPageInfo annotations = AnnotationEntity.toAnnotationWithFilePathAndPageInfo(entity);
+        return annotations;
     }
 
     @Transactional
-    public List<AnnotationWithPosture> getSampleAnnotationsWithPostureByAnnotaterId(Long annotaterId,
+    public AnnotationWithPostureAndPageInfo getSampleAnnotationsWithPostureByAnnotaterId(Long annotaterId,
             Pageable pageable) {
-        List<AnnotationEntity> annotations = annotationRepository
-                .findSampleWithPostureByAnnotaterId(annotaterId, pageable)
-                .getContent();
-        if (annotations == null) {
+        Page<AnnotationEntity> entity = annotationRepository
+                .findSampleWithPostureByAnnotaterId(annotaterId, pageable);
+        if (entity == null) {
             return null;
         }
-
-        return AnnotationEntity.toAnnotationsWithPosture(annotations);
+        AnnotationWithPostureAndPageInfo annotations = AnnotationEntity.toAnnotationWithPostureAndPageInfo(entity);
+        return annotations;
     }
 
     @Transactional
@@ -368,25 +373,17 @@ public class AnnotationService {
     }
 
     @Transactional
-    public List<AnnotationSummaryByPosture> getAnnotationSummaryByPosture(Pageable pageable) {
-        List<AnnotationSummaryByPostureEntity> annotationSummary = annotationRepository
+    public AnnotationSummaryByPostureWithPageInfo getAnnotationSummaryByPosture(Pageable pageable) {
+        AnnotationSummaryByPostureWithPageInfo annotationSummary = annotationRepository
                 .getAnnotationSummaryByPosture(pageable);
-        if (annotationSummary.size() <= 0) {
-            return null;
-        }
-
-        return AnnotationSummaryByPostureEntity.toAnnotationSummaryByPostures(annotationSummary);
+        return annotationSummary;
     }
 
     @Transactional
-    public List<AnnotationSummaryByAnnotater> getAnnotationSummaryByAnnotater(Pageable pageable) {
-        List<AnnotationSummaryByAnnotaterEntity> annotationSummary = annotationRepository
+    public AnnotationSummaryByAnnotaterWithPageInfo getAnnotationSummaryByAnnotater(Pageable pageable) {
+        AnnotationSummaryByAnnotaterWithPageInfo annotationSummary = annotationRepository
                 .getAnnotationSummaryByAnnotater(pageable);
-        if (annotationSummary.size() <= 0) {
-            return null;
-        }
-
-        return AnnotationSummaryByAnnotaterEntity.toAnnotationSummaryByAnnotaters(annotationSummary);
+        return annotationSummary;
     }
 
 }

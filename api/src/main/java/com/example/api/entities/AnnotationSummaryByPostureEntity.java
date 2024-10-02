@@ -4,6 +4,7 @@ import java.time.OffsetDateTime;
 import java.util.List;
 
 import org.hibernate.annotations.Type;
+import org.springframework.data.domain.Page;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -15,6 +16,7 @@ import jakarta.persistence.ConstructorResult;
 
 import com.example.api.utils.DateFormatter;
 import com.generated.model.AnnotationSummaryByPosture;
+import com.generated.model.AnnotationSummaryByPostureWithPageInfo;
 
 @SqlResultSetMapping(name = "AnnotationSummaryByPostureMapping", classes = @ConstructorResult(targetClass = AnnotationSummaryByPostureEntity.class, columns = {
         @ColumnResult(name = "posture_id", type = Long.class),
@@ -198,6 +200,30 @@ public class AnnotationSummaryByPostureEntity {
         return entities.stream()
                 .map(AnnotationSummaryByPostureEntity::toAnnotationSummaryByPosture)
                 .toList();
+    }
+
+    public static AnnotationSummaryByPostureWithPageInfo toAnnotationSummaryByPostureWithPageInfo(
+            Page<AnnotationSummaryByPostureEntity> entity) {
+        return new AnnotationSummaryByPostureWithPageInfo()
+                .contents(
+                        AnnotationSummaryByPostureEntity.toAnnotationSummaryByPostures(entity.getContent()))
+                .pageNumber((long) entity.getNumber())
+                .size((long) entity.getSize())
+                .totalPages((long) entity.getTotalPages())
+                .isFirst((boolean) entity.isFirst())
+                .isLast((boolean) entity.isLast());
+    }
+
+    public static AnnotationSummaryByPostureWithPageInfo toAnnotationSummaryByPostureWithPageInfo(
+            List<AnnotationSummaryByPostureEntity> entities, Long pageNumber, Long pageSize, Long totalPages,
+            Boolean isFirst, Boolean isLast) {
+        return new AnnotationSummaryByPostureWithPageInfo()
+                .contents(AnnotationSummaryByPostureEntity.toAnnotationSummaryByPostures(entities))
+                .pageNumber(pageNumber)
+                .size(pageSize)
+                .totalPages(totalPages)
+                .isFirst(isFirst)
+                .isLast(isLast);
     }
 
 }

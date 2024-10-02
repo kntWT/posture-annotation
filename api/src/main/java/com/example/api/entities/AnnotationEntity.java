@@ -3,6 +3,7 @@ package com.example.api.entities;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.springframework.data.domain.Page;
 
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -25,6 +26,9 @@ import jakarta.persistence.Table;
 import com.generated.model.Annotation;
 import com.generated.model.AnnotationWithFilePath;
 import com.generated.model.AnnotationWithPosture;
+import com.generated.model.AnnotationWithPageInfo;
+import com.generated.model.AnnotationWithFilePathAndPageInfo;
+import com.generated.model.AnnotationWithPostureAndPageInfo;
 import com.example.api.entities.PostureEntity;
 import com.example.api.utils.DateFormatter;
 
@@ -150,31 +154,57 @@ public class AnnotationEntity {
         return waistY;
     }
 
+    public Double getNeckAngle() {
+        return neckAngle;
+    }
+
+    public Double getTorsoAngle() {
+        return torsoAngle;
+    }
+
+    public OffsetDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public OffsetDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
     public PostureEntity getPosture() {
         return posture;
     }
 
-    public Annotation toAnnotation() {
+    public static Annotation toAnnotation(AnnotationEntity entity) {
         return new Annotation()
-                .id(id)
-                .postureId(postureId)
-                .annotaterId(annotaterId)
-                .tragusX(tragusX)
-                .tragusY(tragusY)
-                .shoulderX(shoulderX)
-                .shoulderY(shoulderY)
-                .waistX(waistX)
-                .waistY(waistY)
-                .neckAngle(neckAngle)
-                .torsoAngle(torsoAngle)
-                .createdAt(createdAt)
-                .updatedAt(updatedAt);
+                .id(entity.getId())
+                .postureId(entity.getPostureId())
+                .annotaterId(entity.getAnnotaterId())
+                .tragusX(entity.getTragusX())
+                .tragusY(entity.getTragusY())
+                .shoulderX(entity.getShoulderX())
+                .shoulderY(entity.getShoulderY())
+                .waistX(entity.getWaistX())
+                .waistY(entity.getWaistY())
+                .neckAngle(entity.getNeckAngle())
+                .torsoAngle(entity.getTorsoAngle())
+                .createdAt(entity.getCreatedAt())
+                .updatedAt(entity.getUpdatedAt());
     }
 
     public static List<Annotation> toAnnotations(List<AnnotationEntity> annotationEntities) {
         return annotationEntities.stream()
-                .map(AnnotationEntity::toAnnotation)
-                .collect(Collectors.toList());
+                .map(entity -> AnnotationEntity.toAnnotation(entity))
+                .toList();
+    }
+
+    public static AnnotationWithPageInfo toAnnotationWithPageInfo(Page<AnnotationEntity> entity) {
+        return new AnnotationWithPageInfo()
+                .contents(AnnotationEntity.toAnnotations(entity.getContent()))
+                .pageNumber((long) entity.getNumber())
+                .size((long) entity.getSize())
+                .totalPages((long) entity.getTotalPages())
+                .isFirst((boolean) entity.isFirst())
+                .isLast((boolean) entity.isLast());
     }
 
     public AnnotationWithFilePath toAnnotationWithFilePath() {
@@ -202,16 +232,36 @@ public class AnnotationEntity {
                 .collect(Collectors.toList());
     }
 
+    public static AnnotationWithFilePathAndPageInfo toAnnotationWithFilePathAndPageInfo(Page<AnnotationEntity> entity) {
+        return new AnnotationWithFilePathAndPageInfo()
+                .contents(AnnotationEntity.toAnnotationsWithFilePath(entity.getContent()))
+                .pageNumber((long) entity.getNumber())
+                .size((long) entity.getSize())
+                .totalPages((long) entity.getTotalPages())
+                .isFirst((boolean) entity.isFirst())
+                .isLast((boolean) entity.isLast());
+    }
+
     public static AnnotationWithPosture toAnnotationWithPosture(AnnotationEntity entity) {
         return new AnnotationWithPosture()
-                .annotation(entity.toAnnotation())
-                .posture(entity.getPosture().toPosture());
+                .annotation(AnnotationEntity.toAnnotation(entity))
+                .posture(PostureEntity.toPosture(entity.getPosture()));
     }
 
     public static List<AnnotationWithPosture> toAnnotationsWithPosture(List<AnnotationEntity> entities) {
         return entities.stream()
                 .map(AnnotationEntity::toAnnotationWithPosture)
                 .collect(Collectors.toList());
+    }
+
+    public static AnnotationWithPostureAndPageInfo toAnnotationWithPostureAndPageInfo(Page<AnnotationEntity> entity) {
+        return new AnnotationWithPostureAndPageInfo()
+                .contents(AnnotationEntity.toAnnotationsWithPosture(entity.getContent()))
+                .pageNumber((long) entity.getNumber())
+                .size((long) entity.getSize())
+                .totalPages((long) entity.getTotalPages())
+                .isFirst((boolean) entity.isFirst())
+                .isLast((boolean) entity.isLast());
     }
 
 }

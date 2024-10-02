@@ -17,6 +17,8 @@ import jakarta.transaction.Transactional;
 import com.example.api.entities.AnnotationEntity;
 import com.example.api.entities.AnnotationSummaryByAnnotaterEntity;
 import com.example.api.entities.AnnotationSummaryByPostureEntity;
+import com.generated.model.AnnotationSummaryByPostureWithPageInfo;
+import com.generated.model.AnnotationSummaryByAnnotaterWithPageInfo;
 
 @Repository
 public interface AnnotationRepository extends JpaRepository<AnnotationEntity, Long> {
@@ -321,8 +323,9 @@ public interface AnnotationRepository extends JpaRepository<AnnotationEntity, Lo
                 .toList();
     }
 
-    default public List<AnnotationSummaryByPostureEntity> getAnnotationSummaryByPosture(Pageable pageable) {
-        return findAnnotationSummaryByPosture(pageable).getContent().stream()
+    default public AnnotationSummaryByPostureWithPageInfo getAnnotationSummaryByPosture(Pageable pageable) {
+        Page<Object[]> entityWithPage = findAnnotationSummaryByPosture(pageable);
+        List<AnnotationSummaryByPostureEntity> entity = entityWithPage.getContent().stream()
                 .map(row -> new AnnotationSummaryByPostureEntity(
                         (Long) row[0],
                         (Boolean) row[1],
@@ -334,6 +337,10 @@ public interface AnnotationRepository extends JpaRepository<AnnotationEntity, Lo
                         (Long) row[7],
                         ((Instant) row[8]).atOffset(ZoneOffset.ofHours(9))))
                 .toList();
+        return AnnotationSummaryByPostureEntity.toAnnotationSummaryByPostureWithPageInfo(entity,
+                (long) entityWithPage.getNumber(), (long) entityWithPage.getSize(),
+                (long) entityWithPage.getTotalPages(), (boolean) entityWithPage.isFirst(),
+                (boolean) entityWithPage.isLast());
     }
 
     @Transactional
@@ -390,8 +397,9 @@ public interface AnnotationRepository extends JpaRepository<AnnotationEntity, Lo
                 .toList();
     }
 
-    default public List<AnnotationSummaryByAnnotaterEntity> getAnnotationSummaryByAnnotater(Pageable pageable) {
-        return findAnnotationSummaryByAnnotater(pageable).getContent().stream()
+    default public AnnotationSummaryByAnnotaterWithPageInfo getAnnotationSummaryByAnnotater(Pageable pageable) {
+        Page<Object[]> entityWithPage = findAnnotationSummaryByAnnotater(pageable);
+        List<AnnotationSummaryByAnnotaterEntity> entity = entityWithPage.getContent().stream()
                 .map(row -> new AnnotationSummaryByAnnotaterEntity(
                         (Long) row[0],
                         (String) row[1],
@@ -400,6 +408,10 @@ public interface AnnotationRepository extends JpaRepository<AnnotationEntity, Lo
                         (Double) row[4],
                         (Double) row[5]))
                 .toList();
+        return AnnotationSummaryByAnnotaterEntity.toAnnotationSummaryByAnnotaterWithPageInfo(entity,
+                (long) entityWithPage.getNumber(), (long) entityWithPage.getSize(),
+                (long) entityWithPage.getTotalPages(), (boolean) entityWithPage.isFirst(),
+                (boolean) entityWithPage.isLast());
     }
 
 }
