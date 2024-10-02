@@ -69,12 +69,16 @@ paths:
     $ref: "./paths/annotation.yaml#/annotation_annotater_{annotater_id}_prod"
   /annotation/annotater/{annotater_id}/prod/file-path:
     $ref: "./paths/annotation.yaml#/annotation_annotater_{annotater_id}_prod_file_path"
+  /annotation/annotater/{annotater_id}/prod/posture:
+    $ref: "./paths/annotation.yaml#/annotation_annotater_{annotater_id}_prod_posture"
   /annotation/annotater/{annotater_id}/prod/count:
     $ref: "./paths/annotation.yaml#/annotation_annotater_{annotater_id}_prod_count"
   /annotation/annotater/{annotater_id}/sample:
     $ref: "./paths/annotation.yaml#/annotation_annotater_{annotater_id}_sample"
   /annotation/annotater/{annotater_id}/sample/file-path:
     $ref: "./paths/annotation.yaml#/annotation_annotater_{annotater_id}_sample_file_path"
+  /annotation/annotater/{annotater_id}/sample/posture:
+    $ref: "./paths/annotation.yaml#/annotation_annotater_{annotater_id}_sample_posture"
   /annotation/annotater/{annotater_id}/sample/count:
     $ref: "./paths/annotation.yaml#/annotation_annotater_{annotater_id}_sample_count"
   /annotation/posture/{posture_id}/annotater/{annotater_id}:

@@ -513,6 +513,46 @@ annotation_annotater_{annotater_id}_prod_file_path:
                 $ref: "../components/schemas/annotation.yaml#/AnnotationWithFilePath"
       "403":
         description: forbidden
+annotation_annotater_{annotater_id}_prod_posture:
+  get:
+    description: get prod annotated posture with posture by annotater id
+    operationId: getProdAnnotationsWithPostureByAnnotaterId
+    tags:
+      - annotation
+    security: *bearerAuth
+    x-spring-paginated: true
+    parameters:
+      - name: annotater_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int64
+          minimum: 0
+      - name: size
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int64
+          minimum: 0
+    responses:
+      "200":
+        description: ok
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "../components/schemas/annotation.yaml#/AnnotationWithPosture"
+      "403":
+        description: forbidden
 annotation_annotater_{annotater_id}_prod_count:
   get:
     description: get annotated posture count by annotater id
@@ -615,6 +655,46 @@ annotation_annotater_{annotater_id}_sample_file_path:
               type: array
               items:
                 $ref: "../components/schemas/annotation.yaml#/AnnotationWithFilePath"
+      "403":
+        description: forbidden
+annotation_annotater_{annotater_id}_sample_posture:
+  get:
+    description: get annotated posture sample with posture by annotater id
+    operationId: getSampleAnnotationsWithPostureByAnnotaterId
+    tags:
+      - annotation
+    security: *bearerAuth
+    x-spring-paginated: true
+    parameters:
+      - name: annotater_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int64
+          minimum: 0
+      - name: size
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int64
+          minimum: 0
+    responses:
+      "200":
+        description: ok
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "../components/schemas/annotation.yaml#/AnnotationWithPosture"
       "403":
         description: forbidden
 annotation_annotater_{annotater_id}_sample_count:
