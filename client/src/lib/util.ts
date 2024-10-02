@@ -13,12 +13,12 @@ export const formatDate = (date: Date | undefined) => {
 	if (!date) {
 		return '';
 	}
-	const year = date.getFullYear();
-	const month = date.getMonth() + 1;
-	const day = date.getDate();
-	const hour = date.getHours();
-	const minute = date.getMinutes();
-	const second = date.getSeconds();
+	const dateStr = date.toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo' });
+	const [_, ...parts] = dateStr.match(/(\d+)\/(\d+)\/(\d+) (\d+):(\d+):(\d+)/) ?? [];
+	if (!_ && parts.length < 6) {
+		return '';
+	}
+	const [year, month, day, hour, minute, second] = parts.map((p) => parseInt(p));
 	const ms = date.getMilliseconds();
 	const pad = (num: number, digit: number) => num.toString().padStart(digit, '0');
 	return `${year}-${pad(month, 2)}-${pad(day, 2)}_${pad(hour, 2)}:${pad(minute, 2)}:${pad(second, 2)}.${pad(ms, 3)}`;
