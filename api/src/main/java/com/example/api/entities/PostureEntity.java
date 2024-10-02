@@ -108,11 +108,11 @@ public class PostureEntity {
     @Column(name = "torso_angle", nullable = false)
     private Double torsoAngle;
 
-    @Column(name = "ex_created_at", nullable = false)
+    @Column(name = "ex_created_at", nullable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE")
     private OffsetDateTime exCreatedAt;
 
     @CreationTimestamp
-    @Column(name = "updated_at", nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP  ON UPDATE CURRENT_TIMESTAMP")
+    @Column(name = "updated_at", nullable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE")
     private OffsetDateTime updatedAt;
 
     @Column(name = "is_sample", nullable = false)

@@ -1,6 +1,6 @@
 package com.example.api.repositories;
 
-import java.sql.Timestamp;
+import java.time.Instant;
 import java.time.ZoneOffset;
 import java.util.List;
 
@@ -277,30 +277,30 @@ public interface AnnotationRepository extends JpaRepository<AnnotationEntity, Lo
     default public List<AnnotationSummaryByPostureEntity> getAnnotationSummaryByPosture() {
         return findAnnotationSummaryByPosture().stream()
                 .map(row -> new AnnotationSummaryByPostureEntity(
-                        ((Integer) row[0]).longValue(),
+                        (Long) row[0],
                         (Boolean) row[1],
                         (String) row[2],
                         (String) row[3],
                         ((Float) row[4]).doubleValue(),
                         (Double) row[5],
                         (Double) row[6],
-                        ((Integer) row[7]).longValue(),
-                        ((Timestamp) row[8]).toInstant().atOffset(ZoneOffset.ofHours(9))))
+                        (Long) row[7],
+                        ((Instant) row[8]).atOffset(ZoneOffset.ofHours(9))))
                 .toList();
     }
 
     default public List<AnnotationSummaryByPostureEntity> getAnnotationSummaryByPosture(Pageable pageable) {
         return findAnnotationSummaryByPosture(pageable).getContent().stream()
                 .map(row -> new AnnotationSummaryByPostureEntity(
-                        ((Integer) row[0]).longValue(),
+                        (Long) row[0],
                         (Boolean) row[1],
                         (String) row[2],
                         (String) row[3],
                         ((Float) row[4]).doubleValue(),
                         (Double) row[5],
                         (Double) row[6],
-                        ((Integer) row[7]).longValue(),
-                        ((Timestamp) row[8]).toInstant().atOffset(ZoneOffset.ofHours(9))))
+                        (Long) row[7],
+                        ((Instant) row[8]).atOffset(ZoneOffset.ofHours(9))))
                 .toList();
     }
 
@@ -349,7 +349,7 @@ public interface AnnotationRepository extends JpaRepository<AnnotationEntity, Lo
     default public List<AnnotationSummaryByAnnotaterEntity> getAnnotationSummaryByAnnotater() {
         return findAnnotationSummaryByAnnotater().stream()
                 .map(row -> new AnnotationSummaryByAnnotaterEntity(
-                        ((Integer) row[0]).longValue(),
+                        (Long) row[0],
                         (String) row[1],
                         ((Long) row[2]),
                         (Double) row[3],
@@ -361,9 +361,9 @@ public interface AnnotationRepository extends JpaRepository<AnnotationEntity, Lo
     default public List<AnnotationSummaryByAnnotaterEntity> getAnnotationSummaryByAnnotater(Pageable pageable) {
         return findAnnotationSummaryByAnnotater(pageable).getContent().stream()
                 .map(row -> new AnnotationSummaryByAnnotaterEntity(
-                        ((Integer) row[0]).longValue(),
+                        (Long) row[0],
                         (String) row[1],
-                        ((Long) row[2]),
+                        (Long) row[2],
                         (Double) row[3],
                         (Double) row[4],
                         (Double) row[5]))
