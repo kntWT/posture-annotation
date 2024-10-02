@@ -139,76 +139,81 @@
 	}
 </script>
 
-<Accordion>
-	<Panel>
-		<Header>
-			<p class="center">{counts.display}/{counts.total}件表示</p>
-		</Header>
-		<Content>
-			<div class="sort-container">
-				<h4>ソート条件</h4>
-				<DropdownSort bind:options={optionTemplate} bind:key={sortKey} bind:value={sortValue} />
-			</div>
-			<div class="filter-container">
-				<h4>フィルター条件</h4>
-				{#each filters as filter, i}
-					<div class="center filter-container">
-						{#if filter.type === 'checkbox' && Array.isArray(filter.result)}
-							<CheckboxFilter
-								bind:options={filter.option}
-								bind:key={filter.key}
-								bind:checks={filter.result}
-								checkboxOptions={checkboxOption(filter)}
-							/>
-						{:else if filter.type === 'dropdown' && (isFilterOptionKeys(filter.result) || filter.result === undefined)}
-							<DropdownFilter
-								bind:options={filter.option}
-								bind:key={filter.key}
-								bind:value={filter.value}
-								bind:filterOptionKey={filter.result}
-								{filterOptions}
-							/>
-						{:else}
-							<p>some error occured</p>
-						{/if}
-						<IconButton class="material-icons" on:click={() => remoteFilter(i)}>remove</IconButton>
-					</div>
-				{/each}
-			</div>
-			<div class="center add-button-wrapper">
-				<Wrapper rich>
-					<Icon class="material-icons">add</Icon>
-					<Tooltip xPos="center">
-						<RichActions>
-							<Button on:click={() => addFilter('dropdown')}><span>dropdown</span></Button>
-							<Button on:click={() => addFilter('checkbox')}><span>checkbox</span></Button>
-						</RichActions>
-					</Tooltip>
-				</Wrapper>
-			</div>
-		</Content>
-	</Panel>
-</Accordion>
+<div class="container">
+	<Accordion>
+		<Panel>
+			<Header>
+				<p class="center">{counts.display}/{counts.total}件表示</p>
+			</Header>
+			<Content>
+				<div class="sort-container">
+					<h4>ソート条件</h4>
+					<DropdownSort bind:options={optionTemplate} bind:key={sortKey} bind:value={sortValue} />
+				</div>
+				<div class="filter-container">
+					<h4>フィルター条件</h4>
+					{#each filters as filter, i}
+						<div class="center filter-container">
+							{#if filter.type === 'checkbox' && Array.isArray(filter.result)}
+								<CheckboxFilter
+									bind:options={filter.option}
+									bind:key={filter.key}
+									bind:checks={filter.result}
+									checkboxOptions={checkboxOption(filter)}
+								/>
+							{:else if filter.type === 'dropdown' && (isFilterOptionKeys(filter.result) || filter.result === undefined)}
+								<DropdownFilter
+									bind:options={filter.option}
+									bind:key={filter.key}
+									bind:value={filter.value}
+									bind:filterOptionKey={filter.result}
+									{filterOptions}
+								/>
+							{:else}
+								<p>some error occured</p>
+							{/if}
+							<IconButton class="material-icons" on:click={() => remoteFilter(i)}>remove</IconButton
+							>
+						</div>
+					{/each}
+				</div>
+				<div class="center add-button-wrapper">
+					<Wrapper rich>
+						<Icon class="material-icons">add</Icon>
+						<Tooltip xPos="center">
+							<RichActions>
+								<Button on:click={() => addFilter('dropdown')}><span>dropdown</span></Button>
+								<Button on:click={() => addFilter('checkbox')}><span>checkbox</span></Button>
+							</RichActions>
+						</Tooltip>
+					</Wrapper>
+				</div>
+			</Content>
+		</Panel>
+	</Accordion>
+</div>
 
 <style lang="scss" scoped>
-	.center {
-		margin: auto 0;
-		text-align: center;
-	}
+	.container {
+		.center {
+			margin: auto 0;
+			text-align: center;
+		}
 
-	.filter-container {
-		margin-top: 16px;
-	}
+		.filter-container {
+			margin-top: 16px;
+		}
 
-	:global(.smui-accordion) {
-		z-index: 50;
-	}
+		:global(.smui-accordion) {
+			z-index: 50;
+		}
 
-	.filter-container {
-		padding: 16px;
-	}
+		.filter-container {
+			padding: 16px;
+		}
 
-	.add-button-wrapper {
-		margin-top: 16px;
+		.add-button-wrapper {
+			margin-top: 16px;
+		}
 	}
 </style>
