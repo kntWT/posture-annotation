@@ -1,0 +1,16 @@
+Page:
+  name: page
+  in: query
+  required: false
+  schema:
+    type: integer
+    format: int64
+    minimum: 0
+Size:
+  name: size
+  in: query
+  required: false
+  schema:
+    type: integer
+    format: int64
+    minimum: 0

@@ -1,0 +1,52 @@
+Id:
+  name: id
+  in: path
+  required: true
+  schema:
+    type: integer
+    format: int64
+    minimum: 0
+Ids:
+  name: ids
+  in: query
+  required: true
+  schema:
+    type: array
+    items:
+      type: integer
+      format: int64
+      minimum: 0
+  style: form
+  explode: false
+AnnotaterId:
+  name: annotater_id
+  in: query
+  required: true
+  schema:
+    type: integer
+    format: int64
+    minimum: 0
+AnnotationId:
+  name: annotation_id
+  in: query
+  required: true
+  schema:
+    type: integer
+    format: int64
+    minimum: 0
+PostureId:
+  name: posture_id
+  in: query
+  required: true
+  schema:
+    type: integer
+    format: int64
+    minimum: 0
+UserId:
+  name: user_id
+  in: query
+  required: true
+  schema:
+    type: integer
+    format: int64
+    minimum: 0

@@ -90,6 +90,21 @@ paths:
   /annotation/summary/annotater:
     $ref: "./paths/annotation.yaml#/annotation_summary_annotater"
 components:
+  parameters:
+    Page:
+      $ref: "./components/parameters/pageable.yaml#/Page"
+    Size:
+      $ref: "./components/parameters/pageable.yaml#/Size"
+    Id:
+      $ref: "./components/parameters/id.yaml#/Id"
+    AnnotaterId:
+      $ref: "./components/parameters/id.yaml#/AnnotaterId"
+    AnnotationId:
+      $ref: "./components/parameters/id.yaml#/AnnotationId"
+    PostureId:
+      $ref: "./components/parameters/id.yaml#/PostureId"
+    UserId:
+      $ref: "./components/parameters/id.yaml#/UserId"
   securitySchemes:
     bearerAuth:
       $ref: "./components/securitySchemas/bearerAuth.yaml#/bearerAuth"
