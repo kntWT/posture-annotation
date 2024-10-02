@@ -107,7 +107,7 @@
 			{#each filteredData.map(revertFormatData) as { annotation, posture }}
 				<Cell
 					class="card mdc-elevation-transition"
-					spanDevices={{ desktop: 4, tablet: 6, phone: 12 }}
+					spanDevices={{ desktop: 3, tablet: 6, phone: 12 }}
 				>
 					<AnnotationDetail {annotation} {posture} onClick={() => handleClick(annotation.id)} />
 				</Cell>
