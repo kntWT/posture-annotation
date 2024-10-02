@@ -1,32 +1,40 @@
 <script lang="ts">
 	import AnnotatedCard from '$lib/components/logs/AnnotatedCard.svelte';
-	import { onMount } from 'svelte';
 	import type { PageData } from '../$types';
 	import LayoutGrid, { Cell } from '@smui/layout-grid';
 	import Accordion, { Panel, Header, Content } from '@smui-extra/accordion';
 	import IconButton, { Icon } from '@smui/icon-button';
-	import { imageUrl } from '$lib/util';
+	import { formatDate, imageUrl } from '$lib/util';
+	import type { AnnotationWithPosture } from '$api/generated';
 
 	export let data: PageData;
 	const base = import.meta.env.VITE_BASE_PATH;
 
-	const contents = [
-		{
-			title: 'サンプルデータ',
-			data: data.samples,
-			open: data.samples.length === 0,
-			subPath: 'sample'
-		},
-		{
-			title: '本番データ',
-			data: data.annotations,
-			open: data.annotations.length === 0
-		}
-	];
+	const formatData = (d: AnnotationWithPosture) => {
+		return {
+			...d.annotation,
+			diffNeckAngle: d.annotation.neckAngle - d.posture.neckAngle,
+			userId: d.posture.userId,
+			fileName: formatDate(d.posture.exCreatedAt) + '.jpg'
+		};
+	};
 
-	onMount(async () => {
-		console.log(data);
-	});
+	const contents =
+		data.prod && data.sample
+			? [
+					{
+						title: 'サンプルデータ',
+						data: data.sample.annotations.map(formatData),
+						open: data.sample.count === 0,
+						subPath: 'sample'
+					},
+					{
+						title: '本番データ',
+						data: data.prod.annotations.map(formatData),
+						open: data.prod.count === 0
+					}
+				]
+			: [];
 </script>
 
 <div class="wrapper">
