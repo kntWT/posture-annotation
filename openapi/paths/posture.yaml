@@ -16,9 +16,7 @@ posture:
         content:
           application/json:
             schema:
-              type: array
-              items:
-                $ref: "../components/schemas/posture.yaml#/Posture"
+              $ref: "../components/schemas/page.yaml#/PostureWithPageInfo"
       "403":
         description: forbidden
 posture_{id}:
@@ -131,9 +129,7 @@ posture_sample:
         content:
           application/json:
             schema:
-              type: array
-              items:
-                $ref: "../components/schemas/posture.yaml#/Posture"
+              $ref: "../components/schemas/page.yaml#/PostureWithPageInfo"
       "403":
         description: forbidden
 posture_sample_random:
@@ -188,9 +184,7 @@ posture_user_{user_id}:
         content:
           application/json:
             schema:
-              type: array
-              items:
-                $ref: "../components/schemas/posture.yaml#/Posture"
+              $ref: "../components/schemas/page.yaml#/PostureWithPageInfo"
       "403":
         description: forbidden
 posture_markers:

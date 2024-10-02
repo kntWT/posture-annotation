@@ -1,0 +1,91 @@
+PageInfo:
+  type: object
+  required:
+    - page_number
+    - size
+    - total_pages
+    - is_first
+    - is_last
+  properties:
+    page_number:
+      type: integer
+      format: int64
+      minimum: 0
+    size:
+      type: integer
+      format: int64
+      minimum: 0
+    total_pages:
+      type: integer
+      format: int64
+      minimum: 0
+    is_first:
+      type: boolean
+    is_last:
+      type: boolean
+AnnotationWithPageInfo:
+  type: object
+  required:
+    - contents
+  allOf:
+    - $ref: "#/PageInfo"
+  properties:
+    contents:
+      type: array
+      items:
+        $ref: "./annotation.yaml#/Annotation"
+AnnotationWithFilePathAndPageInfo:
+  type: object
+  required:
+    - contents
+  allOf:
+    - $ref: "#/PageInfo"
+  properties:
+    contents:
+      type: array
+      items:
+        $ref: "./annotation.yaml#/AnnotationWithFilePath"
+AnnotationWithPostureAndPageInfo:
+  type: object
+  required:
+    - contents
+  allOf:
+    - $ref: "#/PageInfo"
+  properties:
+    contents:
+      type: array
+      items:
+        $ref: "./annotation.yaml#/AnnotationWithPosture"
+AnnotationSummaryByPostureWithPageInfo:
+  type: object
+  required:
+    - contents
+  allOf:
+    - $ref: "#/PageInfo"
+  properties:
+    contents:
+      type: array
+      items:
+        $ref: "./annotation.yaml#/AnnotationSummaryByPosture"
+AnnotationSummaryByAnnotaterWithPageInfo:
+  type: object
+  required:
+    - contents
+  allOf:
+    - $ref: "#/PageInfo"
+  properties:
+    contents:
+      type: array
+      items:
+        $ref: "./annotation.yaml#/AnnotationSummaryByAnnotater"
+PostureWithPageInfo:
+  type: object
+  required:
+    - contents
+  allOf:
+    - $ref: "#/PageInfo"
+  properties:
+    contents:
+      type: array
+      items:
+        $ref: "./posture.yaml#/Posture"

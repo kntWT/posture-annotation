@@ -16,9 +16,7 @@ annotation:
         content:
           application/json:
             schema:
-              type: array
-              items:
-                $ref: "../components/schemas/annotation.yaml#/Annotation"
+              $ref: "../components/schemas/page.yaml#/AnnotationWithPageInfo"
       "403":
         description: forbidden
   post:
@@ -182,9 +180,7 @@ annotation_posture_{posture_id}:
         content:
           application/json:
             schema:
-              type: array
-              items:
-                $ref: "../components/schemas/annotation.yaml#/Annotation"
+              $ref: "../components/schemas/page.yaml#/AnnotationWithPageInfo"
       "403":
         description: forbidden
 annotation_posture_{posture_id}_file_path:
@@ -205,9 +201,7 @@ annotation_posture_{posture_id}_file_path:
         content:
           application/json:
             schema:
-              type: array
-              items:
-                $ref: "../components/schemas/annotation.yaml#/AnnotationWithFilePath"
+              $ref: "../components/schemas/page.yaml#/AnnotationWithFilePathAndPageInfo"
       "403":
         description: forbidden
 annotation_annotater_{annotater_id}:
@@ -228,9 +222,7 @@ annotation_annotater_{annotater_id}:
         content:
           application/json:
             schema:
-              type: array
-              items:
-                $ref: "../components/schemas/annotation.yaml#/Annotation"
+              $ref: "../components/schemas/page.yaml#/AnnotationWithPageInfo"
       "403":
         description: forbidden
 annotation_annotater_{annotater_id}_posture:
@@ -251,9 +243,7 @@ annotation_annotater_{annotater_id}_posture:
         content:
           application/json:
             schema:
-              type: array
-              items:
-                $ref: "../components/schemas/annotation.yaml#/AnnotationWithPosture"
+              $ref: "../components/schemas/page.yaml#/AnnotationWithPostureAndPageInfo"
       "403":
         description: forbidden
 annotation_annotater_{annotater_id}_file_path:
@@ -274,9 +264,7 @@ annotation_annotater_{annotater_id}_file_path:
         content:
           application/json:
             schema:
-              type: array
-              items:
-                $ref: "../components/schemas/annotation.yaml#/AnnotationWithFilePath"
+              $ref: "../components/schemas/page.yaml#/AnnotationWithFilePathAndPageInfo"
       "403":
         description: forbidden
 annotation_annotater_{annotater_id}_count:
@@ -316,9 +304,7 @@ annotation_annotater_{annotater_id}_prod:
         content:
           application/json:
             schema:
-              type: array
-              items:
-                $ref: "../components/schemas/annotation.yaml#/Annotation"
+              $ref: "../components/schemas/page.yaml#/AnnotationWithPageInfo"
       "403":
         description: forbidden
 annotation_annotater_{annotater_id}_prod_file_path:
@@ -339,9 +325,7 @@ annotation_annotater_{annotater_id}_prod_file_path:
         content:
           application/json:
             schema:
-              type: array
-              items:
-                $ref: "../components/schemas/annotation.yaml#/AnnotationWithFilePath"
+              $ref: "../components/schemas/page.yaml#/AnnotationWithFilePathAndPageInfo"
       "403":
         description: forbidden
 annotation_annotater_{annotater_id}_prod_posture:
@@ -362,9 +346,7 @@ annotation_annotater_{annotater_id}_prod_posture:
         content:
           application/json:
             schema:
-              type: array
-              items:
-                $ref: "../components/schemas/annotation.yaml#/AnnotationWithPosture"
+              $ref: "../components/schemas/page.yaml#/AnnotationWithPostureAndPageInfo"
       "403":
         description: forbidden
 annotation_annotater_{annotater_id}_prod_count:
@@ -409,9 +391,7 @@ annotation_annotater_{annotater_id}_sample:
         content:
           application/json:
             schema:
-              type: array
-              items:
-                $ref: "../components/schemas/annotation.yaml#/Annotation"
+              $ref: "../components/schemas/page.yaml#/AnnotationWithPageInfo"
       "403":
         description: forbidden
 annotation_annotater_{annotater_id}_sample_file_path:
@@ -432,9 +412,7 @@ annotation_annotater_{annotater_id}_sample_file_path:
         content:
           application/json:
             schema:
-              type: array
-              items:
-                $ref: "../components/schemas/annotation.yaml#/AnnotationWithFilePath"
+              $ref: "../components/schemas/page.yaml#/AnnotationWithFilePathAndPageInfo"
       "403":
         description: forbidden
 annotation_annotater_{annotater_id}_sample_posture:
@@ -455,9 +433,7 @@ annotation_annotater_{annotater_id}_sample_posture:
         content:
           application/json:
             schema:
-              type: array
-              items:
-                $ref: "../components/schemas/annotation.yaml#/AnnotationWithPosture"
+              $ref: "../components/schemas/page.yaml#/AnnotationWithPostureAndPageInfo"
       "403":
         description: forbidden
 annotation_annotater_{annotater_id}_sample_count:
@@ -558,9 +534,7 @@ annotation_summary_posture:
         content:
           application/json:
             schema:
-              type: array
-              items:
-                $ref: "../components/schemas/annotation.yaml#/AnnotationSummaryByPosture"
+              $ref: "../components/schemas/page.yaml#/AnnotationSummaryByPostureWithPageInfo"
       "403":
         description: forbidden
 annotation_summary_annotater:
@@ -580,8 +554,6 @@ annotation_summary_annotater:
         content:
           application/json:
             schema:
-              type: array
-              items:
-                $ref: "../components/schemas/annotation.yaml#/AnnotationSummaryByAnnotater"
+              $ref: "../components/schemas/page.yaml#/AnnotationSummaryByAnnotaterWithPageInfo"
       "403":
         description: forbidden

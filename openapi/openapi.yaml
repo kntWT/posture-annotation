@@ -141,6 +141,20 @@ components:
       $ref: "./components/schemas/annotation.yaml#/AnnotationSummaryByPosture"
     AnnotationSummaryByAnnotater:
       $ref: "./components/schemas/annotation.yaml#/AnnotationSummaryByAnnotater"
+    PageInfo:
+      $ref: "./components/schemas/page.yaml#/PageInfo"
+    PostureWithPageInfor:
+      $ref: "./components/schemas/page.yaml#/PostureWithPageInfo"
+    AnnotationWithPageInfo:
+      $ref: "./components/schemas/page.yaml#/AnnotationWithPageInfo"
+    AnnotationWithFilePathAndPageInfo:
+      $ref: "./components/schemas/page.yaml#/AnnotationWithFilePathAndPageInfo"
+    AnnotationWithPostureAndPageInfo:
+      $ref: "./components/schemas/page.yaml#/AnnotationWithPostureAndPageInfo"
+    AnnotationSummaryByPostureWithPageInfo:
+      $ref: "./components/schemas/page.yaml#/AnnotationSummaryByPostureWithPageInfo"
+    AnnotationSummaryByAnnotaterWithPageInfo:
+      $ref: "./components/schemas/page.yaml#/AnnotationSummaryByAnnotaterWithPageInfo"
   examples:
     UserExample:
       value:
