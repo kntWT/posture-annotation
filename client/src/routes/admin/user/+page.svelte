@@ -1,10 +1,14 @@
 <script lang="ts">
-	import AnnotationSummaryByPostureTable from '$lib/components/admin/AnnotationSummaryTable.svelte';
+	import AnnotationSummaryTable from '$lib/components/admin/AnnotationSummaryTable.svelte';
 	import type { AnnotationSummaryByAnnotater } from '$api/generated';
 	import { goto } from '$app/navigation';
 	import type { PageData } from './$types';
 	import type { Header } from '$lib/components/admin/types/AnnotationSummaryTable';
+	import type { Option } from '$lib/components/dataIntercepter/types/Option';
+	import DataSortFilter from '$lib/components/dataIntercepter/DataSortFilter.svelte';
 	export let data: PageData;
+
+	type Key = keyof AnnotationSummaryByAnnotater;
 
 	const navigateToDetail = (data: AnnotationSummaryByAnnotater) => {
 		console.log(data.annotaterId);
@@ -12,7 +16,7 @@
 			invalidateAll: true
 		});
 	};
-	const headers: Header<keyof AnnotationSummaryByAnnotater>[] = [
+	const headers: Header<Key>[] = [
 		{
 			display: 'id',
 			key: 'annotaterId',
@@ -50,13 +54,51 @@
 			highlightThreshold: 10
 		}
 	];
+
+	const optionTemplate: Option<Key>[] = [
+		{ label: '件数', key: 'count', type: 'number', availableUiTypes: ['dropdown'] },
+		{ label: 'ユーザ名', key: 'name', type: 'string', availableUiTypes: ['dropdown'] },
+		{
+			label: '差分の平均',
+			key: 'avgDiffOriginalNeckAngle',
+			type: 'number',
+			availableUiTypes: ['dropdown']
+		},
+		{
+			label: '差分の平均の平均',
+			key: 'avgDiffAvgNeckAngle',
+			type: 'number',
+			availableUiTypes: ['dropdown']
+		},
+		{
+			label: '差分の平均の標準偏差',
+			key: 'stdDiffAvgNeckAngle',
+			type: 'number',
+			availableUiTypes: ['dropdown']
+		}
+	];
+
+	let filteredData: AnnotationSummaryByAnnotater[] = [...(data.summary ?? [])];
+
+	$: counts = {
+		display: filteredData.length,
+		total: data.summary?.length ?? 0
+	};
 </script>
 
 {#if !data.summary}
 	<p>データがありません</p>
 {:else}
 	<div class="wrapper">
-		<AnnotationSummaryByPostureTable {headers} data={data.summary} {navigateToDetail} />
+		<div class="container">
+			<DataSortFilter
+				{optionTemplate}
+				bind:data={data.summary}
+				bind:counts
+				on:updateData={(e) => (filteredData = e.detail)}
+			/>
+		</div>
+		<AnnotationSummaryTable {headers} data={filteredData} {navigateToDetail} />
 	</div>
 {/if}
 
@@ -77,6 +119,10 @@
 
 		@include mediaQuery('lg') {
 			padding: 32px 8px;
+		}
+
+		.container {
+			margin-bottom: 16px;
 		}
 	}
 </style>

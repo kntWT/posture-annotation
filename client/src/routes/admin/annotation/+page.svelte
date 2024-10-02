@@ -1,5 +1,5 @@
 <script lang="ts">
-	import AnnotationSummaryByPostureTable from '$lib/components/admin/AnnotationSummaryTable.svelte';
+	import AnnotationSummaryTable from '$lib/components/admin/AnnotationSummaryTable.svelte';
 	import type { AnnotationSummaryByPosture } from '$api/generated';
 	import { goto } from '$app/navigation';
 	import type { PageData } from './$types';
@@ -131,7 +131,7 @@
 				on:updateData={(e) => (filteredData = e.detail)}
 			/>
 		</div>
-		<AnnotationSummaryByPostureTable {headers} bind:data={filteredData} {navigateToDetail} />
+		<AnnotationSummaryTable {headers} bind:data={filteredData} {navigateToDetail} />
 	</div>
 {/if}
 
