@@ -205,7 +205,7 @@
 		}
 
 		:global(.smui-accordion) {
-			z-index: 50;
+			z-index: 2;
 		}
 
 		.filter-container {
