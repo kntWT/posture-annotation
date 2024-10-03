@@ -78,22 +78,22 @@
 		}
 	];
 
-	let filteredData: AnnotationSummaryByAnnotater[] = [...(data.summary ?? [])];
+	let filteredData: AnnotationSummaryByAnnotater[] = [...(data.data?.contents ?? [])];
 
 	$: counts = {
 		display: filteredData.length,
-		total: data.summary?.length ?? 0
+		total: data.data?.contents?.length ?? 0
 	};
 </script>
 
-{#if !data.summary}
+{#if !data.data?.contents}
 	<p>データがありません</p>
 {:else}
 	<div class="wrapper">
 		<div class="container">
 			<DataSortFilter
 				{optionTemplate}
-				bind:data={data.summary}
+				bind:data={data.data.contents}
 				bind:counts
 				on:updateData={(e) => (filteredData = e.detail)}
 			/>

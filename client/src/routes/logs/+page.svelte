@@ -42,14 +42,14 @@
 			? [
 					{
 						title: 'サンプルデータ',
-						data: data.sample.annotations.map(formatData),
+						data: data.sample.annotations.contents.map(formatData),
 						open: data.sample.count === 0,
 						subPath: 'sample' as 'sample',
 						key: 'sample' as keyof Data
 					},
 					{
 						title: '本番データ',
-						data: data.prod.annotations.map(formatData),
+						data: data.prod.annotations.contents.map(formatData),
 						open: data.prod.count === 0,
 						key: 'prod' as keyof Data
 					}
@@ -70,8 +70,8 @@
 	];
 
 	let formattedData: Data = {
-		prod: [...data.prod.annotations.map(formatData)],
-		sample: [...data.sample.annotations.map(formatData)]
+		prod: [...data.prod.annotations.contents.map(formatData)],
+		sample: [...data.sample.annotations.contents.map(formatData)]
 	};
 
 	let filteredData: Data = { ...formattedData };

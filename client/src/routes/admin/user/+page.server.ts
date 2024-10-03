@@ -10,9 +10,9 @@ export const load: PageServerLoad = async ({ cookies }) => {
 
 	try {
 		const annotationApi = createAnnotationApi({ token });
-		const summary = await annotationApi.getAnnotationSummaryByAnnotater();
-		return { summary };
+		const data = await annotationApi.getAnnotationSummaryByAnnotater();
+		return { data };
 	} catch (e) {
-		return { summary: null };
+		return { data: null };
 	}
 };

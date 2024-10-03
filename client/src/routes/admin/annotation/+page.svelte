@@ -1,13 +1,13 @@
 <script lang="ts">
 	import AnnotationSummaryTable from '$lib/components/admin/AnnotationSummaryTable.svelte';
-	import type { AnnotationSummaryByPosture } from '$api/generated';
+	import type { AnnotationSummaryByPostureWithPageInfo } from '$api/generated';
 	import { goto } from '$app/navigation';
 	import type { PageData } from './$types';
 	import type { Header } from '$lib/components/admin/types/AnnotationSummaryTable';
 	import DataSortFilter from '$lib/components/dataIntercepter/DataSortFilter.svelte';
 	import type { Option } from '$lib/components/dataIntercepter/types/Option';
 	export let data: PageData;
-	type Data = Omit<AnnotationSummaryByPosture, 'annotaterIds'> & {
+	type Data = Omit<AnnotationSummaryByPostureWithPageInfo['contents'][number], 'annotaterIds'> & {
 		diffNeckAngle: number;
 		count: number;
 		annotaterIds: string;
@@ -103,7 +103,7 @@
 	];
 
 	let formatData: Data[] = [
-		...(data?.summary?.map((d) => ({
+		...(data?.data?.contents?.map((d) => ({
 			...d,
 			diffNeckAngle: d.avgNeckAngle - d.originalNeckAngle,
 			count: d.annotationIds.length,
@@ -115,11 +115,11 @@
 
 	$: counts = {
 		display: filteredData.length,
-		total: data.summary?.length ?? 0
+		total: data.data?.contents?.length ?? 0
 	};
 </script>
 
-{#if !data.summary}
+{#if !data.data}
 	<p>データがありません</p>
 {:else}
 	<div class="wrapper">

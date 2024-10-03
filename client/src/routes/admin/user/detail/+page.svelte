@@ -81,7 +81,7 @@
 		{ key: 'createdAt', label: '作成日時', type: 'date', availableUiTypes: ['dropdown'] }
 	];
 
-	let formattedData: Content[] = [...(data.data?.map(formatData) || [])];
+	let formattedData: Content[] = [...(data.data?.contents?.map(formatData) || [])];
 
 	let filteredData: Content[] = [...formattedData];
 
@@ -92,7 +92,7 @@
 </script>
 
 <div class="wrapper">
-	{#if !data.data || data.data.length === 0}
+	{#if !data.data || data.data.contents.length === 0}
 		<p>データがありません</p>
 	{:else}
 		<div class="container">
