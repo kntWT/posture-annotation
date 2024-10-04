@@ -115,6 +115,51 @@ public class PostureService {
     }
 
     @Transactional
+    public Posture getRandomPostureThinOutById(Long step) {
+        List<PostureEntity> unannotatedPostures = postureRepository.findByOrderByAnnotationCountThinOutByIdLimitTo(
+                step, RANDOM_POOL, MAX_NEED_COUNT);
+        Collections.shuffle(unannotatedPostures);
+        int index = 0;
+        PostureEntity target = null;
+        while (target == null && index < unannotatedPostures.size()) {
+            try {
+                target = postureRepository
+                        .findByIdWithLock(unannotatedPostures.get(index).getId());
+            } catch (PessimisticLockingFailureException e) {
+                index++;
+            }
+        }
+
+        if (target == null) {
+            return null;
+        }
+        return PostureEntity.toPosture(target);
+    }
+
+    @Transactional
+    public Posture getRandomPostureByAnnotaterIdThinOutById(Long annotaterId, Long step) {
+        List<PostureEntity> unannotatedPostures = postureRepository
+                .findByAnnotaterIdOrderByAnnotationCountThinOutByIdLimitTo(annotaterId, step, RANDOM_POOL,
+                        MAX_NEED_COUNT);
+        Collections.shuffle(unannotatedPostures);
+        int index = 0;
+        PostureEntity target = null;
+        while (target == null && index < unannotatedPostures.size()) {
+            try {
+                target = postureRepository
+                        .findByIdWithLock(unannotatedPostures.get(index).getId());
+            } catch (PessimisticLockingFailureException e) {
+                index++;
+            }
+        }
+
+        if (target == null) {
+            return null;
+        }
+        return PostureEntity.toPosture(target);
+    }
+
+    @Transactional
     public Posture updatePostureById(Long id, PostureUpdate postureUpdate) {
         int updateCount = postureRepository
                 .updatePostureById(

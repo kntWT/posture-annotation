@@ -89,6 +89,26 @@ public class PostureController implements PostureApi {
     }
 
     @Override
+    public ResponseEntity<Posture> getRandomPostureThinOutById(Long step) {
+        Posture posture = postureService.getRandomPostureThinOutById(step);
+        if (posture == null) {
+            ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+        return ResponseEntity.ok(posture);
+    }
+
+    @Override
+    public ResponseEntity<Posture> getRandomPostureByAnnotaterIdThinOutById(Long annotaterId, Long step) {
+        Posture posture = postureService.getRandomPostureByAnnotaterIdThinOutById(annotaterId, step);
+        if (posture == null) {
+            ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+        return ResponseEntity.ok(posture);
+    }
+
+    @Override
     public ResponseEntity<Posture> updatePostureMarkerById(Long id,
             PostureUpdateMarkerPosition postureUpdateMarkerPosition) {
         Posture posture = postureService.updatePostureMarkerById(id, postureUpdateMarkerPosition);
