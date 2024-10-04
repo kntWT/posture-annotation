@@ -29,6 +29,10 @@ paths:
     $ref: "./paths/posture.yaml#/posture_random"
   /posture/random/annotater/{annotater_id}:
     $ref: "./paths/posture.yaml#/posture_random_annotater_{annotater_id}"
+  /posture/random/thin-out/{step}:
+    $ref: "./paths/posture.yaml#/posture_random_thin_out_id_{step}"
+  /posture/random/annotater/{annotater_id}/thin-out/{step}:
+    $ref: "./paths/posture.yaml#/posture_random_annotater_{annotater_id}_thin_out_id_{step}"
   /posture/sample:
     $ref: "./paths/posture.yaml#/posture_sample"
   /posture/sample/random:

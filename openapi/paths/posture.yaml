@@ -112,6 +112,53 @@ posture_random_annotater_{annotater_id}:
               $ref: "../components/schemas/posture.yaml#/Posture"
       "403":
         description: forbidden
+posture_random_thin_out_id_{step}:
+  get:
+    description: get random posture thin out by step
+    operationId: getRandomPostureThinOutById
+    tags:
+      - posture
+    security: *bearerAuth
+    parameters:
+      - name: step
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+    responses:
+      "200":
+        description: ok
+        content:
+          application/json:
+            schema:
+              $ref: "../components/schemas/posture.yaml#/Posture"
+      "403":
+        description: forbidden
+posture_random_annotater_{annotater_id}_thin_out_id_{step}:
+  get:
+    description: get random posture by annotater id thin out by step
+    operationId: getRandomPostureByAnnotaterIdThinOutById
+    tags:
+      - posture
+    security: *bearerAuth
+    parameters:
+      - $ref: "../components/parameters/id.yaml#/AnnotaterId"
+      - name: step
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+    responses:
+      "200":
+        description: ok
+        content:
+          application/json:
+            schema:
+              $ref: "../components/schemas/posture.yaml#/Posture"
+      "403":
+        description: forbidden
 posture_sample:
   get:
     description: get sample posture
