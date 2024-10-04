@@ -9,32 +9,36 @@
 	};
 </script>
 
-<Paper>
-	<Title>管理者ページ</Title>
-	<Content>
-		<List>
-			<Item on:click={() => navigateTo('annotation')}>
-				<Card>
-					<h3>アノテーション</h3>
-					<p>アノテーション結果をposture_idごとに集計</p>
-				</Card>
-			</Item>
-			<Item on:click={() => navigateTo('user')}>
-				<Card>
-					<h3>ユーザー</h3>
-					<p>アノテーション結果をユーザごとに集計</p>
-				</Card>
-			</Item>
-		</List>
-	</Content>
-</Paper>
+<div class=".admin-container">
+	<Paper>
+		<Title>管理者ページ</Title>
+		<Content>
+			<List>
+				<Item on:click={() => navigateTo('annotation')}>
+					<Card>
+						<h3>アノテーション</h3>
+						<p>アノテーション結果をposture_idごとに集計</p>
+					</Card>
+				</Item>
+				<Item on:click={() => navigateTo('user')}>
+					<Card>
+						<h3>ユーザー</h3>
+						<p>アノテーション結果をユーザごとに集計</p>
+					</Card>
+				</Item>
+			</List>
+		</Content>
+	</Paper>
+</div>
 
 <style lang="scss" scoped>
-	:global(.smui-paper) {
-		margin: 16px;
+	.admin-container {
+		:global(.smui-paper) {
+			margin: 16px;
 
-		:global(.mdc-deprecated-list-item) {
-			margin: 8px 0;
+			:global(.mdc-deprecated-list-item) {
+				margin: 8px 0;
+			}
 		}
 	}
 </style>
