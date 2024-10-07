@@ -8,7 +8,7 @@ Id:
     minimum: 0
 Ids:
   name: ids
-  in: query
+  in: path
   required: true
   schema:
     type: array
@@ -20,7 +20,7 @@ Ids:
   explode: false
 AnnotaterId:
   name: annotater_id
-  in: query
+  in: path
   required: true
   schema:
     type: integer
@@ -28,7 +28,7 @@ AnnotaterId:
     minimum: 0
 AnnotationId:
   name: annotation_id
-  in: query
+  in: path
   required: true
   schema:
     type: integer
@@ -36,7 +36,7 @@ AnnotationId:
     minimum: 0
 PostureId:
   name: posture_id
-  in: query
+  in: path
   required: true
   schema:
     type: integer
@@ -44,7 +44,7 @@ PostureId:
     minimum: 0
 UserId:
   name: user_id
-  in: query
+  in: path
   required: true
   schema:
     type: integer
