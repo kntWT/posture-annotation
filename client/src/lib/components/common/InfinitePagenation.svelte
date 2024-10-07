@@ -25,6 +25,10 @@
 		dispatch('loadMore', { page: page, size: size, refresh });
 	};
 
+	$: if (contents.length < currentPage * rowsPerPage) {
+		currentPage--;
+	}
+
 	$: if (rowsPerPage > contents.length && !isLast) {
 		currentPage = 0;
 		loadMore(0, rowsPerPage, true);
