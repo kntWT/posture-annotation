@@ -25,7 +25,7 @@
 		dispatch('loadMore', { page: page, size: size, refresh });
 	};
 
-	$: if (rowsPerPage > contents.length) {
+	$: if (rowsPerPage > contents.length && !isLast) {
 		currentPage = 0;
 		loadMore(0, rowsPerPage, true);
 	}
