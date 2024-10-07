@@ -1,15 +1,9 @@
 import { createAnnotationApi } from '$api';
 import type { PageServerLoad } from './$types';
-import { redirect } from '@sveltejs/kit';
 
-export const load: PageServerLoad = async ({ cookies }) => {
-	const token = cookies.get(`${import.meta.env.VITE_COOKIE_PREFIX}token`);
-	if (!token || token === '') {
-		redirect(301, `${import.meta.env.VITE_BASE_PATH}/login`);
-	}
-
+export const load: PageServerLoad = async ({ locals }) => {
 	try {
-		const annotationApi = createAnnotationApi({ token });
+		const annotationApi = createAnnotationApi({ token: locals.user.token });
 		const data = await annotationApi.getAnnotationSummaryByAnnotater();
 		return { data };
 	} catch (e) {
