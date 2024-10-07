@@ -6,12 +6,13 @@
 	import type { Header } from '$lib/components/admin/types/AnnotationSummaryTable';
 	import type { Option } from '$lib/components/dataIntercepter/types/Option';
 	import DataSortFilter from '$lib/components/dataIntercepter/DataSortFilter.svelte';
+	import InfinitePagenation from '$lib/components/common/InfinitePagenation.svelte';
+	import { createAnnotationApi } from '$api';
 	export let data: PageData;
 
 	type Key = keyof AnnotationSummaryByAnnotater;
 
 	const navigateToDetail = (data: AnnotationSummaryByAnnotater) => {
-		console.log(data.annotaterId);
 		goto(`${import.meta.env.VITE_BASE_PATH}/admin/user/detail?annotater_id=${data.annotaterId}`, {
 			invalidateAll: true
 		});
@@ -78,27 +79,91 @@
 		}
 	];
 
-	let filteredData: AnnotationSummaryByAnnotater[] = [...(data.data?.contents ?? [])];
+	const api = createAnnotationApi({
+		basePath: import.meta.env.VITE_API_CLIENT_URL,
+		token: data?.user?.token || ''
+	});
+	const loadMore = async ({
+		page,
+		size,
+		refresh
+	}: {
+		page: number;
+		size: number;
+		refresh: boolean;
+	}) => {
+		if (!data.data) {
+			const res = await api.getAnnotationSummaryByAnnotater({ page: 0, size });
+			data = { ...data, data: res };
+			return;
+		}
+		if (
+			page >= data.data.totalPages ||
+			data.data.isLast ||
+			(page + 1) * size <= data.data.contents.length
+		) {
+			return;
+		}
+
+		try {
+			const res = await api.getAnnotationSummaryByAnnotater({ page, size });
+			data.data = refresh
+				? res
+				: {
+						...data.data,
+						...res,
+						contents: [...data.data.contents, ...res.contents]
+					};
+		} catch (e) {
+			console.error(e);
+		}
+	};
+
+	const mutateFilteredData = (data: AnnotationSummaryByAnnotater[]) => {
+		filteredData = data;
+	};
+
+	let contents = [...(data.data?.contents ?? [])];
+
+	let filteredData: AnnotationSummaryByAnnotater[] = [...contents];
+
+	let displayData: AnnotationSummaryByAnnotater[] = [...filteredData];
 
 	$: counts = {
 		display: filteredData.length,
 		total: data.data?.contents?.length ?? 0
 	};
+
+	$: {
+		if (data.data?.contents.length !== contents.length) {
+			contents = [...(data?.data?.contents || [])];
+			filteredData = [...contents];
+			displayData = [...filteredData];
+		}
+	}
 </script>
 
-{#if !data.data?.contents}
+{#if !data.data}
 	<p>データがありません</p>
 {:else}
 	<div class="wrapper">
 		<div class="container">
 			<DataSortFilter
 				{optionTemplate}
-				bind:data={data.data.contents}
+				bind:data={contents}
 				bind:counts
-				on:updateData={(e) => (filteredData = e.detail)}
+				on:updateData={({ detail }) => mutateFilteredData(detail)}
 			/>
 		</div>
-		<AnnotationSummaryTable {headers} data={filteredData} {navigateToDetail} />
+		<AnnotationSummaryTable {headers} data={displayData} {navigateToDetail} />
+		<div>
+			<InfinitePagenation
+				bind:contents={filteredData}
+				bind:displayData
+				bind:isLast={data.data.isLast}
+				on:loadMore={({ detail }) => loadMore(detail)}
+			/>
+		</div>
 	</div>
 {/if}
 
@@ -111,7 +176,6 @@
 		max-width: 1600px;
 		margin: 0 auto;
 		padding: 12px 4px;
-		overflow-x: scroll;
 
 		@include mediaQuery('md') {
 			padding: 16px 4px;

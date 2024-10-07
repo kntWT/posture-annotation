@@ -5,14 +5,17 @@
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import DataSortFilter from '$lib/components/dataIntercepter/DataSortFilter.svelte';
-	import type { AnnotationWithPosture } from '$api/generated';
+	import type { AnnotationWithPostureAndPageInfo } from '$api/generated';
 	import type { Option } from '$lib/components/dataIntercepter/types/Option';
+	import InfinitePagenation from '$lib/components/common/InfinitePagenation.svelte';
+	import { createAnnotationApi } from '$api';
 
 	export let data: PageData;
 	const POSTURE_PREFIX = 'posture_';
 	type PosturePrefix = typeof POSTURE_PREFIX;
-	type Content = AnnotationWithPosture['annotation'] & {
-		[K in keyof AnnotationWithPosture['posture'] as `${PosturePrefix}${string & K}`]: AnnotationWithPosture['posture'][K];
+	type Data = AnnotationWithPostureAndPageInfo['contents'][number];
+	type Content = Data['annotation'] & {
+		[K in keyof Data['posture'] as `${PosturePrefix}${string & K}`]: Data['posture'][K];
 	} & { _diffNeckAngle: number };
 	type Key = keyof Content;
 	type Count = {
@@ -20,7 +23,9 @@
 		total: number;
 	};
 
-	const formatData = (d: AnnotationWithPosture): Content => {
+	const annotaterId = parseInt($page.url.searchParams.get('annotater_id') || '');
+
+	const formatData = (d: Data): Content => {
 		return {
 			...d.annotation,
 			...Object.fromEntries(
@@ -30,16 +35,16 @@
 		};
 	};
 
-	const revertFormatData = (d: Content): AnnotationWithPosture => {
+	const revertFormatData = (d: Content): Data => {
 		return {
 			annotation: Object.fromEntries(
 				Object.entries(d).filter(([key]) => !key.startsWith(POSTURE_PREFIX) && !key.startsWith('_'))
-			) as AnnotationWithPosture['annotation'],
+			) as Data['annotation'],
 			posture: Object.fromEntries(
 				Object.entries(d)
 					.filter(([key]) => key.startsWith(POSTURE_PREFIX))
 					.map(([key, value]) => [key.slice(POSTURE_PREFIX.length), value])
-			) as AnnotationWithPosture['posture']
+			) as Data['posture']
 		};
 	};
 
@@ -81,14 +86,68 @@
 		{ key: 'createdAt', label: '作成日時', type: 'date', availableUiTypes: ['dropdown'] }
 	];
 
+	const api = createAnnotationApi({
+		basePath: import.meta.env.VITE_API_CLIENT_URL,
+		token: data?.user?.token || ''
+	});
+	const loadMore = async ({
+		page,
+		size,
+		refresh
+	}: {
+		page: number;
+		size: number;
+		refresh: boolean;
+	}) => {
+		if (!data.data) {
+			const res = await api.getAnnotationsWithPostureByAnnotaterId({ annotaterId, page: 0, size });
+			data = { ...data, data: res };
+			return;
+		}
+		if (
+			page >= data.data.totalPages ||
+			data.data.isLast ||
+			(page + 1) * size <= data.data.contents.length
+		) {
+			return;
+		}
+
+		try {
+			const res = await api.getAnnotationsWithPostureByAnnotaterId({ annotaterId, page, size });
+			data.data = refresh
+				? res
+				: {
+						...data.data,
+						...res,
+						contents: [...data.data.contents, ...res.contents]
+					};
+		} catch (e) {
+			console.error(e);
+		}
+	};
+
+	const mutateFilteredData = (data: Content[]) => {
+		filteredData = data;
+	};
+
 	let formattedData: Content[] = [...(data.data?.contents?.map(formatData) || [])];
 
 	let filteredData: Content[] = [...formattedData];
+
+	let displayData: Content[] = [...filteredData];
 
 	$: counts = {
 		display: filteredData.length,
 		total: formattedData.length
 	} as Count;
+
+	$: {
+		if (data.data?.contents.length !== formattedData.length) {
+			formattedData = [...(data?.data?.contents?.map(formatData) || [])];
+			filteredData = [...formattedData];
+			displayData = [...filteredData];
+		}
+	}
 </script>
 
 <div class="wrapper">
@@ -100,11 +159,11 @@
 				bind:data={formattedData}
 				{optionTemplate}
 				bind:counts
-				on:updateData={(e) => (filteredData = e.detail)}
+				on:updateData={(e) => mutateFilteredData(e.detail)}
 			/>
 		</div>
 		<LayoutGrid>
-			{#each filteredData.map(revertFormatData) as { annotation, posture }}
+			{#each displayData.map(revertFormatData) as { annotation, posture }}
 				<Cell
 					class="card mdc-elevation-transition"
 					spanDevices={{ desktop: 3, tablet: 6, phone: 12 }}
@@ -113,6 +172,16 @@
 				</Cell>
 			{/each}
 		</LayoutGrid>
+		<div>
+			<InfinitePagenation
+				bind:contents={filteredData}
+				bind:displayData
+				bind:isLast={data.data.isLast}
+				on:loadMore={({ detail }) => {
+					loadMore(detail);
+				}}
+			/>
+		</div>
 	{/if}
 </div>
 

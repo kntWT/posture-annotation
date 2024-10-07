@@ -8,6 +8,8 @@
 	import type { AnnotationWithPosture } from '$api/generated';
 	import DataSortFilter from '$lib/components/dataIntercepter/DataSortFilter.svelte';
 	import type { Option } from '$lib/components/dataIntercepter/types/Option';
+	import InfinitePagenation from '$lib/components/common/InfinitePagenation.svelte';
+	import { createAnnotationApi } from '$api';
 
 	export let data: PageData;
 	const base = import.meta.env.VITE_BASE_PATH;
@@ -26,6 +28,7 @@
 		display: number;
 		total: number;
 	};
+	type Kind = Omit<keyof Data, 'user'>;
 
 	const formatData = (d: AnnotationWithPosture): Content => {
 		return {
@@ -36,25 +39,6 @@
 			fileName: formatDate(d.posture.exCreatedAt) + '.jpg'
 		};
 	};
-
-	const contents =
-		data.prod && data.sample
-			? [
-					{
-						title: 'サンプルデータ',
-						data: data.sample.annotations.contents.map(formatData),
-						open: data.sample.count === 0,
-						subPath: 'sample' as 'sample',
-						key: 'sample' as keyof Data
-					},
-					{
-						title: '本番データ',
-						data: data.prod.annotations.contents.map(formatData),
-						open: data.prod.count === 0,
-						key: 'prod' as keyof Data
-					}
-				]
-			: [];
 	const optionTemplate: Option<Key>[] = [
 		{ key: 'id', label: 'ID', type: 'number', availableUiTypes: ['dropdown'] },
 		{ key: 'neckAngle', label: '首の角度', type: 'number', availableUiTypes: ['dropdown'] },
@@ -69,6 +53,64 @@
 		{ key: 'createdAt', label: '作成日時', type: 'date', availableUiTypes: ['dropdown'] }
 	];
 
+	const loadFn = async (param: { page: number; size: number }, kind: Kind) => {
+		const api = createAnnotationApi({
+			basePath: import.meta.env.VITE_API_CLIENT_URL,
+			token: data?.user?.token || ''
+		});
+		const annotaterId = data.user?.id || 0;
+		if (kind === 'prod') {
+			const prods = await api.getProdAnnotationsWithPostureByAnnotaterId({ annotaterId, ...param });
+			return prods;
+		} else if (kind === 'sample') {
+			const samples = await api.getSampleAnnotationsWithPostureByAnnotaterId({
+				annotaterId,
+				...param
+			});
+			return samples;
+		}
+	};
+	const loadMore = async (
+		{
+			page,
+			size,
+			refresh
+		}: {
+			page: number;
+			size: number;
+			refresh: boolean;
+		},
+		kind: Kind
+	) => {
+		if (!data[kind]) {
+			const res = await loadFn({ page: 0, size }, kind);
+			data = { ...data, [kind]: { ...data[kind], annotations: res } };
+			return;
+		}
+		if (
+			page >= data[kind].annotations.totalPages ||
+			data[kind].annotations.isLast ||
+			(page + 1) * size <= data[kind].annotations.contents.length
+		) {
+			return;
+		}
+		try {
+			const res = await loadFn({ page, size }, kind);
+			data[kind].annotations = refresh
+				? res
+				: {
+						...data[kind].annotations,
+						...res
+					};
+		} catch (e) {
+			console.error(e);
+		}
+	};
+
+	const mutateFilteredData = (data: Data, kind: Kind) => {
+		filteredData[kind] = data;
+	};
+
 	let formattedData: Data = {
 		prod: [...data.prod.annotations.contents.map(formatData)],
 		sample: [...data.sample.annotations.contents.map(formatData)]
@@ -76,10 +118,45 @@
 
 	let filteredData: Data = { ...formattedData };
 
+	let displayData: Data = { ...filteredData };
+
 	$: counts = {
 		prod: { display: filteredData.prod.length, total: data.prod.count },
 		sample: { display: filteredData.sample.length, total: data.sample.count }
 	} as { [key in keyof Data]: Count };
+
+	const contents =
+		data.prod && data.sample
+			? [
+					{
+						title: 'サンプルデータ',
+						open: data.sample.count === 0,
+						subPath: 'sample' as 'sample',
+						count: data.sample.count,
+						kind: 'sample' as Kind
+					},
+					{
+						title: '本番データ',
+						open: data.prod.count === 0,
+						count: data.prod.count,
+						kind: 'prod' as Kind
+					}
+				]
+			: [];
+
+	$: {
+		if (
+			data.prod?.annotations?.contents.length !== formattedData.prod.length ||
+			data.sample?.annotations?.contents.length !== formattedData.sample.length
+		) {
+			formattedData = {
+				prod: [...data.prod.annotations.contents.map(formatData)],
+				sample: [...data.sample.annotations.contents.map(formatData)]
+			};
+			filteredData = { ...formattedData };
+			displayData = { ...filteredData };
+		}
+	}
 </script>
 
 <div class="wrapper">
@@ -88,26 +165,26 @@
 		{#each contents as content}
 			<Panel bind:open={content.open}>
 				<Header>
-					{content.title}（{content.data.length}件）
+					{content.title}（{data[content.kind]?.count || 0}件）
 					<IconButton slot="icon" toggle pressed={content.open}>
 						<Icon class="material-icons" on>unfold_less</Icon>
 						<Icon class="material-icons">unfold_more</Icon>
 					</IconButton>
 				</Header>
 				<Content>
-					{#if content.data.length === 0}
+					{#if (formattedData?.[content.kind]?.length || 0) === 0}
 						<Content>
 							<p>データがありません</p>
 						</Content>
 					{:else}
 						<DataSortFilter
 							{optionTemplate}
-							bind:data={formattedData[content.key]}
-							bind:counts={counts[content.key]}
-							on:updateData={(e) => (filteredData[content.key] = e.detail)}
+							bind:data={formattedData[content.kind]}
+							bind:counts={counts[content.kind]}
+							on:updateData={(e) => mutateFilteredData(e.detail, content.kind)}
 						/>
 						<LayoutGrid>
-							{#each filteredData[content.key] as annotation}
+							{#each displayData[content.kind] as annotation}
 								<Cell
 									class="card mdc-elevation-transition"
 									spanDevices={{ desktop: 2, tablet: 2, phone: 4 }}
@@ -128,6 +205,12 @@
 								</Cell>
 							{/each}
 						</LayoutGrid>
+						<InfinitePagenation
+							bind:contents={filteredData[content.kind]}
+							bind:displayData={displayData[content.kind]}
+							bind:isLast={data[content.kind].annotations.isLast}
+							on:loadMore={({ detail }) => loadMore(detail, content.kind)}
+						/>
 					{/if}
 				</Content>
 			</Panel>

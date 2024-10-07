@@ -6,6 +6,8 @@
 	import type { Header } from '$lib/components/admin/types/AnnotationSummaryTable';
 	import DataSortFilter from '$lib/components/dataIntercepter/DataSortFilter.svelte';
 	import type { Option } from '$lib/components/dataIntercepter/types/Option';
+	import InfinitePagenation from '$lib/components/common/InfinitePagenation.svelte';
+	import { createAnnotationApi } from '$api';
 	export let data: PageData;
 	type Data = Omit<AnnotationSummaryByPostureWithPageInfo['contents'][number], 'annotaterIds'> & {
 		diffNeckAngle: number;
@@ -102,6 +104,50 @@
 		}
 	];
 
+	const api = createAnnotationApi({
+		basePath: import.meta.env.VITE_API_CLIENT_URL,
+		token: data?.user?.token || ''
+	});
+	const loadMore = async ({
+		page,
+		size,
+		refresh
+	}: {
+		page: number;
+		size: number;
+		refresh: boolean;
+	}) => {
+		if (!data.data) {
+			const res = await api.getAnnotationSummaryByPosture({ page: 0, size });
+			data = { ...data, data: res };
+			return;
+		}
+		if (
+			page >= data.data.totalPages ||
+			data.data.isLast ||
+			(page + 1) * size <= data.data.contents.length
+		) {
+			return;
+		}
+
+		try {
+			const res = await api.getAnnotationSummaryByPosture({ page, size });
+			data.data = refresh
+				? res
+				: {
+						...data.data,
+						...res,
+						contents: [...data.data.contents, ...res.contents]
+					};
+		} catch (e) {
+			console.error(e);
+		}
+	};
+
+	const mutateFilteredData = (data: Data[]) => {
+		filteredData = data;
+	};
+
 	let formatData: Data[] = [
 		...(data?.data?.contents?.map((d) => ({
 			...d,
@@ -113,10 +159,27 @@
 
 	let filteredData: Data[] = [...formatData];
 
+	let displayData: Data[] = [...filteredData];
+
 	$: counts = {
 		display: filteredData.length,
 		total: data.data?.contents?.length ?? 0
 	};
+
+	$: {
+		if (data.data?.contents.length !== formatData.length) {
+			formatData = [
+				...(data?.data?.contents?.map((d) => ({
+					...d,
+					diffNeckAngle: d.avgNeckAngle - d.originalNeckAngle,
+					count: d.annotationIds.length,
+					annotaterIds: d.annotaterIds.join(', ')
+				})) || [])
+			];
+			filteredData = [...formatData];
+			displayData = [...filteredData];
+		}
+	}
 </script>
 
 {#if !data.data}
@@ -128,10 +191,18 @@
 				{optionTemplate}
 				bind:data={formatData}
 				bind:counts
-				on:updateData={(e) => (filteredData = e.detail)}
+				on:updateData={(e) => mutateFilteredData(e.detail)}
 			/>
 		</div>
-		<AnnotationSummaryTable {headers} bind:data={filteredData} {navigateToDetail} />
+		<AnnotationSummaryTable {headers} bind:data={displayData} {navigateToDetail} />
+		<div>
+			<InfinitePagenation
+				bind:contents={filteredData}
+				bind:displayData
+				bind:isLast={data.data.isLast}
+				on:loadMore={(e) => loadMore(e.detail)}
+			/>
+		</div>
 	</div>
 {/if}
 
