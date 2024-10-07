@@ -33,6 +33,17 @@
 	let sortKey: Key | undefined;
 	let sortValue: 'asc' | 'desc' = 'asc';
 
+	const previous: { filters: Filter[]; sortKey: Key | undefined; sortValue: 'asc' | 'desc' } = {
+		filters: [...filters],
+		sortKey: sortKey,
+		sortValue: sortValue
+	};
+
+	const isEqualFilter = (a: Filter, b: Filter) => {
+		if (a === undefined || b === undefined) return false;
+		return a.type === b.type && a.value === b.value && a.key === b.key && a.result === b.result;
+	};
+
 	const remoteFilter = (i: number) => {
 		filters = filters.filter((f, index) => index !== i);
 	};
@@ -98,7 +109,7 @@
 		return [];
 	};
 
-	$: {
+	$: if (!filters.every((f, i) => isEqualFilter(f, previous.filters[i]))) {
 		let processed = [...data];
 		filters.forEach((filter) => {
 			const option = optionTemplate.find((o) => o.key === filter.key);
@@ -126,6 +137,12 @@
 					break;
 			}
 		});
+		update(processed);
+		previous.filters = filters.map((f) => ({ ...f }));
+	}
+
+	$: if (sortKey !== previous.sortKey || sortValue !== previous.sortValue) {
+		let processed = [...data];
 		processed = processed.sort((a, b) => {
 			if (!sortKey) return 0;
 			if (sortValue === 'asc') {
@@ -134,8 +151,9 @@
 				return a[sortKey] < b[sortKey] ? 1 : -1;
 			}
 		});
-		// NOTE: なぜかsetTimeoutを使わないとfilterの変更がUIに反映されない
-		setTimeout(() => update(processed), 0);
+		update(processed);
+		previous.sortKey = sortKey;
+		previous.sortValue = sortValue;
 	}
 </script>
 
