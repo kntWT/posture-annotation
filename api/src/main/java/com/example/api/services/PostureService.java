@@ -31,7 +31,7 @@ public class PostureService {
     private final int RANDOM_POOL = 50;
 
     // n件以上アノテーションが集まってほしいか
-    private final int MAX_NEED_COUNT = 5;
+    private final int MAX_NEED_COUNT = Integer.parseInt(System.getenv("GOAL_ANNOTATION_COUNT_PER_POSTURE"));
 
     @Autowired
     private static PostureRepository postureRepository;
