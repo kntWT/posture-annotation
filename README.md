@@ -17,6 +17,8 @@
     - フレームワーク：[Spring Boot](https://spring.io/)
   - [nginx](https://nginx.org/en/)
     - 画像配信用
+- スキーマ
+  - [OpenAPI](https://www.openapis.org/)
 - データベース
   - [PostgresQL](https://www.postgresql.org/)
 
@@ -25,17 +27,24 @@
   - ```
     POSTGRES_HOST=postgres
     POSTGRES_DATABASE=posture_annotation_db
-    POSTGRES_USER=ユーザ名
-    POSTGRES_PASSWORD=パスワード
-    POSTGRES_ROOT_PASSWORD=パスワード
+    POSTGRES_USER=
+    POSTGRES_PASSWORD=
+    POSTGRES_ROOT_PASSWORD=
     POSTGRES_INITDB_ARGS=--encoding=UTF-8 --locale=C
-    PGADMIN_DEFAULT_EMAIL=gadmin4@pgadmin.org
-    PGADMIN_DEFAULT_PASSWORD=n1k2m3r4fms
+    PGADMIN_DEFAULT_EMAIL=
+    PGADMIN_DEFAULT_PASSWORD=
     TZ=Asia/Tokyo
+    # pgadminを見るための設定
+    SCRIPT_NAME=
+    USE_X_FORWARDED_HOST=True
+    SECURE_PROXY_SSL_HEADER=HTTP_X_FORWARDED_PROTO,https
 
-    BUILD_MODE=dev
+    BUILD_MODE=dev|prod
+    ORIGIN=
 
-    IMAGE_DIR=src/main/resources/static/images
+    IMAGE_DIR=src/main/resources/static/images/annotated/
+    INITIAL_SAMPLE_DATA_SIZE=100
+    GOAL_ANNOTATION_COUNT_PER_POSTURE=
 
     API_URL=http://api:8000
     API_ENDPOINT=/api/
