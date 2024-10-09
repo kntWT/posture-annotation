@@ -41,7 +41,14 @@
 
 	const isEqualFilter = (a: Filter, b: Filter) => {
 		if (a === undefined || b === undefined) return false;
-		return a.type === b.type && a.value === b.value && a.key === b.key && a.result === b.result;
+		return (
+			a.type === b.type &&
+			a.value === b.value &&
+			a.key === b.key &&
+			(Array.isArray(a.result) && Array.isArray(b.result)
+				? a.result.every((r, i) => b.result[i] === r)
+				: a.result === b.result)
+		);
 	};
 
 	const remoteFilter = (i: number) => {
@@ -139,7 +146,7 @@
 		});
 		// NOTE: なぜかsetTimeoutを使わないとfilterがリアクティブにならない
 		setTimeout(() => update(processed), 0);
-		previous.filters = filters.map((f) => ({ ...f }));
+		previous.filters = filters.map((f) => JSON.parse(JSON.stringify(f)));
 	}
 
 	$: if (sortKey !== previous.sortKey || sortValue !== previous.sortValue) {
