@@ -57,6 +57,7 @@
 	];
 
 	const optionTemplate: Option<Key>[] = [
+		{ label: 'id', key: 'annotaterId', type: 'number', availableUiTypes: ['dropdown'] },
 		{ label: '件数', key: 'count', type: 'number', availableUiTypes: ['dropdown'] },
 		{ label: 'ユーザ名', key: 'name', type: 'string', availableUiTypes: ['dropdown'] },
 		{

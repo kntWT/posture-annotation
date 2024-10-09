@@ -71,6 +71,7 @@
 	];
 
 	const optionTemplate: Option<Key>[] = [
+		{ label: 'ID', key: 'postureId', type: 'number', availableUiTypes: ['dropdown'] },
 		{ label: '件数', key: 'count', type: 'number', availableUiTypes: ['dropdown'] },
 		{
 			label: 'もとの首の角度',
