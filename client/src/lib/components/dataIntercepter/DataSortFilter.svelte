@@ -58,7 +58,6 @@
 				result: type === 'dropdown' ? 'equal' : []
 			}
 		];
-		console.log(filters);
 	};
 
 	const filterByDropdown = (toFilter: T[], filter: Filter, key: Key, value: unknown) => {
