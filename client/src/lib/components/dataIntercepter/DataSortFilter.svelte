@@ -58,6 +58,7 @@
 				result: type === 'dropdown' ? 'equal' : []
 			}
 		];
+		console.log(filters);
 	};
 
 	const filterByDropdown = (toFilter: T[], filter: Filter, key: Key, value: unknown) => {
@@ -137,7 +138,8 @@
 					break;
 			}
 		});
-		update(processed);
+		// NOTE: なぜかsetTimeoutを使わないとfilterがリアクティブにならない
+		setTimeout(() => update(processed), 0);
 		previous.filters = filters.map((f) => ({ ...f }));
 	}
 
@@ -151,7 +153,8 @@
 				return a[sortKey] < b[sortKey] ? 1 : -1;
 			}
 		});
-		update(processed);
+		// NOTE: なぜかsetTimeoutを使わないとfilterがリアクティブにならない
+		setTimeout(() => update(processed), 0);
 		previous.sortKey = sortKey;
 		previous.sortValue = sortValue;
 	}

@@ -8,7 +8,7 @@
 	const dispatch = createEventDispatcher();
 
 	const dispatchJumpToSend = () => {
-		dispatch('jumpToTopic', 'send');
+		setTimeout(() => dispatch('jumpToTopic', 'send'), 0);
 	};
 
 	const base = import.meta.env.VITE_BASE_PATH;

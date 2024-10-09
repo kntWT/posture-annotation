@@ -31,7 +31,8 @@
 
 	$: if (rowsPerPage > contents.length && !isLast) {
 		currentPage = 0;
-		loadMore(0, rowsPerPage, true);
+		// NOTE: なぜかsetTimeoutを使わないとdispatchの挙動がおかしい
+		setTimeout(() => loadMore(0, rowsPerPage, true), 0);
 	}
 
 	$: {
