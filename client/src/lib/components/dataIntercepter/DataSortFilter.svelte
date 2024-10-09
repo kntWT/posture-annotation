@@ -46,7 +46,7 @@
 			a.value === b.value &&
 			a.key === b.key &&
 			(Array.isArray(a.result) && Array.isArray(b.result)
-				? a.result.every((r, i) => b.result[i] === r)
+				? a.result.length === b.result.length && a.result.every((r, i) => b.result[i] === r)
 				: a.result === b.result)
 		);
 	};
