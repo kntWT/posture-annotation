@@ -56,7 +56,7 @@
 	};
 </script>
 
-<div class="wrapper">
+<div class="annotate-wrapper">
 	<Button on:click={handleUndo} disabled={isOldest} variant="raised">直前に戻る</Button>
 	{#if posture}
 		<PostureAnnotater
@@ -72,7 +72,7 @@
 </div>
 
 <style lang="scss" scoped>
-	.wrapper {
+	.annotate-wrapper {
 		padding: 24px 0;
 		text-align: center;
 		height: fit-content;
@@ -86,9 +86,6 @@
 		button {
 			padding: 4px 8px;
 		}
-	}
-
-	:global(body) {
 		position: fixed !important;
 		-webkit-touch-callout: none;
 		-webkit-user-select: none;
