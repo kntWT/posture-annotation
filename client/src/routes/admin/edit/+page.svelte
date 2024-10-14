@@ -22,7 +22,8 @@
 			sessionStorage.getItem(`${import.meta.env.VITE_COOKIE_PREFIX}next_path`) || 'undefined'
 		) as NextPath;
 		if (!nextPath) {
-			goto('/admin', { invalidateAll: true });
+			location.replace(`${import.meta.env.VITE_BASE_PATH}/admin`);
+			goto(`${import.meta.env.VITE_BASE_PATH}/admin`, { invalidateAll: true });
 			return;
 		}
 
@@ -32,7 +33,10 @@
 		} else if (nextPath.path === '/admin/user/detail') {
 			param = `?annotater_id=${nextPath.param}`;
 		}
-		goto(`${import.meta.env.VITE_BASE_PATH}${nextPath.path}${param}`, { invalidateAll: true });
+		const url = `${import.meta.env.VITE_BASE_PATH}${nextPath.path}${param}`;
+		location.replace(url);
+		history.go(-1);
+		goto(url, { invalidateAll: true });
 	};
 
 	const onError = (e?: Error) => {
@@ -64,7 +68,7 @@
 	};
 </script>
 
-<div class="wrapper">
+<div class="annotation-wrapper">
 	{#if data.data?.posture && data.data.annotation}
 		<PostureAnnotater
 			posture={data.data.posture}
@@ -84,15 +88,13 @@
 </div>
 
 <style lang="scss" scoped>
-	.wrapper {
+	.annotation-wrapper {
 		padding: 24px 0;
 		text-align: center;
 		height: fit-content;
 		margin-bottom: 12px;
 		overflow: hidden;
-	}
 
-	:global(body) {
 		position: fixed !important;
 		-webkit-touch-callout: none;
 		-webkit-user-select: none;
