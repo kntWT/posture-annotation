@@ -83,7 +83,23 @@
 			type: 'number',
 			availableUiTypes: ['dropdown']
 		},
-		{ key: 'createdAt', label: '作成日時', type: 'date', availableUiTypes: ['dropdown'] }
+		{ key: 'createdAt', label: '作成日時', type: 'date', availableUiTypes: ['dropdown'] },
+		{
+			label: '本番用',
+			key: 'posture_isSample',
+			type: 'boolean',
+			availableUiTypes: ['checkbox'],
+			checkboxConfigs: [
+				{
+					label: '本番用',
+					value: 'false'
+				},
+				{
+					label: 'サンプル',
+					value: 'true'
+				}
+			]
+		}
 	];
 
 	const api = createAnnotationApi({
