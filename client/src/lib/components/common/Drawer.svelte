@@ -43,7 +43,9 @@
 
 	$: menues = [
 		{ name: 'ホーム', path: `${base}/` },
-		$user ? { name: 'ログアウト', path: `${base}/logout` } : { name: 'ログイン', path: '/login' },
+		$user
+			? { name: 'ログアウト', path: `${base}/logout` }
+			: { name: 'ログイン', path: `${base}/login` },
 		{ name: 'アノテーション練習', path: `${base}/annotate/sample` },
 		{ name: 'アノテーション', path: `${base}/annotate` },
 		{ name: 'アノテーション履歴', path: `${base}/logs` },
