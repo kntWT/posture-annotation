@@ -209,8 +209,12 @@
 						<Icon class="material-icons">add</Icon>
 						<Tooltip xPos="center">
 							<RichActions>
-								<Button on:click={() => addFilter('dropdown')}><span>dropdown</span></Button>
-								<Button on:click={() => addFilter('checkbox')}><span>checkbox</span></Button>
+								{#if optionTemplate.some((o) => o.availableUiTypes.includes('dropdown'))}
+									<Button on:click={() => addFilter('dropdown')}><span>dropdown</span></Button>
+								{/if}
+								{#if optionTemplate.some((o) => o.availableUiTypes.includes('checkbox'))}
+									<Button on:click={() => addFilter('checkbox')}><span>checkbox</span></Button>
+								{/if}
 							</RichActions>
 						</Tooltip>
 					</Wrapper>
