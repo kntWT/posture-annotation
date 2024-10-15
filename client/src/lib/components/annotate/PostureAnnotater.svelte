@@ -12,7 +12,7 @@
 
 	export let handleAction: (data: AnnotationCreateWithFile) => Promise<unknown>;
 	export let posture: Posture;
-	export let annotaterId: number | undefined;
+	export let annotaterId: number | undefined = undefined;
 	export let imageSrc: string;
 	export let showWaist: boolean = false;
 	export let holdShoulder: boolean = false;
