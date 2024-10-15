@@ -102,22 +102,8 @@
 		});
 	};
 
-	const dispatch = createEventDispatcher<{ updateData: T[] }>();
-	const update = (filtered: T[]) => {
-		dispatch('updateData', filtered);
-	};
-
-	$: checkboxOption = (filter: Filter) => {
-		if (filter.type !== 'checkbox') return [];
-		const optionIndex = filter.option.findIndex((o) => o.key === filter.key);
-		if (optionIndex !== -1) {
-			return filter.option[optionIndex].checkboxConfigs;
-		}
-		return [];
-	};
-
-	$: if (!filters.every((f, i) => isEqualFilter(f, previous.filters[i]))) {
-		let processed = [...data];
+	const doFilter = (d: T[]): T[] => {
+		let processed = [...d];
 		filters.forEach((filter) => {
 			const option = optionTemplate.find((o) => o.key === filter.key);
 			if (!option) return;
@@ -144,13 +130,11 @@
 					break;
 			}
 		});
-		// NOTE: なぜかsetTimeoutを使わないとfilterがリアクティブにならない
-		setTimeout(() => update(processed), 0);
-		previous.filters = filters.map((f) => JSON.parse(JSON.stringify(f)));
-	}
+		return processed;
+	};
 
-	$: if (sortKey !== previous.sortKey || sortValue !== previous.sortValue) {
-		let processed = [...data];
+	const doSort = (d: T[]): T[] => {
+		let processed = [...d];
 		processed = processed.sort((a, b) => {
 			if (!sortKey) return 0;
 			if (sortValue === 'asc') {
@@ -159,6 +143,32 @@
 				return a[sortKey] < b[sortKey] ? 1 : -1;
 			}
 		});
+		return processed;
+	};
+
+	const dispatch = createEventDispatcher<{ updateData: T[] }>();
+	const update = (filtered: T[]) => {
+		dispatch('updateData', filtered);
+	};
+
+	$: checkboxOption = (filter: Filter) => {
+		if (filter.type !== 'checkbox') return [];
+		const optionIndex = filter.option.findIndex((o) => o.key === filter.key);
+		if (optionIndex !== -1) {
+			return filter.option[optionIndex].checkboxConfigs;
+		}
+		return [];
+	};
+
+	$: if (!filters.every((f, i) => isEqualFilter(f, previous.filters[i]))) {
+		const processed = doFilter(doSort(data));
+		// NOTE: なぜかsetTimeoutを使わないとfilterがリアクティブにならない
+		setTimeout(() => update(processed), 0);
+		previous.filters = filters.map((f) => JSON.parse(JSON.stringify(f)));
+	}
+
+	$: if (sortKey !== previous.sortKey || sortValue !== previous.sortValue) {
+		const processed = doSort(doFilter(data));
 		// NOTE: なぜかsetTimeoutを使わないとfilterがリアクティブにならない
 		setTimeout(() => update(processed), 0);
 		previous.sortKey = sortKey;
