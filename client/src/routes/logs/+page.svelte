@@ -182,6 +182,7 @@
 							bind:data={formattedData[content.kind]}
 							bind:counts={counts[content.kind]}
 							on:updateData={(e) => mutateFilteredData(e.detail, content.kind)}
+							id={`/logs/${content.kind}`}
 						/>
 						<LayoutGrid>
 							{#each displayData[content.kind] as annotation}

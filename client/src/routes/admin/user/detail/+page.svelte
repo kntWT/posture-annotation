@@ -176,6 +176,7 @@
 				{optionTemplate}
 				bind:counts
 				on:updateData={(e) => mutateFilteredData(e.detail)}
+				id="/admin/user/detail"
 			/>
 		</div>
 		<LayoutGrid>

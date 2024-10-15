@@ -1,6 +1,8 @@
 <script lang="ts">
+	import { browser } from '$app/environment';
+
 	import { filterOptions } from './config';
-	import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher, onDestroy, onMount, tick } from 'svelte';
 	import type { CheckboxOption, Option } from './types/Option';
 	import {
 		isFilterOptionKeys,
@@ -18,9 +20,13 @@
 
 	type T = $$Generic;
 	type Key = keyof T;
+
 	export let data: T[] = [];
 	export let counts: { display: number; total: number };
 	export let optionTemplate: Option<Key>[];
+	// コンポーネント内のステートを管理するための識別子
+	export let id: string = 'DataSortFilter';
+
 	type Filter = {
 		type: FilterAvailableUIType;
 		value: string;
@@ -29,8 +35,7 @@
 		result: FilterOptionKeys | Pick<CheckboxOption, 'value'>[];
 	};
 	let filters: Filter[] = [];
-
-	let sortKey: Key | undefined;
+	let sortKey: Key | undefined = undefined;
 	let sortValue: 'asc' | 'desc' = 'asc';
 
 	const previous: { filters: Filter[]; sortKey: Key | undefined; sortValue: 'asc' | 'desc' } = {
@@ -38,6 +43,28 @@
 		sortKey: sortKey,
 		sortValue: sortValue
 	};
+
+	onMount(async () => {
+		// NOTE: 初期値を反映させるためレンダリングを待つ
+		await tick();
+		// filters = JSON.parse(sessionStorage.getItem(`${id}__filters`) || '[]');
+		// sortKey = (JSON.parse(sessionStorage.getItem(`${id}__sortKey`) || 'false') as Key) || undefined;
+		// sortValue = JSON.parse((sessionStorage.getItem(`${id}__sortValue`) || 'asc') as 'asc' | 'desc');
+		const initalValues = JSON.parse(sessionStorage.getItem(id) || 'null');
+		if (initalValues) {
+			filters = initalValues.filters || [];
+			sortKey = initalValues.sortKey || undefined;
+			sortValue = initalValues.sortValue || 'asc';
+		}
+	});
+
+	onDestroy(() => {
+		if (!browser) return;
+		// sessionStorage.setItem(`${id}__filters`, JSON.stringify(filters));
+		// sessionStorage.setItem(`${id}__sortKey`, JSON.stringify(sortKey || false));
+		// sessionStorage.setItem(`${id}__sortValue`, JSON.stringify(sortValue));
+		sessionStorage.setItem(id, JSON.stringify({ filters, sortKey, sortValue }));
+	});
 
 	const isEqualFilter = (a: Filter, b: Filter) => {
 		if (a === undefined || b === undefined) return false;

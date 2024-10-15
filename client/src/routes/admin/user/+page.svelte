@@ -154,6 +154,7 @@
 				bind:data={contents}
 				bind:counts
 				on:updateData={({ detail }) => mutateFilteredData(detail)}
+				id="/admin/user"
 			/>
 		</div>
 		<AnnotationSummaryTable {headers} data={displayData} {navigateToDetail} />

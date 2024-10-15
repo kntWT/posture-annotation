@@ -193,6 +193,7 @@
 				bind:data={formatData}
 				bind:counts
 				on:updateData={(e) => mutateFilteredData(e.detail)}
+				id="/admin/annotation"
 			/>
 		</div>
 		<AnnotationSummaryTable {headers} bind:data={displayData} {navigateToDetail} />
