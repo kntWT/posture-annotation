@@ -10,7 +10,7 @@
 	export let options: Option<Key>[] = [];
 	export let key: Key | undefined;
 	export let checkboxOptions: CheckboxOption[] = [];
-	export let checks: Key[];
+	export let checks: Pick<CheckboxOption, 'value'>[];
 </script>
 
 <FormField>
