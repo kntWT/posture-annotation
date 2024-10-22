@@ -10,23 +10,34 @@
 	export let data: PageData;
 
 	let openHelpModal = false;
+	// FIXME: なぜか一度#ifを使ってコンポーネントを再レンダリングしないと送信できなくなる場合がある
+	let refreshState = false;
 	const base = import.meta.env.VITE_BASE_PATH;
 
 	onMount(() => {
 		console.log(data);
 	});
 
+	const handleRefresh = () => {
+		refreshState = true;
+		setTimeout(() => {
+			refreshState = false;
+		}, 100);
+	};
+
 	const handlePostUndo = (dst: number) => {
 		const path = window.location.pathname;
 		// FIXME: なぜかinvalidateAllしてもページが更新されないので，リソーそを無理矢理変更している
 		data = { ...data, posture: null };
 		goto(`${path}?id=${dst}`, { invalidateAll: true });
+		handleRefresh();
 	};
 
 	const onSuccess = () => {
 		const path = window.location.pathname;
 		goto(path, { invalidateAll: true });
 		data = { ...data, posture: null };
+		handleRefresh();
 	};
 
 	const onError = (e?: Error) => {
@@ -48,7 +59,7 @@
 </script>
 
 <!-- FIXME: モーダルが開いている時にもp5のmousePressedイベントが発火してしまうので，userをnullにして送信できなくする -->
-{#if data.posture && data.user && !openHelpModal}
+{#if data.posture && user && !refreshState}
 	{#key user}
 		<Annotate posture={data.posture} {user} {handlePostUndo} {onSuccess} {onError} />
 	{/key}
