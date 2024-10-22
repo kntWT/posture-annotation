@@ -55,7 +55,7 @@ public class AnnotationController implements AnnotationApi {
                     annotationWithFile.getNeckAngle(),
                     annotationWithFile.getTorsoAngle(),
                     annotationWithFile.getFile(),
-                    annotationWithFile.getAnnotaterId(),
+                    annotationWithFile.getUserId(),
                     annotationWithFile.getFileName());
             Annotation annotation = annotationService.updateAnnotationByPostureIdAndAnnotaterId(
                     annotationWithFile.getPostureId(),
