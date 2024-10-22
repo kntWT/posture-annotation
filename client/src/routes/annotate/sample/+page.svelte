@@ -38,7 +38,7 @@
 	const onSuccess = () => {
 		const path = window.location.pathname;
 		goto(path, { invalidateAll: true });
-		data = { ...data, posture: null };
+		data = { ...data, posture: undefined };
 		handleRefresh();
 	};
 
@@ -61,19 +61,23 @@
 </script>
 
 <!-- FIXME: モーダルが開いている時にもp5のmousePressedイベントが発火してしまうので，userをnullにして送信できなくする -->
-{#if data.posture && user && !refreshState}
-	{#key user}
-		<Annotate posture={data.posture} {user} {handlePostUndo} {onSuccess} {onError} />
-	{/key}
-{:else if data.posture === null}
-	<div>
+{#await data.posture}
+	<p>loading...</p>
+{:then posture}
+	{#if posture && user && !refreshState}
+		{#key user}
+			<Annotate {posture} {user} {handlePostUndo} {onSuccess} {onError} />
+		{/key}
+	{:else if posture === null}
 		<div>
-			<strong>お疲れ様です，全てのデータをアノテーションしました！</strong><br />
-			<strong>本番用のアノテーションに取り組んでください！</strong><br />
+			<div>
+				<strong>お疲れ様です，全てのデータをアノテーションしました！</strong><br />
+				<strong>本番用のアノテーションに取り組んでください！</strong><br />
+			</div>
+			<Button variant="raised" color="primary" href="{base}/annotate">本番用アノテーション</Button>
 		</div>
-		<Button variant="raised" color="primary" href="{base}/annotate">本番用アノテーション</Button>
-	</div>
-{/if}
+	{/if}
+{/await}
 <Modal open={openHelpModal} handleClose={handleCloseHelpModal}>
 	<HowToAnnotate topic="" showTableOfContents={false} />
 </Modal>

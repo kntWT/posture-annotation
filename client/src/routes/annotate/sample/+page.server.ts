@@ -1,8 +1,12 @@
 import type { PageServerLoad } from './$types';
 import { createPostureApi, userApi } from '$api';
 import { toBearer } from '$lib/util';
+import type { Posture } from '$api/generated';
 
-export const load: PageServerLoad = async ({ locals, url }) => {
+export const load: PageServerLoad = async ({
+	locals,
+	url
+}): Promise<{ posture: Posture | null | undefined }> => {
 	const token = locals.user.token;
 	const id = url.searchParams.get('id') ?? null;
 	const postureApi = createPostureApi({ token });
