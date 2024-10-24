@@ -57,7 +57,7 @@ public interface PostureRepository extends JpaRepository<PostureEntity, Long> {
                 WHERE p.id NOT IN (
                     SELECT a.posture_id FROM annotations AS a WHERE a.annotater_id = :annotaterId
                 ) AND is_sample = FALSE
-                ORDER BY CASE WHEN COALESCE(counts.count, 0) > :threshold THEN -1 ELSE COALESCE(counts.count, 0) END DESC, RANDOM()
+                ORDER BY CASE WHEN COALESCE(counts.count, 0) >= :threshold THEN -1 ELSE COALESCE(counts.count, 0) END DESC, RANDOM()
                 LIMIT :limit
             """, nativeQuery = true)
     public List<PostureEntity> findByAnnotaterIdOrderByAnnotationCountLimitTo(
@@ -73,7 +73,7 @@ public interface PostureRepository extends JpaRepository<PostureEntity, Long> {
                 GROUP BY a.posture_id
             ) AS counts ON p.id = counts.posture_id
             WHERE is_sample = FALSE AND p.id % :step = 1
-            ORDER BY CASE WHEN COALESCE(counts.count, 0) > :threshold THEN -1 ELSE COALESCE(counts.count, 0) END DESC, RANDOM()
+            ORDER BY CASE WHEN COALESCE(counts.count, 0) >= :threshold THEN -1 ELSE COALESCE(counts.count, 0) END DESC, RANDOM()
             LIMIT :limit
             """, nativeQuery = true)
     public List<PostureEntity> findByOrderByAnnotationCountThinOutByIdLimitTo(@Param("step") Long step,
@@ -90,7 +90,7 @@ public interface PostureRepository extends JpaRepository<PostureEntity, Long> {
                 WHERE p.id NOT IN (
                     SELECT a.posture_id FROM annotations AS a WHERE a.annotater_id = :annotaterId
                 ) AND is_sample = FALSE AND p.id % :step = 1
-                ORDER BY CASE WHEN COALESCE(counts.count, 0) > :threshold THEN -1 ELSE COALESCE(counts.count, 0) END DESC, RANDOM()
+                ORDER BY CASE WHEN COALESCE(counts.count, 0) >= :threshold THEN -1 ELSE COALESCE(counts.count, 0) END DESC, RANDOM()
                 LIMIT :limit
             """, nativeQuery = true)
     public List<PostureEntity> findByAnnotaterIdOrderByAnnotationCountThinOutByIdLimitTo(
@@ -105,7 +105,7 @@ public interface PostureRepository extends JpaRepository<PostureEntity, Long> {
                 SELECT p.* FROM postures AS p
                 LEFT JOIN (SELECT a.posture_id, COUNT(*) AS count FROM annotations AS a GROUP BY a.posture_id) AS counts ON p.id = counts.posture_id
                 WHERE p.id NOT IN (SELECT a.posture_id FROM annotations AS a WHERE a.annotater_id = :annotaterId) AND is_sample = TRUE
-                ORDER BY CASE WHEN COALESCE(counts.count, 0) > :threshold THEN -1 ELSE COALESCE(counts.count, 0) END DESC, RANDOM()
+                ORDER BY CASE WHEN COALESCE(counts.count, 0) >= :threshold THEN -1 ELSE COALESCE(counts.count, 0) END DESC, RANDOM()
                 LIMIT :limit
             """, nativeQuery = true)
     public List<PostureEntity> findSampleByAnnotaterIdOrderByAnnotationCountLimitTo(
