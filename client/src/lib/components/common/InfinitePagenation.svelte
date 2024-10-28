@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { browser } from '$app/environment';
+
 	import { createEventDispatcher, onDestroy, onMount, tick } from 'svelte';
 	import { Label, Pagination } from '@smui/data-table';
 	import IconButton from '@smui/icon-button';
@@ -28,6 +30,7 @@
 	});
 
 	onDestroy(() => {
+		if (!browser) return;
 		sessionStorage.setItem(id, JSON.stringify({ rowsPerPage }));
 	});
 
