@@ -182,7 +182,7 @@
 							bind:data={formattedData[content.kind]}
 							bind:counts={counts[content.kind]}
 							on:updateData={(e) => mutateFilteredData(e.detail, content.kind)}
-							id={`/logs/${content.kind}`}
+							id={`DataSortFilter_/logs/${content.kind}`}
 						/>
 						<LayoutGrid>
 							{#each displayData[content.kind] as annotation}
@@ -211,6 +211,7 @@
 							bind:displayData={displayData[content.kind]}
 							bind:isLast={data[content.kind].annotations.isLast}
 							on:loadMore={({ detail }) => loadMore(detail, content.kind)}
+							id={`InfinitePagenation_/logs/${content.kind}`}
 						/>
 					{/if}
 				</Content>

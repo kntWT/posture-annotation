@@ -193,7 +193,7 @@
 				bind:data={formatData}
 				bind:counts
 				on:updateData={(e) => mutateFilteredData(e.detail)}
-				id="/admin/annotation"
+				id="DataSortFilter_/admin/annotation"
 			/>
 		</div>
 		<AnnotationSummaryTable {headers} bind:data={displayData} {navigateToDetail} />
@@ -203,6 +203,7 @@
 				bind:displayData
 				bind:isLast={data.data.isLast}
 				on:loadMore={(e) => loadMore(e.detail)}
+				id="InfinitePagenation_/admin/annotation"
 			/>
 		</div>
 	</div>

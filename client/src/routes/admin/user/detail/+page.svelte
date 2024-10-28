@@ -176,7 +176,7 @@
 				{optionTemplate}
 				bind:counts
 				on:updateData={(e) => mutateFilteredData(e.detail)}
-				id="/admin/user/detail"
+				id="DataSortFilter_/admin/user/detail"
 			/>
 		</div>
 		<LayoutGrid>
@@ -197,6 +197,7 @@
 				on:loadMore={({ detail }) => {
 					loadMore(detail);
 				}}
+				id="InfinitePagenation_/admin/user/detail"
 			/>
 		</div>
 	{/if}

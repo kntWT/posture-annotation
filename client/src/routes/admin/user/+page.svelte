@@ -154,7 +154,7 @@
 				bind:data={contents}
 				bind:counts
 				on:updateData={({ detail }) => mutateFilteredData(detail)}
-				id="/admin/user"
+				id="DataSortFilter_/admin/user"
 			/>
 		</div>
 		<AnnotationSummaryTable {headers} data={displayData} {navigateToDetail} />
@@ -164,6 +164,7 @@
 				bind:displayData
 				bind:isLast={data.data.isLast}
 				on:loadMore={({ detail }) => loadMore(detail)}
+				id="InfinitePagenation_/admin/user"
 			/>
 		</div>
 	</div>

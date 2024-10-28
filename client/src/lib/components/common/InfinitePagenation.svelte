@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher, onDestroy, onMount, tick } from 'svelte';
 	import { Label, Pagination } from '@smui/data-table';
 	import IconButton from '@smui/icon-button';
 	import Select, { Option } from '@smui/select';
@@ -8,6 +8,8 @@
 	export let contents: T[];
 	export let displayData: T[];
 	export let isLast: boolean;
+	// コンポーネント内のステートを管理するための識別子
+	export let id: string = 'InfinitePagenation';
 
 	const dispatch = createEventDispatcher<{
 		loadMore: { page: number; size: number; refresh: boolean };
@@ -15,6 +17,19 @@
 
 	let currentPage = 0;
 	export let rowsPerPage = 50;
+
+	onMount(async () => {
+		// NOTE: 初期値を反映させるためレンダリングを待つ
+		await tick();
+		const initalValues = JSON.parse(sessionStorage.getItem(id) || 'null');
+		if (initalValues) {
+			rowsPerPage = initalValues.rowsPerPage || 50;
+		}
+	});
+
+	onDestroy(() => {
+		sessionStorage.setItem(id, JSON.stringify({ rowsPerPage }));
+	});
 
 	$: start = currentPage * rowsPerPage;
 	$: end = Math.min(start + rowsPerPage, contents.length);
