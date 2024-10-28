@@ -66,3 +66,10 @@ export const imageUrlFromPosture = (
 export const toBearer = (token: string) => {
 	return `Bearer ${token}`;
 };
+
+export const mergeArray = <T>(arr1: T[], arr2: T[], key: keyof T) => {
+	const map = new Map();
+	arr1.forEach((item) => map.set(item[key], item));
+	arr2.forEach((item) => map.set(item[key], item));
+	return Array.from(map.values());
+};
