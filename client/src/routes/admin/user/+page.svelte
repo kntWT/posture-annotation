@@ -107,8 +107,10 @@
 			return;
 		}
 
+		const _page = refresh ? 0 : Math.ceil(data.data.contents.length / size);
+
 		try {
-			const res = await api.getAnnotationSummaryByAnnotater({ page, size });
+			const res = await api.getAnnotationSummaryByAnnotater({ page: _page, size });
 			data.data = refresh
 				? res
 				: {

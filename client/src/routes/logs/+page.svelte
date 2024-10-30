@@ -69,7 +69,6 @@
 			});
 			return samples;
 		}
-		console.log('kind', kind);
 	};
 	const loadMore = async (
 		{
@@ -96,7 +95,7 @@
 			return;
 		}
 		try {
-			const _page = Math.ceil(data[kind].annotations.contents.length / size);
+			const _page = refresh ? 0 : Math.ceil(data[kind].annotations.contents.length / size);
 			const res = await loadFn({ page: _page, size }, kind);
 			data[kind].annotations = refresh
 				? res
@@ -114,8 +113,9 @@
 		}
 	};
 
-	const mutateFilteredData = (data: Data, kind: Kind) => {
-		filteredData[kind] = data;
+	const mutateFilteredData = (d: Data, kind: Kind) => {
+		// console.log(d);
+		filteredData[kind] = d;
 	};
 
 	let formattedData: Data = {
@@ -154,7 +154,9 @@
 	$: {
 		if (
 			data.prod?.annotations?.contents.length !== formattedData.prod.length ||
-			data.sample?.annotations?.contents.length !== formattedData.sample.length
+			data.sample?.annotations?.contents.length !== formattedData.sample.length ||
+			formattedData.prod.length !== filteredData.prod.length ||
+			formattedData.sample.length !== filteredData.sample.length
 		) {
 			formattedData = {
 				prod: [...data.prod.annotations.contents.map(formatData)],

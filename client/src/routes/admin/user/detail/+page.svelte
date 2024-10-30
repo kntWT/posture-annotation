@@ -129,7 +129,7 @@
 			return;
 		}
 
-		const _page = Math.ceil(data.data.contents.length / size);
+		const _page = refresh ? 0 : Math.ceil(data.data.contents.length / size);
 
 		try {
 			const res = await api.getAnnotationsWithPostureByAnnotaterId({
