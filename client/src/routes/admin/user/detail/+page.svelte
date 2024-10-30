@@ -9,6 +9,7 @@
 	import type { Option } from '$lib/components/dataIntercepter/types/Option';
 	import InfinitePagenation from '$lib/components/common/InfinitePagenation.svelte';
 	import { createAnnotationApi } from '$api';
+	import { mergeArray } from '$lib/util';
 
 	export let data: PageData;
 	const POSTURE_PREFIX = 'posture_';
@@ -121,21 +122,27 @@
 			return;
 		}
 		if (
-			page >= data.data.totalPages ||
+			page > data.data.totalPages ||
 			data.data.isLast ||
-			(page + 1) * size <= data.data.contents.length
+			(page + 1) * size <= displayData.length
 		) {
 			return;
 		}
 
+		const _page = Math.ceil(data.data.contents.length / size);
+
 		try {
-			const res = await api.getAnnotationsWithPostureByAnnotaterId({ annotaterId, page, size });
+			const res = await api.getAnnotationsWithPostureByAnnotaterId({
+				annotaterId,
+				page: _page,
+				size
+			});
 			data.data = refresh
 				? res
 				: {
 						...data.data,
 						...res,
-						contents: [...data.data.contents, ...res.contents]
+						contents: mergeArray(data.data.contents, res.contents, (c) => c.annotation.id)
 					};
 		} catch (e) {
 			console.error(e);

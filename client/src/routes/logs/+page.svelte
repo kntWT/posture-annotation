@@ -4,7 +4,7 @@
 	import LayoutGrid, { Cell } from '@smui/layout-grid';
 	import Accordion, { Panel, Header, Content } from '@smui-extra/accordion';
 	import IconButton, { Icon } from '@smui/icon-button';
-	import { formatDate, imageUrl } from '$lib/util';
+	import { formatDate, imageUrl, mergeArray } from '$lib/util';
 	import type { AnnotationWithPosture } from '$api/generated';
 	import DataSortFilter from '$lib/components/dataIntercepter/DataSortFilter.svelte';
 	import type { Option } from '$lib/components/dataIntercepter/types/Option';
@@ -28,7 +28,7 @@
 		display: number;
 		total: number;
 	};
-	type Kind = Omit<keyof Data, 'user'>;
+	type Kind = Omit<typeof data, 'user'>;
 
 	const formatData = (d: AnnotationWithPosture): Content => {
 		return {
@@ -69,6 +69,7 @@
 			});
 			return samples;
 		}
+		console.log('kind', kind);
 	};
 	const loadMore = async (
 		{
@@ -88,19 +89,25 @@
 			return;
 		}
 		if (
-			page >= data[kind].annotations.totalPages ||
+			page > data[kind].annotations.totalPages ||
 			data[kind].annotations.isLast ||
-			(page + 1) * size <= data[kind].annotations.contents.length
+			(page + 1) * size <= displayData[kind].length
 		) {
 			return;
 		}
 		try {
-			const res = await loadFn({ page, size }, kind);
+			const _page = Math.ceil(data[kind].annotations.contents.length / size);
+			const res = await loadFn({ page: _page, size }, kind);
 			data[kind].annotations = refresh
 				? res
 				: {
 						...data[kind].annotations,
-						...res
+						...res,
+						contents: mergeArray(
+							data[kind].annotations.contents,
+							res?.contents || [],
+							(item: AnnotationWithPosture) => item.annotation.id
+						)
 					};
 		} catch (e) {
 			console.error(e);

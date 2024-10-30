@@ -38,7 +38,13 @@
 	let sortKey: Key | undefined = undefined;
 	let sortValue: 'asc' | 'desc' = 'asc';
 
-	const previous: { filters: Filter[]; sortKey: Key | undefined; sortValue: 'asc' | 'desc' } = {
+	const previous: {
+		dataLength: number;
+		filters: Filter[];
+		sortKey: Key | undefined;
+		sortValue: 'asc' | 'desc';
+	} = {
+		dataLength: data.length,
 		filters: [...filters],
 		sortKey: sortKey,
 		sortValue: sortValue
@@ -47,9 +53,6 @@
 	onMount(async () => {
 		// NOTE: 初期値を反映させるためレンダリングを待つ
 		await tick();
-		// filters = JSON.parse(sessionStorage.getItem(`${id}__filters`) || '[]');
-		// sortKey = (JSON.parse(sessionStorage.getItem(`${id}__sortKey`) || 'false') as Key) || undefined;
-		// sortValue = JSON.parse((sessionStorage.getItem(`${id}__sortValue`) || 'asc') as 'asc' | 'desc');
 		const initalValues = JSON.parse(sessionStorage.getItem(id) || 'null');
 		if (initalValues) {
 			filters = initalValues.filters || [];
@@ -60,9 +63,6 @@
 
 	onDestroy(() => {
 		if (!browser) return;
-		// sessionStorage.setItem(`${id}__filters`, JSON.stringify(filters));
-		// sessionStorage.setItem(`${id}__sortKey`, JSON.stringify(sortKey || false));
-		// sessionStorage.setItem(`${id}__sortValue`, JSON.stringify(sortValue));
 		sessionStorage.setItem(id, JSON.stringify({ filters, sortKey, sortValue }));
 	});
 
@@ -187,7 +187,15 @@
 		return [];
 	};
 
+	$: if (data.length !== previous.dataLength) {
+		const processed = doSort(doFilter(data));
+		// NOTE: なぜかsetTimeoutを使わないとfilterがリアクティブにならない
+		setTimeout(() => update(processed), 0);
+		previous.dataLength = data.length;
+	}
+
 	$: if (!filters.every((f, i) => isEqualFilter(f, previous.filters[i]))) {
+		console.log(filters.length);
 		const processed = doFilter(doSort(data));
 		// NOTE: なぜかsetTimeoutを使わないとfilterがリアクティブにならない
 		setTimeout(() => update(processed), 0);

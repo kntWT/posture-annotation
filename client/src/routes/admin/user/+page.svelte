@@ -8,6 +8,7 @@
 	import DataSortFilter from '$lib/components/dataIntercepter/DataSortFilter.svelte';
 	import InfinitePagenation from '$lib/components/common/InfinitePagenation.svelte';
 	import { createAnnotationApi } from '$api';
+	import { mergeArray } from '$lib/util';
 	export let data: PageData;
 
 	type Key = keyof AnnotationSummaryByAnnotater;
@@ -99,9 +100,9 @@
 			return;
 		}
 		if (
-			page >= data.data.totalPages ||
+			page > data.data.totalPages ||
 			data.data.isLast ||
-			(page + 1) * size <= data.data.contents.length
+			(page + 1) * size <= displayData.length
 		) {
 			return;
 		}
@@ -113,7 +114,7 @@
 				: {
 						...data.data,
 						...res,
-						contents: [...data.data.contents, ...res.contents]
+						contents: mergeArray(data.data.contents, res.contents, 'annotaterId')
 					};
 		} catch (e) {
 			console.error(e);
