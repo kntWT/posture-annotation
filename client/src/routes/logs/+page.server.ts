@@ -1,8 +1,20 @@
 import type { PageServerLoad } from './$types';
 import { createAnnotationApi, userApi } from '$api';
 import { toBearer } from '$lib/util';
+import type { AnnotationWithPostureAndPageInfo } from '$api/generated';
 
-export const load: PageServerLoad = async ({ locals }) => {
+type Data = {
+	prod: {
+		annotations: AnnotationWithPostureAndPageInfo;
+		count: number;
+	} | null;
+	sample: {
+		annotations: AnnotationWithPostureAndPageInfo;
+		count: number;
+	} | null;
+};
+
+export const load: PageServerLoad = async ({ locals }): Promise<Data> => {
 	const token = locals.user.token;
 	const annotationApi = createAnnotationApi({ token });
 	try {
