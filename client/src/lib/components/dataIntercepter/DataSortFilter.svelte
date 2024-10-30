@@ -104,17 +104,17 @@
 			const v = typeof d[key] === 'number' ? Math.abs(d[key]) : d[key];
 			switch (currentKey) {
 				case 'above':
-					return d[key] > (value as typeof t);
+					return v > (value as typeof t);
 				case 'greater':
-					return d[key] >= (value as typeof t);
+					return v >= (value as typeof t);
 				case 'below':
-					return d[key] < (value as typeof t);
+					return v < (value as typeof t);
 				case 'less':
-					return d[key] <= (value as typeof t);
+					return v <= (value as typeof t);
 				case 'equal':
-					return d[key] === value;
+					return v === value;
 				case 'notEqual':
-					return d[key] !== value;
+					return v !== value;
 			}
 		});
 	};
@@ -195,8 +195,7 @@
 	}
 
 	$: if (!filters.every((f, i) => isEqualFilter(f, previous.filters[i]))) {
-		console.log(filters.length);
-		const processed = doFilter(doSort(data));
+		const processed = doSort(doFilter(data));
 		// NOTE: なぜかsetTimeoutを使わないとfilterがリアクティブにならない
 		setTimeout(() => update(processed), 0);
 		previous.filters = filters.map((f) => JSON.parse(JSON.stringify(f)));
