@@ -67,9 +67,9 @@ export const toBearer = (token: string) => {
 	return `Bearer ${token}`;
 };
 
-export const mergeArray = <T>(arr1: T[], arr2: T[], key: keyof T) => {
+export const mergeArray = <T>(arr1: T[], arr2: T[], key: keyof T | ((obj: T) => unknown)) => {
 	const map = new Map();
-	arr1.forEach((item) => map.set(item[key], item));
-	arr2.forEach((item) => map.set(item[key], item));
+	arr1.forEach((item) => map.set(typeof key === 'function' ? key(item) : item[key], item));
+	arr2.forEach((item) => map.set(typeof key === 'function' ? key(item) : item[key], item));
 	return Array.from(map.values());
 };
