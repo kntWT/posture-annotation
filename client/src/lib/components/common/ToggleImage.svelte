@@ -21,13 +21,15 @@
 		<Label>{show ? '画像を非表示' : '画像を非表示'}</Label>
 		<Icon class="material-icons">{show ? 'arrow_drop_up' : 'arrow_drop_down'}</Icon>
 	</Button>
-	<img
-		class={`toggle-image ${show ? 'visible' : 'invisible'}`}
-		width={`${width}px`}
-		{src}
-		{alt}
-		style={`object-view-box: inset(${viewBox.top}% ${viewBox.right}% ${viewBox.bottom}% ${viewBox.left}%);`}
-	/>
+	{#if show}
+		<img
+			class={`toggle-image ${show ? 'visible' : 'invisible'}`}
+			width={`${width}px`}
+			{src}
+			{alt}
+			style={`object-view-box: inset(${viewBox.top}% ${viewBox.right}% ${viewBox.bottom}% ${viewBox.left}%);`}
+		/>
+	{/if}
 </div>
 
 <style lang="scss" scoped>
