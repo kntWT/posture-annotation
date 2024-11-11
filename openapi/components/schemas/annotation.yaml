@@ -123,7 +123,7 @@ AnnotationSummaryByPosture:
     - annotater_ids
     - original_neck_angle
     - avg_neck_angle
-    - std_neck_angle
+    - max_diff_neck_angle
   properties:
     posture_id:
       type: integer
@@ -148,7 +148,7 @@ AnnotationSummaryByPosture:
     avg_neck_angle:
       type: number
       format: double
-    std_neck_angle:
+    max_diff_neck_angle:
       type: number
       format: double
 AnnotationSummaryByAnnotater:
