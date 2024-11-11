@@ -55,7 +55,7 @@ public class AnnotationSummaryByPostureEntity {
 
     private Double avgNeckAngle;
 
-    private Double stdNeckAngle;
+    private Double maxDiffNeckAngle;
 
     private Long userId;
 
@@ -65,7 +65,7 @@ public class AnnotationSummaryByPostureEntity {
     }
 
     public AnnotationSummaryByPostureEntity(Long postureId, Boolean isSample, String annotationIds, String annotaterIds,
-            Double originalNeckAngle, Double avgNeckAngle, Double stdNeckAngle, Long userId,
+            Double originalNeckAngle, Double avgNeckAngle, Double maxDiffNeckAngle, Long userId,
             OffsetDateTime exCreatedAt) {
         this.postureId = postureId;
         this.isSample = isSample;
@@ -73,7 +73,7 @@ public class AnnotationSummaryByPostureEntity {
         this.annotaterIds = annotaterIds;
         this.originalNeckAngle = originalNeckAngle;
         this.avgNeckAngle = avgNeckAngle;
-        this.stdNeckAngle = stdNeckAngle;
+        this.maxDiffNeckAngle = maxDiffNeckAngle;
         this.userId = userId;
         this.exCreatedAt = exCreatedAt;
     }
@@ -132,12 +132,12 @@ public class AnnotationSummaryByPostureEntity {
         return this;
     }
 
-    public Double getStdNeckAngle() {
-        return stdNeckAngle;
+    public Double getMaxDiffNeckAngle() {
+        return maxDiffNeckAngle;
     }
 
-    public AnnotationSummaryByPostureEntity setStdNeckAngle(Double stdNeckAngle) {
-        this.stdNeckAngle = stdNeckAngle;
+    public AnnotationSummaryByPostureEntity setMaxDiffNeckAngle(Double maxDiffNeckAngle) {
+        this.maxDiffNeckAngle = maxDiffNeckAngle;
         return this;
     }
 
@@ -174,7 +174,7 @@ public class AnnotationSummaryByPostureEntity {
                 ", annotaterIds=" + annotaterIds +
                 ", originalNeckAngle=" + originalNeckAngle +
                 ", avgNeckAngle=" + avgNeckAngle +
-                ", stdNeckAngle=" + stdNeckAngle +
+                ", maxDiffNeckAngle=" + maxDiffNeckAngle +
                 ", userId=" + userId +
                 ", exCreatedAt=" + exCreatedAt +
                 '}';
@@ -191,7 +191,7 @@ public class AnnotationSummaryByPostureEntity {
                 .annotaterIds(splitStringToLongList(entity.getAnnotaterIds()))
                 .originalNeckAngle(entity.getOriginalNeckAngle())
                 .avgNeckAngle(entity.getAvgNeckAngle())
-                .stdNeckAngle(entity.getStdNeckAngle())
+                .maxDiffNeckAngle(entity.getMaxDiffNeckAngle())
                 .fileName(fileName);
     }
 

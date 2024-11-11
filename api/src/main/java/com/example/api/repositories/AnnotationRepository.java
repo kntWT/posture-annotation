@@ -281,7 +281,7 @@ public interface AnnotationRepository extends JpaRepository<AnnotationEntity, Lo
                 STRING_AGG(CAST(a.annotater_id AS TEXT), ',') AS annotater_ids,
                 MAX(p.neck_angle) AS original_neck_angle,
                 AVG(a.neck_angle) AS avg_neck_angle,
-                COALESCE(STDDEV(a.neck_angle), 0) AS std_neck_angle,
+                MAX(a.neck_angle) - MIN(a.neck_angle) AS max_diff_neck_angle,
                 MAX(p.user_id) AS user_id,
                 MAX(p.ex_created_at) AS ex_created_at
             FROM annotations AS a
@@ -299,7 +299,7 @@ public interface AnnotationRepository extends JpaRepository<AnnotationEntity, Lo
                 STRING_AGG(CAST(a.annotater_id AS TEXT), ',') AS annotater_ids,
                 MAX(p.neck_angle) AS original_neck_angle,
                 AVG(a.neck_angle) AS avg_neck_angle,
-                COALESCE(STDDEV(a.neck_angle), 0) AS std_neck_angle,
+                MAX(a.neck_angle) - MIN(a.neck_angle) AS max_diff_neck_angle,
                 MAX(p.user_id) AS user_id,
                 MAX(p.ex_created_at) AS ex_created_at
             FROM annotations AS a
@@ -317,7 +317,7 @@ public interface AnnotationRepository extends JpaRepository<AnnotationEntity, Lo
                         (String) row[3],
                         ((Float) row[4]).doubleValue(),
                         (Double) row[5],
-                        (Double) row[6],
+                        ((Float) row[6]).doubleValue(),
                         (Long) row[7],
                         ((Instant) row[8]).atOffset(ZoneOffset.ofHours(9))))
                 .toList();
@@ -333,7 +333,7 @@ public interface AnnotationRepository extends JpaRepository<AnnotationEntity, Lo
                         (String) row[3],
                         ((Float) row[4]).doubleValue(),
                         (Double) row[5],
-                        (Double) row[6],
+                        ((Float) row[6]).doubleValue(),
                         (Long) row[7],
                         ((Instant) row[8]).atOffset(ZoneOffset.ofHours(9))))
                 .toList();
