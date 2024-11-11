@@ -51,8 +51,8 @@
 			digit: 4
 		},
 		{
-			display: '角度の標準偏差',
-			key: 'stdNeckAngle',
+			display: '角度の最大誤差',
+			key: 'maxDiffNeckAngle',
 			type: 'number',
 			digit: 4,
 			highlightThreshold: 10
@@ -82,8 +82,8 @@
 		},
 		{ label: '角度の平均', key: 'avgNeckAngle', type: 'number', availableUiTypes: ['dropdown'] },
 		{
-			label: '角度の標準偏差',
-			key: 'stdNeckAngle',
+			label: '角度の最大誤差',
+			key: 'maxDiffNeckAngle',
 			type: 'number',
 			availableUiTypes: ['dropdown']
 		},
