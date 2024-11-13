@@ -5,6 +5,7 @@
 	import { Label, Pagination } from '@smui/data-table';
 	import IconButton from '@smui/icon-button';
 	import Select, { Option } from '@smui/select';
+	import Textfield from '@smui/textfield';
 
 	type T = $$Generic;
 	export let contents: T[];
@@ -19,6 +20,7 @@
 
 	let currentPage = 0;
 	export let rowsPerPage = 50;
+	let rowsPerPages = [50, 100, 200, 500, 1000, 5000, 10000];
 
 	onMount(async () => {
 		// NOTE: 初期値を反映させるためレンダリングを待つ
@@ -63,11 +65,9 @@
 		<svelte:fragment slot="rowsPerPage">
 			<Label>Rows Per Page</Label>
 			<Select variant="outlined" bind:value={rowsPerPage} noLabel>
-				<Option value={50}>50</Option>
-				<Option value={100}>100</Option>
-				<Option value={200}>200</Option>
-				<Option value={500}>500</Option>
-				<Option value={1000}>1000</Option>
+				{#each rowsPerPages as r}
+					<Option value={r}>{r}</Option>
+				{/each}
 			</Select>
 		</svelte:fragment>
 		<svelte:fragment slot="total">
