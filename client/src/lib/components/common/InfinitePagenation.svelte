@@ -5,7 +5,6 @@
 	import { Label, Pagination } from '@smui/data-table';
 	import IconButton from '@smui/icon-button';
 	import Select, { Option } from '@smui/select';
-	import Textfield from '@smui/textfield';
 
 	type T = $$Generic;
 	export let contents: T[];
