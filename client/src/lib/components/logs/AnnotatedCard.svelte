@@ -27,7 +27,7 @@
 				首の角度: {annotation.neckAngle.toFixed(2)}
 				{#if originalNeckAngle !== null}
 					(<span class={getHighlightColor(diffNeckAngle, THRES)}>
-						{diffNeckAngle < 0 ? '-' : '+'}{diffNeckAngle.toFixed(2)}
+						{diffNeckAngle < 0 ? '' : '+'}{diffNeckAngle.toFixed(2)}
 					</span>)
 				{/if}
 			</span>
