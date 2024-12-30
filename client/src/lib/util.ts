@@ -26,7 +26,7 @@ export const formatDate = (date: Date | undefined) => {
 
 type color = 'green' | 'red' | '';
 export const getHighlightColor = (value: number, thres?: number): color => {
-	if (!thres) {
+	if (isNaN(value) || !thres || isNaN(thres)) {
 		return '';
 	}
 	if (value > thres) {
