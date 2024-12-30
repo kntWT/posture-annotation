@@ -197,7 +197,7 @@
 							{#each displayData[content.kind] as annotation}
 								<Cell
 									class="card mdc-elevation-transition"
-									spanDevices={{ desktop: 2, tablet: 2, phone: 4 }}
+									spanDevices={{ desktop: 3, tablet: 3, phone: 4 }}
 								>
 									<AnnotatedCard
 										{annotation}
