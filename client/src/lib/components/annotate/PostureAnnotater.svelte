@@ -47,6 +47,7 @@
 			document.removeEventListener('mousemove', handleUpdateCanSubmit);
 			document.removeEventListener('touchmove', handleUpdateCanSubmit);
 		}
+		canSubmit = false;
 	});
 
 	const handleUpdateCanSubmit = (e: MouseEvent | TouchEvent) => {
