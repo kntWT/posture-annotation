@@ -19,7 +19,7 @@
 
 	let currentPage = 0;
 	export let rowsPerPage = 50;
-	let rowsPerPages = [50, 100, 200, 500, 1000, 5000, 10000];
+	let rowsPerPages = [50, 100, 200, 500, 1000, 2000];
 
 	onMount(async () => {
 		// NOTE: 初期値を反映させるためレンダリングを待つ
