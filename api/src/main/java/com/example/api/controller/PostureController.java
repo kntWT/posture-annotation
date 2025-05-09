@@ -35,7 +35,7 @@ public class PostureController implements PostureApi {
     PostureService postureService;
 
     @Override
-    public ResponseEntity<PostureWithPageInfo> getPostures(Long page, Long size, Pageable pageable) {
+    public ResponseEntity<PostureWithPageInfo> getPostures(Pageable pageable) {
         PostureWithPageInfo postures = postureService.getPostures(pageable);
         return ResponseEntity.ok(postures);
     }
@@ -62,8 +62,7 @@ public class PostureController implements PostureApi {
     }
 
     @Override
-    public ResponseEntity<PostureWithPageInfo> getPosturesByUserId(Long userId, Long page, Long size,
-            Pageable pageable) {
+    public ResponseEntity<PostureWithPageInfo> getPosturesByUserId(Long userId, Pageable pageable) {
         PostureWithPageInfo postures = postureService.getPosturesByUserId(userId, pageable);
         return ResponseEntity.ok(postures);
     }
@@ -99,8 +98,10 @@ public class PostureController implements PostureApi {
     }
 
     @Override
-    public ResponseEntity<Posture> getRandomPostureByAnnotaterIdThinOutById(Long annotaterId, Long step) {
-        Posture posture = postureService.getRandomPostureByAnnotaterIdThinOutById(annotaterId, step);
+    public ResponseEntity<Posture> getRandomPostureByAnnotaterIdThinOutById(Long annotaterId,
+            Long step) {
+        Posture posture =
+                postureService.getRandomPostureByAnnotaterIdThinOutById(annotaterId, step);
         if (posture == null) {
             ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
@@ -120,13 +121,14 @@ public class PostureController implements PostureApi {
     }
 
     @Override
-    public ResponseEntity<Long> updatePostureMarkers(List<PostureUpdateMarkerPosition> markerPositions) {
+    public ResponseEntity<Long> updatePostureMarkers(
+            List<PostureUpdateMarkerPosition> markerPositions) {
         Long updatedCount = postureService.updatePostureMarkers(markerPositions);
         return ResponseEntity.ok(updatedCount);
     }
 
     @Override
-    public ResponseEntity<PostureWithPageInfo> getSamplePostures(Long page, Long size, Pageable pageable) {
+    public ResponseEntity<PostureWithPageInfo> getSamplePostures(Pageable pageable) {
         PostureWithPageInfo postures = postureService.getPosturesByIsSample(true, pageable);
         return ResponseEntity.ok(postures);
     }
@@ -153,7 +155,8 @@ public class PostureController implements PostureApi {
 
     @Override
     public ResponseEntity<PostureWithAnnotations> getPostureWithAnnotationsById(Long id) {
-        PostureWithAnnotations postureWithAnnotations = postureService.getPostureWithAnnotationsById(id);
+        PostureWithAnnotations postureWithAnnotations =
+                postureService.getPostureWithAnnotationsById(id);
         if (postureWithAnnotations == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
