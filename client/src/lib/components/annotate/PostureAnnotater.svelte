@@ -3,12 +3,13 @@
 	import { isLoggedIn, getUser } from '$lib/store/user';
 	import { onMount, onDestroy } from 'svelte';
 	import { browser } from '$app/environment';
-	import type p5 from 'p5';
-	import P5 from 'p5-svelte';
+	import type { default as P5 } from 'p5';
+	let container: HTMLDivElement | null = null;
 	import IconButton from '@smui/icon-button';
 	import TextField from '@smui/textfield';
 
 	type Vector = { x: number; y: number };
+	let p5: any = null;
 
 	export let handleAction: (data: AnnotationCreateWithFile) => Promise<unknown>;
 	export let posture: Posture;
@@ -17,6 +18,7 @@
 	export let showWaist: boolean = false;
 	export let holdShoulder: boolean = false;
 
+	let p5Instance: P5 | null = null;
 	const tragus: Vector = { x: posture.tragusX ?? 0, y: posture.tragusY ?? 0 };
 	const shoulder: Vector = { x: posture.shoulderX ?? 0, y: posture.shoulderY ?? 0 };
 	const waist: Vector = { x: posture.waistX ?? 0, y: posture.waistY ?? 0 };
@@ -31,14 +33,17 @@
 	let canSubmit: boolean = false;
 	let isMobile: boolean = false;
 
-	onMount(() => {
+	onMount(async () => {
+		p5 = (await import('p5')).default;
 		document.addEventListener('keydown', handleKeyDown);
 		setTimeout(() => {
-			canvas = document.querySelector('canvas');
 			document.addEventListener('mousemove', handleUpdateCanSubmit);
 			document.addEventListener('touchmove', handleUpdateCanSubmit);
 		}, 1000);
 		isMobile = navigator.userAgent.indexOf('Mobile') >= 0;
+		if (container) {
+			p5Instance = new p5(sketch, container);
+		}
 	});
 
 	onDestroy(() => {
@@ -48,6 +53,10 @@
 			document.removeEventListener('touchmove', handleUpdateCanSubmit);
 		}
 		canSubmit = false;
+		p5Instance?.remove();
+		p5Instance = null;
+		canvas?.remove();
+		canvas = null;
 	});
 
 	const handleUpdateCanSubmit = (e: MouseEvent | TouchEvent) => {
@@ -135,7 +144,8 @@
 		return canvas.toDataURL('image/jpeg');
 	};
 
-	const sketch = (p: p5) => {
+	const sketch = (p: P5) => {
+		p5Instance = p;
 		let img: p5.Image;
 		const radius = 4;
 		const marginRadius = 5;
@@ -160,7 +170,8 @@
 			const container = document.getElementById('annotater-container');
 			const height = container?.clientHeight ?? 600;
 			const width = Math.min(container?.clientWidth ?? 400, (height * 16) / 9);
-			p.createCanvas(width, height);
+			const c = p.createCanvas(width, height);
+			canvas = c.elt;
 			p.imageMode(p.CENTER);
 			imageOffset.set(0, 0);
 			initMarkerPosition();
@@ -491,7 +502,7 @@
 			<IconButton class="material-icons" on:click={incrementScale}>add</IconButton>
 		</div>
 	</div>
-	<P5 class="anotate-canvas" {sketch} />
+	<div class="anotate-canvas" bind:this={container}></div>
 </div>
 
 <style lang="scss" scoped>
